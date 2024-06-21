@@ -6,6 +6,12 @@ CustomFishing is a Paper plugin that provides minigames and a powerful condition
 With the new concept of weight system, CustomFishing brings unlimited customization possibilities and best performance.
 Developed by xiaomomi.
 
+# Why a fork?
+
+Because the original repository is malformed for building outside of the developer infrastructure.
+So I fixed it.
+I removed the proxy settings that were causing the build to fail.
+
 ## How to build
 
 ### Linux
