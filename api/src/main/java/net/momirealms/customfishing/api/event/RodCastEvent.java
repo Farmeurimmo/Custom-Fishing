@@ -30,11 +30,11 @@ import org.jetbrains.annotations.NotNull;
  */
 public class RodCastEvent extends PlayerEvent implements Cancellable {
 
+    private static final HandlerList handlerList = new HandlerList();
     private final Effect effect;
-    private boolean isCancelled;
     private final PlayerFishEvent event;
     private final FishingPreparation preparation;
-    private static final HandlerList handlerList = new HandlerList();
+    private boolean isCancelled;
 
     /**
      * Constructs a new RodCastEvent.
@@ -50,6 +50,10 @@ public class RodCastEvent extends PlayerEvent implements Cancellable {
         this.preparation = fishingPreparation;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlerList;
+    }
+
     @Override
     public boolean isCancelled() {
         return this.isCancelled;
@@ -63,10 +67,6 @@ public class RodCastEvent extends PlayerEvent implements Cancellable {
     @Override
     public void setCancelled(boolean cancel) {
         this.isCancelled = cancel;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlerList;
     }
 
     /**

@@ -136,7 +136,7 @@ public abstract class AbstractGamingPlayer implements GamingPlayer, Runnable {
     protected void switchItemCheck() {
         PlayerInventory playerInventory = player.getInventory();
         if (playerInventory.getItemInMainHand().getType() != Material.FISHING_ROD
-            && playerInventory.getItemInOffHand().getType() != Material.FISHING_ROD
+                && playerInventory.getItemInOffHand().getType() != Material.FISHING_ROD
         ) {
             cancel();
             endGame();

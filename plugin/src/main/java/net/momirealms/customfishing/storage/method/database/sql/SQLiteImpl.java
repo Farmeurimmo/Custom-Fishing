@@ -125,33 +125,33 @@ public class SQLiteImpl extends AbstractSQLDatabase {
     public CompletableFuture<Optional<PlayerData>> getPlayerData(UUID uuid, boolean lock) {
         var future = new CompletableFuture<Optional<PlayerData>>();
         plugin.getScheduler().runTaskAsync(() -> {
-        try (
-            Connection connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement(String.format(SqlConstants.SQL_SELECT_BY_UUID, getTableName("data")))
-        ) {
-            statement.setString(1, uuid.toString());
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                int lockValue = rs.getInt(2);
-                if (lockValue != 0 && getCurrentSeconds() - CFConfig.dataSaveInterval <= lockValue) {
-                    connection.close();
-                    future.complete(Optional.of(PlayerData.LOCKED));
-                    return;
+            try (
+                    Connection connection = getConnection();
+                    PreparedStatement statement = connection.prepareStatement(String.format(SqlConstants.SQL_SELECT_BY_UUID, getTableName("data")))
+            ) {
+                statement.setString(1, uuid.toString());
+                ResultSet rs = statement.executeQuery();
+                if (rs.next()) {
+                    int lockValue = rs.getInt(2);
+                    if (lockValue != 0 && getCurrentSeconds() - CFConfig.dataSaveInterval <= lockValue) {
+                        connection.close();
+                        future.complete(Optional.of(PlayerData.LOCKED));
+                        return;
+                    }
+                    final byte[] dataByteArray = rs.getBytes("data");
+                    if (lock) lockOrUnlockPlayerData(uuid, true);
+                    future.complete(Optional.of(plugin.getStorageManager().fromBytes(dataByteArray)));
+                } else if (Bukkit.getPlayer(uuid) != null) {
+                    var data = PlayerData.empty();
+                    insertPlayerData(uuid, data, lock);
+                    future.complete(Optional.of(data));
+                } else {
+                    future.complete(Optional.empty());
                 }
-                final byte[] dataByteArray = rs.getBytes("data");
-                if (lock) lockOrUnlockPlayerData(uuid, true);
-                future.complete(Optional.of(plugin.getStorageManager().fromBytes(dataByteArray)));
-            } else if (Bukkit.getPlayer(uuid) != null) {
-                var data = PlayerData.empty();
-                insertPlayerData(uuid, data, lock);
-                future.complete(Optional.of(data));
-            } else {
-                future.complete(Optional.empty());
+            } catch (SQLException e) {
+                LogUtils.warn("Failed to get " + uuid + "'s data.", e);
+                future.completeExceptionally(e);
             }
-        } catch (SQLException e) {
-            LogUtils.warn("Failed to get " + uuid + "'s data.", e);
-            future.completeExceptionally(e);
-        }
         });
         return future;
     }
@@ -168,19 +168,19 @@ public class SQLiteImpl extends AbstractSQLDatabase {
     public CompletableFuture<Boolean> updatePlayerData(UUID uuid, PlayerData playerData, boolean unlock) {
         var future = new CompletableFuture<Boolean>();
         plugin.getScheduler().runTaskAsync(() -> {
-        try (
-            Connection connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement(String.format(SqlConstants.SQL_UPDATE_BY_UUID, getTableName("data")))
-        ) {
-            statement.setInt(1, unlock ? 0 : getCurrentSeconds());
-            statement.setBytes(2, plugin.getStorageManager().toBytes(playerData));
-            statement.setString(3, uuid.toString());
-            statement.executeUpdate();
-            future.complete(true);
-        } catch (SQLException e) {
-            LogUtils.warn("Failed to update " + uuid + "'s data.", e);
-            future.completeExceptionally(e);
-        }
+            try (
+                    Connection connection = getConnection();
+                    PreparedStatement statement = connection.prepareStatement(String.format(SqlConstants.SQL_UPDATE_BY_UUID, getTableName("data")))
+            ) {
+                statement.setInt(1, unlock ? 0 : getCurrentSeconds());
+                statement.setBytes(2, plugin.getStorageManager().toBytes(playerData));
+                statement.setString(3, uuid.toString());
+                statement.executeUpdate();
+                future.complete(true);
+            } catch (SQLException e) {
+                LogUtils.warn("Failed to update " + uuid + "'s data.", e);
+                future.completeExceptionally(e);
+            }
         });
         return future;
     }
@@ -224,8 +224,8 @@ public class SQLiteImpl extends AbstractSQLDatabase {
     @Override
     public void insertPlayerData(UUID uuid, PlayerData playerData, boolean lock) {
         try (
-            Connection connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement(String.format(SqlConstants.SQL_INSERT_DATA_BY_UUID, getTableName("data")))
+                Connection connection = getConnection();
+                PreparedStatement statement = connection.prepareStatement(String.format(SqlConstants.SQL_INSERT_DATA_BY_UUID, getTableName("data")))
         ) {
             statement.setString(1, uuid.toString());
             statement.setInt(2, lock ? getCurrentSeconds() : 0);

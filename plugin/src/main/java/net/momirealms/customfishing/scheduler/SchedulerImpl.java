@@ -111,9 +111,9 @@ public class SchedulerImpl implements Scheduler {
     /**
      * Runs a task asynchronously with a specified delay.
      *
-     * @param runnable  The task to run.
-     * @param delay     The delay before the task execution.
-     * @param timeUnit  The time unit for the delay.
+     * @param runnable The task to run.
+     * @param delay    The delay before the task execution.
+     * @param timeUnit The time unit for the delay.
      * @return A CancellableTask for managing the scheduled task.
      */
     @Override
@@ -130,10 +130,10 @@ public class SchedulerImpl implements Scheduler {
     /**
      * Runs a task synchronously with a specified delay.
      *
-     * @param runnable  The task to run.
-     * @param location  The location associated with the task.
-     * @param delay     The delay before the task execution.
-     * @param timeUnit  The time unit for the delay.
+     * @param runnable The task to run.
+     * @param location The location associated with the task.
+     * @param delay    The delay before the task execution.
+     * @param timeUnit The time unit for the delay.
      * @return A CancellableTask for managing the scheduled task.
      */
     @Override
@@ -146,9 +146,9 @@ public class SchedulerImpl implements Scheduler {
     /**
      * Runs a task synchronously with a specified delay in ticks.
      *
-     * @param runnable    The task to run.
-     * @param location    The location associated with the task.
-     * @param delayTicks  The delay in ticks before the task execution.
+     * @param runnable   The task to run.
+     * @param location   The location associated with the task.
+     * @param delayTicks The delay in ticks before the task execution.
      * @return A CancellableTask for managing the scheduled task.
      */
     @Override
@@ -159,10 +159,10 @@ public class SchedulerImpl implements Scheduler {
     /**
      * Runs a task asynchronously with a specified delay and period.
      *
-     * @param runnable    The task to run.
-     * @param delay       The delay before the first execution.
-     * @param period      The period between subsequent executions.
-     * @param timeUnit    The time unit for the delay and period.
+     * @param runnable The task to run.
+     * @param delay    The delay before the first execution.
+     * @param period   The period between subsequent executions.
+     * @param timeUnit The time unit for the delay and period.
      * @return A CancellableTask for managing the scheduled task.
      */
     @Override

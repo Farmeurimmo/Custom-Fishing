@@ -55,7 +55,7 @@ public class DustParticleSetting extends ParticleSetting {
                     double x = r * Math.cos(theta) + 0.5;
                     double z = r * Math.sin(theta) + 0.5;
                     double y = expressionVertical.setVariable("theta", theta).setVariable("radius", radius).evaluate();
-                    world.spawnParticle(particle, location.clone().add(x, y, z), 1,0,0,0, 0, dustOptions);
+                    world.spawnParticle(particle, location.clone().add(x, y, z), 1, 0, 0, 0, 0, dustOptions);
                 }
             }
         }, delay * 50L, period * 50L, TimeUnit.MILLISECONDS);

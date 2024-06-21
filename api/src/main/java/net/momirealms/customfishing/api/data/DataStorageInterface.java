@@ -56,9 +56,9 @@ public interface DataStorageInterface {
     /**
      * Update a player's data
      *
-     * @param uuid      The UUID of the player.
+     * @param uuid       The UUID of the player.
      * @param playerData The player data to update.
-     * @param unlock    Whether to unlock the player data after updating.
+     * @param unlock     Whether to unlock the player data after updating.
      * @return A CompletableFuture indicating the success of the update.
      */
     CompletableFuture<Boolean> updatePlayerData(UUID uuid, PlayerData playerData, boolean unlock);
@@ -66,9 +66,9 @@ public interface DataStorageInterface {
     /**
      * Update or insert a player's data into the SQL database.
      *
-     * @param uuid      The UUID of the player.
+     * @param uuid       The UUID of the player.
      * @param playerData The player data to update or insert.
-     * @param unlock    Whether to unlock the player data after updating or inserting.
+     * @param unlock     Whether to unlock the player data after updating or inserting.
      * @return A CompletableFuture indicating the success of the operation.
      */
     CompletableFuture<Boolean> updateOrInsertPlayerData(UUID uuid, PlayerData playerData, boolean unlock);

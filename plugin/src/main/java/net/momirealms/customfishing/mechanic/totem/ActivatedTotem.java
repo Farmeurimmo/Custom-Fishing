@@ -42,7 +42,7 @@ public class ActivatedTotem {
     public ActivatedTotem(Location coreLocation, TotemConfig config) {
         this.subTasks = new ArrayList<>();
         this.expireTime = System.currentTimeMillis() + config.getDuration() * 1000L;
-        this.coreLocation = coreLocation.clone().add(0.5,0,0.5);
+        this.coreLocation = coreLocation.clone().add(0.5, 0, 0.5);
         this.totemConfig = config;
         this.effectCarrier = CustomFishingPlugin.get().getEffectManager().getEffectCarrier("totem", config.getKey());
         for (TotemParticle particleSetting : config.getParticleSettings()) {
@@ -70,7 +70,7 @@ public class ActivatedTotem {
 
     public void doTimerAction() {
         HashMap<String, String> args = new HashMap<>();
-        args.put("{time_left}", String.valueOf((expireTime - System.currentTimeMillis())/1000));
+        args.put("{time_left}", String.valueOf((expireTime - System.currentTimeMillis()) / 1000));
         Condition condition = new Condition(coreLocation, null, args);
         if (effectCarrier != null) {
             Action[] actions = effectCarrier.getActions(ActionTrigger.TIMER);

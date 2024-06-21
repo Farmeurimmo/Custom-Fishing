@@ -51,6 +51,10 @@ public class FishHookLandEvent extends PlayerEvent {
         this.isFirst = isFirst;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlerList;
+    }
+
     /**
      * Gets the target where the fishing hook has landed.
      *
@@ -67,10 +71,6 @@ public class FishHookLandEvent extends PlayerEvent {
      */
     public FishHook getFishHook() {
         return fishHook;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlerList;
     }
 
     /**

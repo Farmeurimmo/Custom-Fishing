@@ -33,6 +33,7 @@ public class HalfImpl implements TotemBlockProperty, Serializable {
 
     /**
      * half is not affected by mirroring.
+     *
      * @param axis The axis to mirror.
      * @return this
      */
@@ -43,6 +44,7 @@ public class HalfImpl implements TotemBlockProperty, Serializable {
 
     /**
      * half is not affected by rotation.
+     *
      * @return this
      */
     @Override
@@ -52,6 +54,7 @@ public class HalfImpl implements TotemBlockProperty, Serializable {
 
     /**
      * Checks if the block's half is the same as the half of this property.
+     *
      * @param block The block to check.
      * @return true if the block's half is the same as the half of this property.
      */
@@ -65,6 +68,7 @@ public class HalfImpl implements TotemBlockProperty, Serializable {
 
     /**
      * Returns the raw text of the half property.
+     *
      * @return The raw text of the half property.
      */
     @Override

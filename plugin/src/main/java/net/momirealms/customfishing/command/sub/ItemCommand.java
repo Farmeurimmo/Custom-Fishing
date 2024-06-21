@@ -52,11 +52,11 @@ public class ItemCommand {
     public CommandAPICommand getItemCommand() {
         return new CommandAPICommand("items")
                 .withSubcommands(
-                    getSubCommand("item"),
-                    getSubCommand("util"),
-                    getSubCommand("bait"),
-                    getSubCommand("rod"),
-                    getSubCommand("hook")
+                        getSubCommand("item"),
+                        getSubCommand("util"),
+                        getSubCommand("bait"),
+                        getSubCommand("rod"),
+                        getSubCommand("hook")
                 );
     }
 
@@ -83,7 +83,7 @@ public class ItemCommand {
                 .withOptionalArguments(new StringArgument("file"))
                 .executesPlayer((player, args) -> {
                     String key = (String) args.get("key");
-                    String fileName = args.getOrDefault("file","import") + ".yml";
+                    String fileName = args.getOrDefault("file", "import") + ".yml";
                     ItemStack itemStack = player.getInventory().getItemInMainHand();
                     if (itemStack.getType() == Material.AIR)
                         return;
@@ -154,7 +154,8 @@ public class ItemCommand {
                         for (Player player : players) {
                             ItemStack item = CustomFishingPlugin.get().getItemManager().build(player, namespace, id, new Condition(player).getArgs());
                             int actual = ItemUtils.giveItem(player, item, amount);
-                            if (!silence) AdventureHelper.getInstance().sendMessageWithPrefix(sender, CFLocale.MSG_Give_Item.replace("{item}", id).replace("{amount}", String.valueOf(actual)).replace("{player}", player.getName()));
+                            if (!silence)
+                                AdventureHelper.getInstance().sendMessageWithPrefix(sender, CFLocale.MSG_Give_Item.replace("{item}", id).replace("{amount}", String.valueOf(actual)).replace("{player}", player.getName()));
                         }
                     } else {
                         AdventureHelper.getInstance().sendMessageWithPrefix(sender, CFLocale.MSG_Item_Not_Exists);

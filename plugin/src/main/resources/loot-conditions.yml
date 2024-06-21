@@ -1,7 +1,7 @@
 # global group
 global-group:
-  list: []
-  conditions: {}
+  list: [ ]
+  conditions: { }
   sub-groups:
     loots_in_water:
       conditions:
@@ -127,7 +127,7 @@ global-group:
     loots_in_lava:
       conditions:
         lava-fishing: true
-      list: []
+      list: [ ]
       sub-groups:
         world_loots:
           conditions:

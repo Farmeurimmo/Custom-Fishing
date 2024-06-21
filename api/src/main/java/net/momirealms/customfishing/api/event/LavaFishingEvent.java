@@ -31,8 +31,8 @@ public class LavaFishingEvent extends PlayerEvent implements Cancellable {
 
     private static final HandlerList handlerList = new HandlerList();
     private final State state;
-    private boolean isCancelled;
     private final FishHook hook;
+    private boolean isCancelled;
 
     /**
      * Constructs a new LavaFishingEvent.
@@ -46,6 +46,10 @@ public class LavaFishingEvent extends PlayerEvent implements Cancellable {
         this.state = state;
         this.isCancelled = false;
         this.hook = hook;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlerList;
     }
 
     /**
@@ -64,10 +68,6 @@ public class LavaFishingEvent extends PlayerEvent implements Cancellable {
      */
     public FishHook getHook() {
         return hook;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlerList;
     }
 
     @NotNull

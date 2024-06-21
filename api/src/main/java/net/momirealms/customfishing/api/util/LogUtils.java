@@ -27,6 +27,10 @@ import java.util.logging.Level;
  */
 public final class LogUtils {
 
+    private LogUtils() {
+        throw new UnsupportedOperationException("This class cannot be instantiated");
+    }
+
     /**
      * Log an informational message.
      *
@@ -57,8 +61,8 @@ public final class LogUtils {
     /**
      * Log a warning message with a throwable exception.
      *
-     * @param message    The message to log.
-     * @param throwable  The throwable exception to log.
+     * @param message   The message to log.
+     * @param throwable The throwable exception to log.
      */
     public static void warn(@NotNull String message, Throwable throwable) {
         CustomFishingPlugin.getInstance().getLogger().log(Level.WARNING, message, throwable);
@@ -67,14 +71,10 @@ public final class LogUtils {
     /**
      * Log a severe error message with a throwable exception.
      *
-     * @param message    The message to log.
-     * @param throwable  The throwable exception to log.
+     * @param message   The message to log.
+     * @param throwable The throwable exception to log.
      */
     public static void severe(@NotNull String message, Throwable throwable) {
         CustomFishingPlugin.getInstance().getLogger().log(Level.SEVERE, message, throwable);
-    }
-
-    private LogUtils() {
-        throw new UnsupportedOperationException("This class cannot be instantiated");
     }
 }

@@ -7,7 +7,7 @@
 # Vanilla/EcoEnchants: minecraft:enchant:level
 # AdvancedEnchantments: AE:enchant:level
 minecraft:luck_of_the_sea:1:
-  requirements: {}
+  requirements: { }
   effects:
     effect_1:
       type: group-mod
@@ -15,7 +15,7 @@ minecraft:luck_of_the_sea:1:
         - silver_star:+2
         - golden_star:+1
 minecraft:luck_of_the_sea:2:
-  requirements: {}
+  requirements: { }
   effects:
     effect_1:
       type: group-mod
@@ -23,7 +23,7 @@ minecraft:luck_of_the_sea:2:
         - silver_star:+4
         - golden_star:+2
 minecraft:luck_of_the_sea:3:
-  requirements: {}
+  requirements: { }
   effects:
     effect_1:
       type: group-mod

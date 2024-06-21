@@ -123,8 +123,8 @@ public class ActionManagerImpl implements ActionManager {
      * Registers an ActionFactory for a specific action type.
      * This method allows you to associate an ActionFactory with a custom action type.
      *
-     * @param type           The custom action type to register.
-     * @param actionFactory  The ActionFactory responsible for creating actions of the specified type.
+     * @param type          The custom action type to register.
+     * @param actionFactory The ActionFactory responsible for creating actions of the specified type.
      * @return True if the registration was successful (the action type was not already registered), false otherwise.
      */
     @Override
@@ -163,9 +163,9 @@ public class ActionManagerImpl implements ActionManager {
             return EmptyAction.instance;
         }
         return factory.build(
-                        section.get("value"),
-                        section.getDouble("chance", 1d)
-                );
+                section.get("value"),
+                section.getDouble("chance", 1d)
+        );
     }
 
     /**
@@ -270,9 +270,10 @@ public class ActionManagerImpl implements ActionManager {
                 ActionExpansion expansion = expansionClass.getDeclaredConstructor().newInstance();
                 unregisterAction(expansion.getActionType());
                 registerAction(expansion.getActionType(), expansion.getActionFactory());
-                LogUtils.info("Loaded action expansion: " + expansion.getActionType() + "[" + expansion.getVersion() + "]" + " by " + expansion.getAuthor() );
+                LogUtils.info("Loaded action expansion: " + expansion.getActionType() + "[" + expansion.getVersion() + "]" + " by " + expansion.getAuthor());
             }
-        } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
+                 NoSuchMethodException e) {
             LogUtils.warn("Error occurred when creating expansion instance.", e);
         }
     }
@@ -461,20 +462,20 @@ public class ActionManagerImpl implements ActionManager {
                     if (Math.random() > chance) return;
                     Player owner = condition.getPlayer();
                     plugin.getScheduler().runTaskSync(() -> {
-                        for (Entity player : condition.getLocation().getWorld().getNearbyEntities(condition.getLocation(), range, range, range, entity -> entity instanceof Player)) {
-                            double distance = LocationUtils.getDistance(player.getLocation(), condition.getLocation());
-                            if (distance <= range) {
-                                condition.insertArg("{near}", player.getName());
-                                String replaced = PlaceholderManagerImpl.getInstance().parse(
-                                        owner,
-                                        actionbar,
-                                        condition.getArgs()
-                                );
-                                AdventureHelper.getInstance().sendActionbar((Player) player, replaced);
-                                condition.delArg("{near}");
-                            }
-                        }
-                        }, condition.getLocation()
+                                for (Entity player : condition.getLocation().getWorld().getNearbyEntities(condition.getLocation(), range, range, range, entity -> entity instanceof Player)) {
+                                    double distance = LocationUtils.getDistance(player.getLocation(), condition.getLocation());
+                                    if (distance <= range) {
+                                        condition.insertArg("{near}", player.getName());
+                                        String replaced = PlaceholderManagerImpl.getInstance().parse(
+                                                owner,
+                                                actionbar,
+                                                condition.getArgs()
+                                        );
+                                        AdventureHelper.getInstance().sendActionbar((Player) player, replaced);
+                                        condition.delArg("{near}");
+                                    }
+                                }
+                            }, condition.getLocation()
                     );
                 };
             } else {
@@ -664,25 +665,27 @@ public class ActionManagerImpl implements ActionManager {
                     );
                     if (range > 0) {
                         plugin.getScheduler().runTaskSync(() -> {
-                                for (Entity player : finalLocation.getWorld().getNearbyEntities(finalLocation, range, range, range, entity -> entity instanceof Player)) {
-                                    double distance = LocationUtils.getDistance(player.getLocation(), finalLocation);
-                                    if (distance <= range) {
-                                        Location locationTemp = finalLocation.clone();
-                                        if (opposite) locationTemp.setYaw(-player.getLocation().getYaw());
-                                        else locationTemp.setYaw((float) plugin.getPlaceholderManager().getExpressionValue((Player) player, yaw, condition.getArgs()));
-                                        ArmorStandUtils.sendFakeItem(
-                                                condition.getPlayer(),
-                                                locationTemp,
-                                                itemStack,
-                                                duration
-                                        );
+                                    for (Entity player : finalLocation.getWorld().getNearbyEntities(finalLocation, range, range, range, entity -> entity instanceof Player)) {
+                                        double distance = LocationUtils.getDistance(player.getLocation(), finalLocation);
+                                        if (distance <= range) {
+                                            Location locationTemp = finalLocation.clone();
+                                            if (opposite) locationTemp.setYaw(-player.getLocation().getYaw());
+                                            else
+                                                locationTemp.setYaw((float) plugin.getPlaceholderManager().getExpressionValue((Player) player, yaw, condition.getArgs()));
+                                            ArmorStandUtils.sendFakeItem(
+                                                    condition.getPlayer(),
+                                                    locationTemp,
+                                                    itemStack,
+                                                    duration
+                                            );
+                                        }
                                     }
-                                }
-                            }, condition.getLocation()
+                                }, condition.getLocation()
                         );
                     } else {
                         if (opposite) finalLocation.setYaw(-owner.getLocation().getYaw());
-                        else finalLocation.setYaw((float) plugin.getPlaceholderManager().getExpressionValue(owner, yaw, condition.getArgs()));
+                        else
+                            finalLocation.setYaw((float) plugin.getPlaceholderManager().getExpressionValue(owner, yaw, condition.getArgs()));
                         ArmorStandUtils.sendFakeItem(
                                 condition.getPlayer(),
                                 finalLocation,
@@ -855,22 +858,22 @@ public class ActionManagerImpl implements ActionManager {
                 return condition -> {
                     if (Math.random() > chance) return;
                     plugin.getScheduler().runTaskSync(() -> {
-                            for (Entity player : condition.getLocation().getWorld().getNearbyEntities(condition.getLocation(), range, range, range, entity -> entity instanceof Player)) {
-                                double distance = LocationUtils.getDistance(player.getLocation(), condition.getLocation());
-                                if (distance <= range) {
-                                    condition.insertArg("{near}", player.getName());
-                                    AdventureHelper.getInstance().sendTitle(
-                                            condition.getPlayer(),
-                                            PlaceholderManagerImpl.getInstance().parse(condition.getPlayer(), title, condition.getArgs()),
-                                            PlaceholderManagerImpl.getInstance().parse(condition.getPlayer(), subtitle, condition.getArgs()),
-                                            fadeIn,
-                                            stay,
-                                            fadeOut
-                                    );
-                                    condition.delArg("{near}");
+                                for (Entity player : condition.getLocation().getWorld().getNearbyEntities(condition.getLocation(), range, range, range, entity -> entity instanceof Player)) {
+                                    double distance = LocationUtils.getDistance(player.getLocation(), condition.getLocation());
+                                    if (distance <= range) {
+                                        condition.insertArg("{near}", player.getName());
+                                        AdventureHelper.getInstance().sendTitle(
+                                                condition.getPlayer(),
+                                                PlaceholderManagerImpl.getInstance().parse(condition.getPlayer(), title, condition.getArgs()),
+                                                PlaceholderManagerImpl.getInstance().parse(condition.getPlayer(), subtitle, condition.getArgs()),
+                                                fadeIn,
+                                                stay,
+                                                fadeOut
+                                        );
+                                        condition.delArg("{near}");
+                                    }
                                 }
-                            }
-                        }, condition.getLocation()
+                            }, condition.getLocation()
                     );
                 };
             } else {
@@ -994,19 +997,19 @@ public class ActionManagerImpl implements ActionManager {
                 return condition -> {
                     if (Math.random() > chance) return;
                     outer:
-                        for (Pair<Requirement[], Action[]> pair : conditionActionPairList) {
-                            if (pair.left() != null)
-                                for (Requirement requirement : pair.left()) {
-                                    if (!requirement.isConditionMet(condition)) {
-                                        continue outer;
-                                    }
+                    for (Pair<Requirement[], Action[]> pair : conditionActionPairList) {
+                        if (pair.left() != null)
+                            for (Requirement requirement : pair.left()) {
+                                if (!requirement.isConditionMet(condition)) {
+                                    continue outer;
                                 }
-                            if (pair.right() != null)
-                                for (Action action : pair.right()) {
-                                    action.trigger(condition);
-                                }
-                            return;
-                        }
+                            }
+                        if (pair.right() != null)
+                            for (Action action : pair.right()) {
+                                action.trigger(condition);
+                            }
+                        return;
+                    }
                 };
             } else {
                 LogUtils.warn("Illegal value format found at action: priority");

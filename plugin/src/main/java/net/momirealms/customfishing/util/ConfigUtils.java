@@ -44,7 +44,8 @@ import java.util.Map;
  */
 public class ConfigUtils {
 
-    private ConfigUtils() {}
+    private ConfigUtils() {
+    }
 
     /**
      * Converts an object into an ArrayList of strings.
@@ -85,7 +86,7 @@ public class ConfigUtils {
     public static List<Pair<String, Double>> getWeights(List<String> list) {
         List<Pair<String, Double>> result = new ArrayList<>(list.size());
         for (String member : list) {
-            String[] split = member.split(":",2);
+            String[] split = member.split(":", 2);
             String key = split[0];
             result.add(Pair.of(key, Double.parseDouble(split[1])));
         }
@@ -184,7 +185,7 @@ public class ConfigUtils {
     public static List<Pair<String, WeightModifier>> getModifiers(List<String> modList) {
         List<Pair<String, WeightModifier>> result = new ArrayList<>(modList.size());
         for (String member : modList) {
-            String[] split = member.split(":",2);
+            String[] split = member.split(":", 2);
             String key = split[0];
             result.add(Pair.of(key, getModifier(split[1])));
         }
@@ -360,7 +361,7 @@ public class ConfigUtils {
                     readableList.add("  ".repeat(loop_times) + "<gold>" + entry.getKey() + ":");
                 }
                 for (Object value : list) {
-                    if (value instanceof Map<?,?> nbtMap) {
+                    if (value instanceof Map<?, ?> nbtMap) {
                         mapToReadableStringList((Map<String, Object>) nbtMap, readableList, loop_times + 2, true);
                     } else {
                         readableList.add("  ".repeat(loop_times + 1) + "<white>- " + value);
@@ -374,7 +375,7 @@ public class ConfigUtils {
                     readableList.add("  ".repeat(loop_times) + "<gold>" + entry.getKey() + ":");
                 }
                 mapToReadableStringList(section.getValues(false), readableList, loop_times + 1, false);
-            } else if (nbt instanceof Map<?,?> innerMap) {
+            } else if (nbt instanceof Map<?, ?> innerMap) {
                 if (isMapList && first) {
                     first = false;
                     readableList.add("  ".repeat(loop_times - 1) + "<white>- <gold>" + entry.getKey() + ":");

@@ -32,6 +32,14 @@ public class BossBarConfig extends AbstractCompetitionInfo {
         return overlay;
     }
 
+    public enum Overlay {
+        NOTCHED_6,
+        NOTCHED_10,
+        NOTCHED_12,
+        NOTCHED_20,
+        PROGRESS
+    }
+
     public static class Builder {
 
         private final BossBarConfig config;
@@ -73,13 +81,5 @@ public class BossBarConfig extends AbstractCompetitionInfo {
         public BossBarConfig build() {
             return this.config;
         }
-    }
-
-    public enum Overlay {
-        NOTCHED_6,
-        NOTCHED_10,
-        NOTCHED_12,
-        NOTCHED_20,
-        PROGRESS
     }
 }

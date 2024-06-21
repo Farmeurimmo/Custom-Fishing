@@ -36,7 +36,20 @@ import java.util.*;
  */
 public class NBTUtils {
 
-    private NBTUtils() {}
+    private static final Map<String, MinecraftVersion> VERSION_TO_REVISION = new HashMap<>() {
+        {
+            this.put("1.20", MinecraftVersion.MC1_20_R1);
+            this.put("1.20.1", MinecraftVersion.MC1_20_R1);
+            this.put("1.20.2", MinecraftVersion.MC1_20_R2);
+            this.put("1.20.3", MinecraftVersion.MC1_20_R3);
+            this.put("1.20.4", MinecraftVersion.MC1_20_R3);
+            this.put("1.20.5", MinecraftVersion.MC1_20_R4);
+            this.put("1.20.6", MinecraftVersion.MC1_20_R4);
+        }
+    };
+
+    private NBTUtils() {
+    }
 
     public static void disableNBTAPILogs() {
         MinecraftVersion.disableBStats();
@@ -64,7 +77,7 @@ public class NBTUtils {
             hasGsonSupport = false;
         }
         try {
-            Field field= MinecraftVersion.class.getDeclaredField("hasGsonSupport");
+            Field field = MinecraftVersion.class.getDeclaredField("hasGsonSupport");
             field.setAccessible(true);
             field.set(Boolean.class, hasGsonSupport);
         } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -72,37 +85,11 @@ public class NBTUtils {
         }
     }
 
-    private static final Map<String, MinecraftVersion> VERSION_TO_REVISION = new HashMap<>() {
-        {
-            this.put("1.20", MinecraftVersion.MC1_20_R1);
-            this.put("1.20.1", MinecraftVersion.MC1_20_R1);
-            this.put("1.20.2", MinecraftVersion.MC1_20_R2);
-            this.put("1.20.3", MinecraftVersion.MC1_20_R3);
-            this.put("1.20.4", MinecraftVersion.MC1_20_R3);
-            this.put("1.20.5", MinecraftVersion.MC1_20_R4);
-            this.put("1.20.6", MinecraftVersion.MC1_20_R4);
-        }
-    };
-
-
-    /**
-     * Inner class representing a stack element used during NBT data conversion.
-     */
-    public static class StackElement {
-        final Map<String, Object> currentMap;
-        final NBTCompound currentNbtCompound;
-
-        StackElement(Map<String, Object> map, NBTCompound nbtCompound) {
-            this.currentMap = map;
-            this.currentNbtCompound = nbtCompound;
-        }
-    }
-
     /**
      * Converts data from a Bukkit YAML configuration to NBT tags.
      *
      * @param nbtCompound The target NBT compound
-     * @param map The source map from Bukkit YAML
+     * @param map         The source map from Bukkit YAML
      */
     @SuppressWarnings("unchecked")
     public static void setTagsFromBukkitYAML(Player player, Map<String, String> placeholders, NBTCompound nbtCompound, Map<String, Object> map) {
@@ -176,7 +163,7 @@ public class NBTUtils {
             case "ByteArray" -> {
                 String[] split = splitValue(value);
                 byte[] bytes = new byte[split.length];
-                for (int i = 0; i < split.length; i++){
+                for (int i = 0; i < split.length; i++) {
                     bytes[i] = Byte.parseByte(split[i]);
                 }
                 nbtCompound.setByteArray(key, bytes);
@@ -192,8 +179,9 @@ public class NBTUtils {
 
     public static String getParsedData(Player player, Map<String, String> placeholders, String data) {
         if (data.length() >= 3)
-            switch (data.substring(0,3)) {
-                case "-P:" -> data = PlaceholderManagerImpl.getInstance().parse(player, data.substring(3), placeholders);
+            switch (data.substring(0, 3)) {
+                case "-P:" ->
+                        data = PlaceholderManagerImpl.getInstance().parse(player, data.substring(3), placeholders);
                 case "-E:" -> {
                     double value = ConfigUtils.getExpressionValue(player, data.substring(3), placeholders);
                     if (value % 1 == 0) {
@@ -212,10 +200,10 @@ public class NBTUtils {
      * @param nbtCompound The source NBT compound
      * @return A map representing the NBT data
      */
-    public static Map<String, Object> compoundToMap(ReadWriteNBT nbtCompound){
+    public static Map<String, Object> compoundToMap(ReadWriteNBT nbtCompound) {
         Map<String, Object> map = new HashMap<>();
         for (String key : nbtCompound.getKeys()) {
-            switch (nbtCompound.getType(key)){
+            switch (nbtCompound.getType(key)) {
                 case NBTTagByte -> map.put(key, "(Byte) " + nbtCompound.getByte(key));
                 case NBTTagInt -> map.put(key, "(Int) " + nbtCompound.getInteger(key));
                 case NBTTagDouble -> map.put(key, "(Double) " + nbtCompound.getDouble(key));
@@ -232,13 +220,15 @@ public class NBTUtils {
                 case NBTTagList -> {
                     List<Object> list = new ArrayList<>();
                     switch (Objects.requireNonNull(nbtCompound.getListType(key))) {
-                        case NBTTagCompound -> nbtCompound.getCompoundList(key).forEach(a -> list.add(compoundToMap(a)));
+                        case NBTTagCompound ->
+                                nbtCompound.getCompoundList(key).forEach(a -> list.add(compoundToMap(a)));
                         case NBTTagInt -> nbtCompound.getIntegerList(key).forEach(a -> list.add("(Int) " + a));
                         case NBTTagDouble -> nbtCompound.getDoubleList(key).forEach(a -> list.add("(Double) " + a));
                         case NBTTagString -> nbtCompound.getStringList(key).forEach(a -> list.add("(String) " + a));
                         case NBTTagFloat -> nbtCompound.getFloatList(key).forEach(a -> list.add("(Float) " + a));
                         case NBTTagLong -> nbtCompound.getLongList(key).forEach(a -> list.add("(Long) " + a));
-                        case NBTTagIntArray -> nbtCompound.getIntArrayList(key).forEach(a -> list.add("(IntArray) " + Arrays.toString(a)));
+                        case NBTTagIntArray ->
+                                nbtCompound.getIntArrayList(key).forEach(a -> list.add("(IntArray) " + Arrays.toString(a)));
                     }
                     if (!list.isEmpty()) map.put(key, list);
                 }
@@ -276,5 +266,18 @@ public class NBTUtils {
         return value.substring(value.indexOf('[') + 1, value.lastIndexOf(']'))
                 .replaceAll("\\s", "")
                 .split(",");
+    }
+
+    /**
+     * Inner class representing a stack element used during NBT data conversion.
+     */
+    public static class StackElement {
+        final Map<String, Object> currentMap;
+        final NBTCompound currentNbtCompound;
+
+        StackElement(Map<String, Object> map, NBTCompound nbtCompound) {
+            this.currentMap = map;
+            this.currentNbtCompound = nbtCompound;
+        }
     }
 }

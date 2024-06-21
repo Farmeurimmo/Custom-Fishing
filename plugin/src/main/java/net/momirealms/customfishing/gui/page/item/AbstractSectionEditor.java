@@ -107,6 +107,8 @@ public abstract class AbstractSectionEditor implements SectionPage {
         itemSelector.save();
     }
 
+    public abstract List<Item> getItemList();
+
     public class RefreshExample extends AbstractItem {
 
         @Override
@@ -119,6 +121,4 @@ public abstract class AbstractSectionEditor implements SectionPage {
             notifyWindows();
         }
     }
-
-    public abstract List<Item> getItemList();
 }

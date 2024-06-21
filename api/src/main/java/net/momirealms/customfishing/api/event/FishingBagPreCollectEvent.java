@@ -29,14 +29,18 @@ public class FishingBagPreCollectEvent extends PlayerEvent implements Cancellabl
 
     private static final HandlerList handlerList = new HandlerList();
     private final ItemStack itemStack;
-    private boolean isCancelled;
     private final Inventory bag;
+    private boolean isCancelled;
 
     public FishingBagPreCollectEvent(@NotNull Player who, ItemStack itemStack, Inventory bag) {
         super(who);
         this.itemStack = itemStack;
         this.isCancelled = false;
         this.bag = bag;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlerList;
     }
 
     @Override
@@ -55,10 +59,6 @@ public class FishingBagPreCollectEvent extends PlayerEvent implements Cancellabl
 
     @Override
     public @NotNull HandlerList getHandlers() {
-        return handlerList;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlerList;
     }
 

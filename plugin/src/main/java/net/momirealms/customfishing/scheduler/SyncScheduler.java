@@ -44,9 +44,9 @@ public interface SyncScheduler {
     /**
      * Runs a task synchronously with a specified delay in ticks.
      *
-     * @param runnable    The task to run.
-     * @param location    The location associated with the task.
-     * @param delayTicks  The delay in ticks before the task execution.
+     * @param runnable   The task to run.
+     * @param location   The location associated with the task.
+     * @param delayTicks The delay in ticks before the task execution.
      * @return A CancellableTask for managing the scheduled task.
      */
     CancellableTask runTaskSyncLater(Runnable runnable, Location location, long delayTicks);

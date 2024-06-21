@@ -73,7 +73,7 @@ public class NBTEditor {
                 deque.addLast(new InvValueIcon(path, str));
             } else if (entry.getValue() instanceof ConfigurationSection inner) {
                 deque.addFirst(new InvCompoundIcon(path, inner));
-            } else if (entry.getValue() instanceof Map<?,?> map) {
+            } else if (entry.getValue() instanceof Map<?, ?> map) {
                 deque.addLast(new InvMapIcon(path));
             }
         }
@@ -197,7 +197,7 @@ public class NBTEditor {
     }
 
     public void reOpenAddValue() {
-        var confirm =new ConfirmValueItem();
+        var confirm = new ConfirmValueItem();
         Gui upperGui = Gui.normal()
                 .setStructure("a b c")
                 .addIngredient('a', new ItemBuilder(Material.COMMAND_BLOCK).setDisplayName(""))
@@ -282,16 +282,16 @@ public class NBTEditor {
     public List<Item> getTypeContents(String key) {
         ArrayList<Item> list = new ArrayList<>();
         for (Map.Entry<String, String> entry : Map.of(
-                "String","some text",
-                "Byte","1",
-                "Short","123",
-                "Int","123456",
-                "Long","123456789",
+                "String", "some text",
+                "Byte", "1",
+                "Short", "123",
+                "Int", "123456",
+                "Long", "123456789",
                 "Double", "1.2345",
                 "Float", "1.23",
                 "Boolean", "true",
                 "IntArray", "[111,222,333,444]",
-                "ByteArray","[1,2,3,4]"
+                "ByteArray", "[1,2,3,4]"
         ).entrySet()) {
             list.add(new TypeItem(key, entry.getKey(), entry.getValue()));
         }
@@ -329,7 +329,7 @@ public class NBTEditor {
         public ItemProvider getItemProvider() {
             if (value == null || value.equals("") || value.contains(".") || currentSection.contains(value)) {
                 return new ItemBuilder(Material.BARRIER).setDisplayName(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
-                    CFLocale.GUI_NBT_INVALID_KEY
+                        CFLocale.GUI_NBT_INVALID_KEY
                 )));
             }
 
@@ -486,7 +486,7 @@ public class NBTEditor {
         public ItemProvider getItemProvider() {
             String[] splits = node.split("\\.");
             return new ItemBuilder(Material.COMMAND_BLOCK_MINECART).setDisplayName(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
-                            "Compound: " + splits[splits.length -1]
+                            "Compound: " + splits[splits.length - 1]
                     ))).addLoreLines("")
                     .addLoreLines(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
                             CFLocale.GUI_LEFT_CLICK_EDIT
@@ -521,7 +521,7 @@ public class NBTEditor {
         public ItemProvider getItemProvider() {
             String[] splits = node.split("\\.");
             return new ItemBuilder(Material.REPEATING_COMMAND_BLOCK).setDisplayName(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
-                            splits[splits.length -1] + ": " + value
+                            splits[splits.length - 1] + ": " + value
                     )))
                     .addLoreLines("")
                     .addLoreLines(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
@@ -535,7 +535,7 @@ public class NBTEditor {
         public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull InventoryClickEvent event) {
             String[] split = node.split("\\.");
             if (clickType.isLeftClick()) {
-                reOpenSetValue(split[split.length-1], NBTUtils.getTypeAndData(value)[0]);
+                reOpenSetValue(split[split.length - 1], NBTUtils.getTypeAndData(value)[0]);
             } else if (clickType.isRightClick()) {
                 removeByNode(node);
                 reOpenMain();
@@ -555,7 +555,7 @@ public class NBTEditor {
         public ItemProvider getItemProvider() {
             String[] splits = node.split("\\.");
             return new ItemBuilder(Material.CHAIN_COMMAND_BLOCK).setDisplayName(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
-                            "List: " + splits[splits.length -1]
+                            "List: " + splits[splits.length - 1]
                     )))
                     .addLoreLines("")
                     .addLoreLines(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
@@ -586,7 +586,7 @@ public class NBTEditor {
         public ItemProvider getItemProvider() {
             String[] splits = node.split("\\.");
             return new ItemBuilder(Material.COMMAND_BLOCK).setDisplayName(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
-                            "Map: " + splits[splits.length -1]
+                            "Map: " + splits[splits.length - 1]
                     )))
                     .addLoreLines("")
                     .addLoreLines(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(

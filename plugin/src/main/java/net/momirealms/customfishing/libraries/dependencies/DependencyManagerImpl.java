@@ -49,17 +49,29 @@ import java.util.concurrent.CountDownLatch;
  */
 public class DependencyManagerImpl implements DependencyManager {
 
-    /** A registry containing plugin specific behaviour for dependencies. */
+    /**
+     * A registry containing plugin specific behaviour for dependencies.
+     */
     private final DependencyRegistry registry;
-    /** The path where library jars are cached. */
+    /**
+     * The path where library jars are cached.
+     */
     private final Path cacheDirectory;
-    /** The classpath appender to preload dependencies into */
+    /**
+     * The classpath appender to preload dependencies into
+     */
     private final ClassPathAppender classPathAppender;
-    /** A map of dependencies which have already been loaded. */
+    /**
+     * A map of dependencies which have already been loaded.
+     */
     private final EnumMap<Dependency, Path> loaded = new EnumMap<>(Dependency.class);
-    /** A map of isolated classloaders which have been created. */
+    /**
+     * A map of isolated classloaders which have been created.
+     */
     private final Map<ImmutableSet<Dependency>, IsolatedClassLoader> loaders = new HashMap<>();
-    /** Cached relocation handler instance. */
+    /**
+     * Cached relocation handler instance.
+     */
     private @MonotonicNonNull RelocationHandler relocationHandler = null;
 
     public DependencyManagerImpl(CustomFishingPluginImpl plugin, ClassPathAppender classPathAppender) {
@@ -67,6 +79,12 @@ public class DependencyManagerImpl implements DependencyManager {
         this.cacheDirectory = setupCacheDirectory(plugin);
         this.classPathAppender = classPathAppender;
         this.relocationHandler = new RelocationHandler(this);
+    }
+
+    private static Path setupCacheDirectory(CustomFishingPlugin plugin) {
+        File folder = new File(plugin.getDataFolder(), "libs");
+        folder.mkdirs();
+        return folder.toPath();
     }
 
     @Override
@@ -185,12 +203,6 @@ public class DependencyManagerImpl implements DependencyManager {
         relocationHandler.remap(normalFile, remappedFile, rules);
         LogUtils.info("Successfully remapped " + dependency.getFileName(null));
         return remappedFile;
-    }
-
-    private static Path setupCacheDirectory(CustomFishingPlugin plugin) {
-        File folder = new File(plugin.getDataFolder(), "libs");
-        folder.mkdirs();
-        return folder.toPath();
     }
 
     @Override

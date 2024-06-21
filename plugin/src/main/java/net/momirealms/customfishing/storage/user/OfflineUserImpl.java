@@ -41,12 +41,12 @@ import java.util.UUID;
  */
 public class OfflineUserImpl implements OfflineUser {
 
+    public static OfflineUserImpl LOCKED_USER = new OfflineUserImpl(UUID.randomUUID(), "-locked-", PlayerData.empty());
     private final UUID uuid;
     private final String name;
     private final FishingBagHolder holder;
     private final EarningData earningData;
     private final Statistics statistics;
-    public static OfflineUserImpl LOCKED_USER = new OfflineUserImpl(UUID.randomUUID(), "-locked-", PlayerData.empty());
 
     /**
      * Constructor to create an OfflineUserImpl instance.

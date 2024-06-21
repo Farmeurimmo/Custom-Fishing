@@ -22,7 +22,8 @@ import org.bukkit.Location;
 
 public class LocationUtils {
 
-    private LocationUtils() {}
+    private LocationUtils() {
+    }
 
     /**
      * Calculates the Euclidean distance between two locations in 3D space.

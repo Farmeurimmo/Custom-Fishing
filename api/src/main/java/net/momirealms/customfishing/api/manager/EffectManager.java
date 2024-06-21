@@ -61,16 +61,17 @@ public interface EffectManager {
      * @param id        The unique identifier of the EffectCarrier.
      * @return The EffectCarrier with the given namespace and id, or null if it doesn't exist.
      */
-    @Nullable EffectCarrier getEffectCarrier(String namespace, String id);
+    @Nullable
+    EffectCarrier getEffectCarrier(String namespace, String id);
 
     /**
      * Parses a ConfigurationSection to create an EffectCarrier based on the specified key and configuration.
      * <p>
      * xxx_item:    <- section
-     *   effects:
-     *      ...
-     *   events:
-     *      ...
+     * effects:
+     * ...
+     * events:
+     * ...
      *
      * @param key     The key that uniquely identifies the EffectCarrier.
      * @param section The ConfigurationSection containing the EffectCarrier configuration.
@@ -83,20 +84,22 @@ public interface EffectManager {
      *
      * @return The initial FishingEffect.
      */
-    @NotNull FishingEffect getInitialEffect();
+    @NotNull
+    FishingEffect getInitialEffect();
 
     /**
      * Parses a ConfigurationSection to retrieve an array of EffectModifiers.
      * <p>
      * effects:    <- section
-     *   effect_1:
-     *     type: xxx
-     *     value: xxx
+     * effect_1:
+     * type: xxx
+     * value: xxx
      *
      * @param section The ConfigurationSection to parse.
      * @return An array of EffectModifiers based on the values found in the section.
      */
-    @NotNull EffectModifier[] getEffectModifiers(ConfigurationSection section);
+    @NotNull
+    EffectModifier[] getEffectModifiers(ConfigurationSection section);
 
     BaseEffect getBaseEffect(ConfigurationSection section);
 
@@ -104,12 +107,13 @@ public interface EffectManager {
      * Parses a ConfigurationSection to create an EffectModifier based on the specified type and configuration.
      * <p>
      * effects:
-     *   effect_1: <- section
-     *     type: xxx
-     *     value: xxx
+     * effect_1: <- section
+     * type: xxx
+     * value: xxx
      *
      * @param section The ConfigurationSection containing the effect modifier configuration.
      * @return An EffectModifier instance based on the type and configuration.
      */
-    @Nullable EffectModifier getEffectModifier(ConfigurationSection section);
+    @Nullable
+    EffectModifier getEffectModifier(ConfigurationSection section);
 }

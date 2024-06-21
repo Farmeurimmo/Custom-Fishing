@@ -85,8 +85,8 @@ public class GameManagerImpl implements GameManager {
     /**
      * Registers a new game type with the specified type identifier.
      *
-     * @param type         The type identifier for the game.
-     * @param gameFactory  The {@link GameFactory} that creates instances of the game.
+     * @param type        The type identifier for the game.
+     * @param gameFactory The {@link GameFactory} that creates instances of the game.
      * @return {@code true} if the registration was successful, {@code false} if the type identifier is already registered.
      */
     @Override
@@ -126,7 +126,7 @@ public class GameManagerImpl implements GameManager {
      *
      * @param key The key identifying the game instance.
      * @return An {@code Optional} containing a {@code Pair} of the basic game configuration and the game instance
-     *         if found, or an empty {@code Optional} if not found.
+     * if found, or an empty {@code Optional} if not found.
      */
     @Override
     public Pair<BasicGameConfig, GameInstance> getGameInstance(String key) {
@@ -212,7 +212,7 @@ public class GameManagerImpl implements GameManager {
             Set<String> chances = Objects.requireNonNull(section.getConfigurationSection("success-rate-sections")).getKeys(false);
             var widthPerSection = section.getInt("arguments.width-per-section", 16);
             var successRate = new double[chances.size()];
-            for(int i = 0; i < chances.size(); i++)
+            for (int i = 0; i < chances.size(); i++)
                 successRate[i] = section.getDouble("success-rate-sections." + (i + 1));
             var totalWidth = chances.size() * widthPerSection - 1;
             var pointerOffset = section.getInt("arguments.pointer-offset");
@@ -224,13 +224,13 @@ public class GameManagerImpl implements GameManager {
 
             return (player, fishHook, settings) -> new AbstractGamingPlayer(player, fishHook, settings) {
 
+                private final String sendTitle = title.get(ThreadLocalRandom.current().nextInt(title.size()));
                 private int progress = -1;
                 private boolean face = true;
-                private final String sendTitle = title.get(ThreadLocalRandom.current().nextInt(title.size()));
 
                 @Override
                 public void arrangeTask() {
-                    var period = ((double) 10*(200-settings.getDifficulty()))/((double) (1+4*settings.getDifficulty()));
+                    var period = ((double) 10 * (200 - settings.getDifficulty())) / ((double) (1 + 4 * settings.getDifficulty()));
                     this.task = CustomFishingPlugin.get().getScheduler().runTaskAsyncTimer(
                             this,
                             50,
@@ -255,10 +255,10 @@ public class GameManagerImpl implements GameManager {
 
                 public void showUI() {
                     String bar = FontUtils.surroundWithFont(barImage, font)
-                               + OffsetUtils.getOffsetChars(pointerOffset + progress)
-                               + FontUtils.surroundWithFont(pointerImage, font)
-                               + OffsetUtils.getOffsetChars(totalWidth - progress - pointerWidth);
-                    AdventureHelper.getInstance().sendTitle(player, sendTitle, bar,0,10,0);
+                            + OffsetUtils.getOffsetChars(pointerOffset + progress)
+                            + FontUtils.surroundWithFont(pointerImage, font)
+                            + OffsetUtils.getOffsetChars(totalWidth - progress - pointerWidth);
+                    AdventureHelper.getInstance().sendTitle(player, sendTitle, bar, 0, 10, 0);
                 }
 
                 @Override
@@ -287,19 +287,19 @@ public class GameManagerImpl implements GameManager {
             var pullingStrength = section.getDouble("arguments.pulling-strength", 0.45);
             var looseningLoss = section.getDouble("arguments.loosening-strength-loss", 0.3);
 
-            var title = section.getString("title","{progress}");
+            var title = section.getString("title", "{progress}");
             var font = section.getString("subtitle.font");
             var barImage = section.getString("subtitle.bar");
             var tip = section.getString("tip");
 
             return (player, fishHook, settings) -> new AbstractGamingPlayer(player, fishHook, settings) {
+                private final int time_requirement = timeRequirements[ThreadLocalRandom.current().nextInt(timeRequirements.length)] * 1000;
                 private double hold_time;
                 private double judgement_position;
                 private double fish_position;
                 private double judgement_velocity;
                 private double fish_velocity;
                 private int timer;
-                private final int time_requirement = timeRequirements[ThreadLocalRandom.current().nextInt(timeRequirements.length)] * 1000;
                 private boolean played;
 
                 @Override
@@ -426,7 +426,7 @@ public class GameManagerImpl implements GameManager {
             var strugglingIncrease = section.getDouble("arguments.struggling-tension-increase", 2);
             var tensionLoss = section.getDouble("arguments.loosening-tension-loss", 2);
 
-            var title = section.getString("title","{progress}");
+            var title = section.getString("title", "{progress}");
             var font = section.getString("subtitle.font");
             var barImage = section.getString("subtitle.bar");
             var tip = section.getString("tip");
@@ -533,12 +533,12 @@ public class GameManagerImpl implements GameManager {
 
             return (player, fishHook, settings) -> new AbstractGamingPlayer(player, fishHook, settings) {
 
+                boolean fail = false;
                 private int clickedTimes;
                 private int requiredTimes;
                 private boolean preventFirst = true;
                 // 0 = left / 1 = right / 2 = up / 3 = down
                 private int[] order;
-                boolean fail = false;
 
                 @Override
                 public void arrangeTask() {
@@ -727,7 +727,7 @@ public class GameManagerImpl implements GameManager {
                             AdventureHelper.getInstance().sendTitle(
                                     player,
                                     sb.toString(),
-                                    subtitle.replace("{time}", String.format("%.1f", ((double) deadline - System.currentTimeMillis())/1000)),
+                                    subtitle.replace("{time}", String.format("%.1f", ((double) deadline - System.currentTimeMillis()) / 1000)),
                                     0,
                                     10,
                                     0
@@ -771,7 +771,7 @@ public class GameManagerImpl implements GameManager {
                             AdventureHelper.getInstance().sendTitle(
                                     player,
                                     sb.toString(),
-                                    subtitle.replace("{time}", String.format("%.1f", ((double) deadline - System.currentTimeMillis())/1000)),
+                                    subtitle.replace("{time}", String.format("%.1f", ((double) deadline - System.currentTimeMillis()) / 1000)),
                                     0,
                                     10,
                                     0
@@ -788,14 +788,14 @@ public class GameManagerImpl implements GameManager {
     private void registerClickGame() {
         this.registerGameType("click", (section -> {
 
-            var title = section.getString("title","<red>{click}");
+            var title = section.getString("title", "<red>{click}");
             var subtitle = section.getString("subtitle", "<gray>Click <white>{clicks} <gray>times to win. Time left <white>{time}s");
             var left = section.getBoolean("left-click", true);
 
             return (player, fishHook, settings) -> new AbstractGamingPlayer(player, fishHook, settings) {
 
-                private int clickedTimes;
                 private final int requiredTimes = settings.getDifficulty();
+                private int clickedTimes;
                 private boolean preventFirst = true;
 
                 @Override
@@ -846,7 +846,7 @@ public class GameManagerImpl implements GameManager {
                     AdventureHelper.getInstance().sendTitle(
                             player,
                             title.replace("{click}", String.valueOf(clickedTimes)),
-                            subtitle.replace("{clicks}", String.valueOf(requiredTimes)).replace("{time}", String.format("%.1f", ((double) deadline - System.currentTimeMillis())/1000)),
+                            subtitle.replace("{clicks}", String.valueOf(requiredTimes)).replace("{time}", String.format("%.1f", ((double) deadline - System.currentTimeMillis()) / 1000)),
                             0,
                             10,
                             0
@@ -861,10 +861,10 @@ public class GameManagerImpl implements GameManager {
         this.registerGameType("accurate_click_v2", (section -> {
 
             var barWidth = ConfigUtils.getIntegerPair(section.getString("title.total-width", "15~20"));
-            var barSuccess = ConfigUtils.getIntegerPair(section.getString("title.success-width","3~4"));
-            var barBody = section.getString("title.body","");
+            var barSuccess = ConfigUtils.getIntegerPair(section.getString("title.success-width", "3~4"));
+            var barBody = section.getString("title.body", "");
             var barPointer = section.getString("title.pointer", "");
-            var barTarget = section.getString("title.target","");
+            var barTarget = section.getString("title.target", "");
 
             var subtitle = section.getString("subtitle", "<gray>Reel in at the most critical moment");
 
@@ -955,14 +955,14 @@ public class GameManagerImpl implements GameManager {
 
             return (player, fishHook, settings) -> new AbstractGamingPlayer(player, fishHook, settings) {
 
-                private int progress = -1;
-                private boolean face = true;
                 private final int judgement_position = ThreadLocalRandom.current().nextInt(barEffectiveWidth - judgementAreaWidth + 1);
                 private final String title = titles.get(ThreadLocalRandom.current().nextInt(titles.size()));
+                private int progress = -1;
+                private boolean face = true;
 
                 @Override
                 public void arrangeTask() {
-                    var period = ((double) 10*(200-settings.getDifficulty()))/((double) (1+4*settings.getDifficulty()));
+                    var period = ((double) 10 * (200 - settings.getDifficulty())) / ((double) (1 + 4 * settings.getDifficulty()));
                     this.task = CustomFishingPlugin.get().getScheduler().runTaskAsyncTimer(
                             this,
                             50,
@@ -1037,13 +1037,13 @@ public class GameManagerImpl implements GameManager {
             var left = section.getBoolean("left-click", true);
 
             return (player, fishHook, settings) -> new AbstractGamingPlayer(player, fishHook, settings) {
+                private final int time_requirement = timeRequirements[ThreadLocalRandom.current().nextInt(timeRequirements.length)] * 1000;
                 private double hold_time;
                 private double judgement_position;
                 private double fish_position;
                 private double judgement_velocity;
                 private double fish_velocity;
                 private int timer;
-                private final int time_requirement = timeRequirements[ThreadLocalRandom.current().nextInt(timeRequirements.length)] * 1000;
                 private boolean played;
                 private boolean preventFirst = true;
 
@@ -1200,9 +1200,10 @@ public class GameManagerImpl implements GameManager {
                 GameExpansion expansion = expansionClass.getDeclaredConstructor().newInstance();
                 unregisterGameType(expansion.getGameType());
                 registerGameType(expansion.getGameType(), expansion.getGameFactory());
-                LogUtils.info("Loaded minigame expansion: " + expansion.getGameType() + "[" + expansion.getVersion() + "]" + " by " + expansion.getAuthor() );
+                LogUtils.info("Loaded minigame expansion: " + expansion.getGameType() + "[" + expansion.getVersion() + "]" + " by " + expansion.getAuthor());
             }
-        } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
+                 NoSuchMethodException e) {
             LogUtils.warn("Error occurred when creating expansion instance.", e);
         }
     }

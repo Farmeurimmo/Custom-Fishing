@@ -52,7 +52,8 @@ import java.io.IOException;
  */
 public class ItemUtils {
 
-    private ItemUtils() {}
+    private ItemUtils() {
+    }
 
     /**
      * Updates the lore of an NBTItem based on its custom NBT tags.
@@ -118,7 +119,7 @@ public class ItemUtils {
     /**
      * Reduces the durability of a fishing hook item.
      *
-     * @param rod  The fishing rod ItemStack
+     * @param rod        The fishing rod ItemStack
      * @param updateLore Whether to update the lore after reducing durability
      */
     public static void decreaseHookDurability(ItemStack rod, int amount, boolean updateLore) {
@@ -146,9 +147,9 @@ public class ItemUtils {
     /**
      * Increases the durability of a fishing hook by a specified amount and optionally updates its lore.
      *
-     * @param rod   The fishing rod ItemStack to modify.
-     * @param amount      The amount by which to increase the durability.
-     * @param updateLore  Whether to update the lore of the fishing rod.
+     * @param rod        The fishing rod ItemStack to modify.
+     * @param amount     The amount by which to increase the durability.
+     * @param updateLore Whether to update the lore of the fishing rod.
      */
     public static void increaseHookDurability(ItemStack rod, int amount, boolean updateLore) {
         if (rod == null || rod.getType() != Material.FISHING_ROD)
@@ -177,9 +178,9 @@ public class ItemUtils {
     /**
      * Sets the durability of a fishing hook to a specific amount and optionally updates its lore.
      *
-     * @param rod         The fishing rod ItemStack to modify.
-     * @param amount      The new durability value to set.
-     * @param updateLore  Whether to update the lore of the fishing rod.
+     * @param rod        The fishing rod ItemStack to modify.
+     * @param amount     The new durability value to set.
+     * @param updateLore Whether to update the lore of the fishing rod.
      */
     public static void setHookDurability(ItemStack rod, int amount, boolean updateLore) {
         if (rod == null || rod.getType() != Material.FISHING_ROD)
@@ -345,9 +346,9 @@ public class ItemUtils {
     /**
      * Gives a certain amount of an item to a player, handling stacking and item drops.
      *
-     * @param player     The player to give the item to
-     * @param itemStack  The ItemStack to give
-     * @param amount     The amount of items to give
+     * @param player    The player to give the item to
+     * @param itemStack The ItemStack to give
+     * @param amount    The amount of items to give
      * @return The actual amount of items given
      */
     public static int giveItem(Player player, ItemStack itemStack, int amount) {

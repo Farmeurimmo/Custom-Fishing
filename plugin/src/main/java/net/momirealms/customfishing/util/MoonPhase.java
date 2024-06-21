@@ -33,18 +33,18 @@ public enum MoonPhase {
     FIRST_QUARTER(6L),
     WAXING_GIBBOUS(7L);
 
-    private final long day;
-
-    MoonPhase(long day) {
-        this.day = day;
-    }
-
     private static final Map<Long, MoonPhase> BY_DAY = new HashMap<>();
 
     static {
         for (MoonPhase phase : values()) {
             BY_DAY.put(phase.day, phase);
         }
+    }
+
+    private final long day;
+
+    MoonPhase(long day) {
+        this.day = day;
     }
 
     @NotNull

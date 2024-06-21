@@ -53,12 +53,12 @@ public class HookCheckTimerTask implements Runnable {
 
     private final FishingManagerImpl manager;
     private final CancellableTask hookMovementTask;
-    private LavaEffectTask lavaFishingTask;
     private final FishHook fishHook;
     private final FishingPreparation fishingPreparation;
     private final FishingEffect initialEffect;
-    private Effect tempEffect;
     private final int lureLevel;
+    private LavaEffectTask lavaFishingTask;
+    private Effect tempEffect;
     private boolean firstTime;
     private boolean fishHooked;
     private boolean reserve;
@@ -70,10 +70,10 @@ public class HookCheckTimerTask implements Runnable {
     /**
      * Constructs a new HookCheckTimerTask.
      *
-     * @param manager             The FishingManagerImpl instance.
-     * @param fishHook            The FishHook entity being checked.
-     * @param fishingPreparation  The FishingPreparation instance.
-     * @param initialEffect       The initial fishing effect.
+     * @param manager            The FishingManagerImpl instance.
+     * @param fishHook           The FishHook entity being checked.
+     * @param fishingPreparation The FishingPreparation instance.
+     * @param initialEffect      The initial fishing effect.
      */
     public HookCheckTimerTask(
             FishingManagerImpl manager,
@@ -95,7 +95,7 @@ public class HookCheckTimerTask implements Runnable {
     @Override
     public void run() {
         if (
-            !this.fishHook.isValid()
+                !this.fishHook.isValid()
             //|| (fishHook.getHookedEntity() != null && fishHook.getHookedEntity().getType() != EntityType.ARMOR_STAND)
         ) {
             // This task would be cancelled when hook is removed
@@ -132,7 +132,7 @@ public class HookCheckTimerTask implements Runnable {
                 if (this.jumpTimer < 4)
                     return;
                 this.jumpTimer = 0;
-                this.fishHook.setVelocity(new Vector(0,0.24,0));
+                this.fishHook.setVelocity(new Vector(0, 0.24, 0));
                 return;
             }
 
@@ -140,7 +140,7 @@ public class HookCheckTimerTask implements Runnable {
                 // jump
                 if (this.jumpTimer < 5) {
                     this.jumpTimer++;
-                    this.fishHook.setVelocity(new Vector(0,0.2 - this.jumpTimer * 0.02,0));
+                    this.fishHook.setVelocity(new Vector(0, 0.2 - this.jumpTimer * 0.02, 0));
                     return;
                 }
 

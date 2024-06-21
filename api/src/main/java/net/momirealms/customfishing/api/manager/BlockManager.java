@@ -101,5 +101,6 @@ public interface BlockManager {
      * @param block The Block instance for which to retrieve the block ID.
      * @return The block ID
      */
-    @NotNull String getAnyPluginBlockID(Block block);
+    @NotNull
+    String getAnyPluginBlockID(Block block);
 }

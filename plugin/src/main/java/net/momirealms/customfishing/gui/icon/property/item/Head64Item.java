@@ -50,8 +50,8 @@ public class Head64Item extends AbstractItem {
                 )));
         if (itemPage.getSection().contains("head64")) {
             itemBuilder.addLoreLines(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
-                            CFLocale.GUI_CURRENT_VALUE
-                    )));
+                    CFLocale.GUI_CURRENT_VALUE
+            )));
             String head64 = itemPage.getSection().getString("head64", "");
             ArrayList<String> list = new ArrayList<>();
             for (int i = 0; i < head64.length(); i += 16) {
@@ -63,7 +63,7 @@ public class Head64Item extends AbstractItem {
             }
             for (String line : list) {
                 itemBuilder.addLoreLines(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
-                        "<white>"+ line
+                        "<white>" + line
                 )));
             }
             itemBuilder.addLoreLines("").addLoreLines(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(

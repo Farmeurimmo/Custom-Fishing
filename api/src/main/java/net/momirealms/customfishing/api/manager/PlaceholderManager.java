@@ -30,7 +30,7 @@ public interface PlaceholderManager {
      * Register a custom placeholder
      *
      * @param placeholder for instance {level}
-     * @param original for instance %player_level%
+     * @param original    for instance %player_level%
      * @return success or not, it would fail if the placeholder has been registered
      */
     boolean registerCustomPlaceholder(String placeholder, String original);
@@ -64,8 +64,8 @@ public interface PlaceholderManager {
     /**
      * Get the value associated with a single placeholder.
      *
-     * @param player      The player for whom the placeholders are being resolved (nullable).
-     * @param placeholder The placeholder to look up.
+     * @param player       The player for whom the placeholders are being resolved (nullable).
+     * @param placeholder  The placeholder to look up.
      * @param placeholders A map of placeholders to their corresponding values.
      * @return The value associated with the placeholder, or the original placeholder if not found.
      */
@@ -74,8 +74,8 @@ public interface PlaceholderManager {
     /**
      * Parse a text string by replacing placeholders with their corresponding values.
      *
-     * @param player      The offline player for whom the placeholders are being resolved (nullable).
-     * @param text        The text string containing placeholders.
+     * @param player       The offline player for whom the placeholders are being resolved (nullable).
+     * @param text         The text string containing placeholders.
      * @param placeholders A map of placeholders to their corresponding values.
      * @return The text string with placeholders replaced by their values.
      */
@@ -93,15 +93,17 @@ public interface PlaceholderManager {
 
     /**
      * Get an expression's value
-     * @param player player
+     *
+     * @param player  player
      * @param formula formula
-     * @param vars vars
+     * @param vars    vars
      * @return result
      */
     double getExpressionValue(Player player, String formula, Map<String, String> vars);
 
     /**
      * Get an expression's value
+     *
      * @param formula formula
      * @return result
      */

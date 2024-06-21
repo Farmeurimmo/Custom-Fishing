@@ -19,11 +19,11 @@ package net.momirealms.customfishing.api.mechanic.competition;
 
 import org.jetbrains.annotations.NotNull;
 
-public class CompetitionPlayer implements Comparable<CompetitionPlayer>{
+public class CompetitionPlayer implements Comparable<CompetitionPlayer> {
 
     public static CompetitionPlayer empty = new CompetitionPlayer("", 0);
-    private long time;
     private final String player;
+    private long time;
     private double score;
 
     public CompetitionPlayer(String player, double score) {
@@ -32,13 +32,8 @@ public class CompetitionPlayer implements Comparable<CompetitionPlayer>{
         this.time = System.currentTimeMillis();
     }
 
-    public void addScore(double score){
+    public void addScore(double score) {
         this.score += score;
-        this.time = System.currentTimeMillis();
-    }
-
-    public void setScore(double score){
-        this.score = score;
         this.time = System.currentTimeMillis();
     }
 
@@ -50,7 +45,12 @@ public class CompetitionPlayer implements Comparable<CompetitionPlayer>{
         return this.score;
     }
 
-    public String getPlayer(){
+    public void setScore(double score) {
+        this.score = score;
+        this.time = System.currentTimeMillis();
+    }
+
+    public String getPlayer() {
         return this.player;
     }
 

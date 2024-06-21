@@ -36,7 +36,8 @@ public interface StorageManager {
      *
      * @return The unique server identifier.
      */
-    @NotNull String getUniqueID();
+    @NotNull
+    String getUniqueID();
 
     /**
      * Gets an OnlineUser instance for the specified UUID.
@@ -44,7 +45,8 @@ public interface StorageManager {
      * @param uuid The UUID of the player.
      * @return An OnlineUser instance if the player is online, or null if not.
      */
-    @Nullable OnlineUser getOnlineUser(UUID uuid);
+    @Nullable
+    OnlineUser getOnlineUser(UUID uuid);
 
     /**
      * Get all the online users
@@ -78,7 +80,7 @@ public interface StorageManager {
      * Asynchronously saves user data for an OfflineUser.
      *
      * @param offlineUser The OfflineUser whose data needs to be saved.
-     * @param unlock Whether to unlock the data after saving.
+     * @param unlock      Whether to unlock the data after saving.
      * @return A CompletableFuture that resolves to a boolean indicating the success of the data saving operation.
      */
     CompletableFuture<Boolean> saveUserData(OfflineUser offlineUser, boolean unlock);
@@ -111,7 +113,8 @@ public interface StorageManager {
      * @param data The PlayerData to be converted.
      * @return The JSON string representation of PlayerData.
      */
-    @NotNull String toJson(@NotNull PlayerData data);
+    @NotNull
+    String toJson(@NotNull PlayerData data);
 
     /**
      * Converts JSON string to PlayerData.
@@ -119,7 +122,8 @@ public interface StorageManager {
      * @param json The JSON string to be converted.
      * @return The PlayerData object.
      */
-    @NotNull PlayerData fromJson(String json);
+    @NotNull
+    PlayerData fromJson(String json);
 
     /**
      * Converts bytes to PlayerData.
@@ -127,5 +131,6 @@ public interface StorageManager {
      * @param data The byte array to be converted.
      * @return The PlayerData object.
      */
-    @NotNull PlayerData fromBytes(byte[] data);
+    @NotNull
+    PlayerData fromBytes(byte[] data);
 }

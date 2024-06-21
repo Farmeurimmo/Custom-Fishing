@@ -52,7 +52,8 @@ public class ReflectionUtils {
                 Class<?> craftChatMessageClass = Class.forName("org.bukkit.craftbukkit.util.CraftChatMessage");
                 iChatComponentMethod = craftChatMessageClass.getDeclaredMethod("fromJSON", String.class);
                 iChatComponentMethod.setAccessible(true);
-            } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException | NoSuchMethodException exception) {
+            } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException |
+                     NoSuchMethodException exception) {
                 LogUtils.severe("Error occurred when loading reflections", exception);
             }
         } else {
@@ -69,7 +70,8 @@ public class ReflectionUtils {
                 updateConstructor.setAccessible(true);
                 iChatComponentMethod = MinecraftReflection.getChatSerializerClass().getMethod("a", String.class);
                 iChatComponentMethod.setAccessible(true);
-            } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException | NoSuchMethodException exception) {
+            } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException |
+                     NoSuchMethodException exception) {
                 LogUtils.severe("Error occurred when loading reflections", exception);
             }
         }
@@ -83,7 +85,8 @@ public class ReflectionUtils {
             gsonInstance = gsonMethod.invoke(null);
             gsonDeserializeMethod = gsonComponentSerializerImplClass.getMethod("deserialize", String.class);
             gsonDeserializeMethod.setAccessible(true);
-        } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException exception) {
+        } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException |
+                 IllegalAccessException exception) {
             LogUtils.severe("Error occurred when loading reflections", exception);
         }
     }

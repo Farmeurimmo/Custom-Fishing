@@ -25,6 +25,8 @@ import java.util.List;
 
 public class FishingEffect implements Effect {
 
+    private final List<Pair<String, WeightModifier>> weightModifier = new ArrayList<>();
+    private final List<Pair<String, WeightModifier>> weightModifierIgnored = new ArrayList<>();
     private boolean lavaFishing = false;
     private double multipleLootChance = 0;
     private double waitTime = 0;
@@ -37,9 +39,6 @@ public class FishingEffect implements Effect {
     private double difficultyMultiplier = 1;
     private double gameTime = 0;
     private double gameTimeMultiplier = 1;
-
-    private final List<Pair<String, WeightModifier>> weightModifier = new ArrayList<>();
-    private final List<Pair<String, WeightModifier>> weightModifierIgnored = new ArrayList<>();
 
     public FishingEffect(double waitTime, double waitTimeMultiplier, double difficulty, double difficultyMultiplier, double gameTime, double gameTimeMultiplier) {
         this.waitTime = waitTime;
@@ -63,128 +62,6 @@ public class FishingEffect implements Effect {
         this.lavaFishing = lavaFishing;
         return this;
     }
-
-    /**
-     * Sets the multiple loot chance.
-     *
-     * @param multipleLootChance The multiple loot chance value to set.
-     * @return The FishingEffect instance for method chaining.
-     */
-    public FishingEffect setMultipleLootChance(double multipleLootChance) {
-        this.multipleLootChance = multipleLootChance;
-        return this;
-    }
-
-    /**
-     * Sets the size multiplier.
-     *
-     * @param sizeMultiplier The size multiplier value to set.
-     * @return The FishingEffect instance for method chaining.
-     */
-    public FishingEffect setSizeMultiplier(double sizeMultiplier) {
-        this.sizeMultiplier = sizeMultiplier;
-        return this;
-    }
-
-    /**
-     * Sets the size.
-     *
-     * @param size The size value to set.
-     * @return The FishingEffect instance for method chaining.
-     */
-    public FishingEffect setSize(double size) {
-        this.size = size;
-        return this;
-    }
-
-    /**
-     * Sets the score multiplier.
-     *
-     * @param scoreMultiplier The score multiplier value to set.
-     * @return The FishingEffect instance for method chaining.
-     */
-    public FishingEffect setScoreMultiplier(double scoreMultiplier) {
-        this.scoreMultiplier = scoreMultiplier;
-        return this;
-    }
-
-    /**
-     * Sets the score
-     *
-     * @param score The score value to set.
-     * @return The FishingEffect instance for method chaining.
-     */
-    public FishingEffect setScore(double score) {
-        this.score = score;
-        return this;
-    }
-
-    /**
-     * Sets the wait time multiplier.
-     *
-     * @param timeMultiplier The wait time multiplier value to set.
-     * @return The FishingEffect instance for method chaining.
-     */
-    public FishingEffect setWaitTimeMultiplier(double timeMultiplier) {
-        this.waitTimeMultiplier = timeMultiplier;
-        return this;
-    }
-
-    /**
-     * Sets the wait time.
-     *
-     * @param waitTime The wait time value to set.
-     * @return The FishingEffect instance for method chaining.
-     */
-    public FishingEffect setWaitTime(double waitTime) {
-        this.waitTime = waitTime;
-        return this;
-    }
-
-    /**
-     * Sets the difficulty.
-     *
-     * @param difficulty The difficulty value to set.
-     * @return The FishingEffect instance for method chaining.
-     */
-    public FishingEffect setDifficulty(double difficulty) {
-        this.difficulty = difficulty;
-        return this;
-    }
-
-    /**
-     * Sets the difficulty multiplier.
-     *
-     * @param difficultyMultiplier The difficulty multiplier value to set.
-     * @return The FishingEffect instance for method chaining.
-     */
-    public FishingEffect setDifficultyMultiplier(double difficultyMultiplier) {
-        this.difficultyMultiplier = difficultyMultiplier;
-        return this;
-    }
-
-    /**
-     * Sets the game time.
-     *
-     * @param gameTime The game time value to set.
-     * @return The FishingEffect instance for method chaining.
-     */
-    public FishingEffect setGameTime(double gameTime) {
-        this.gameTime = gameTime;
-        return this;
-    }
-
-    /**
-     * Sets the game time multiplier.
-     *
-     * @param gameTimeMultiplier The game time multiplier value to set.
-     * @return The FishingEffect instance for method chaining.
-     */
-    public FishingEffect setGameTimeMultiplier(double gameTimeMultiplier) {
-        this.gameTimeMultiplier = gameTimeMultiplier;
-        return this;
-    }
-
 
     /**
      * Adds weight modifiers to the FishingEffect.
@@ -229,6 +106,17 @@ public class FishingEffect implements Effect {
     }
 
     /**
+     * Sets the multiple loot chance.
+     *
+     * @param multipleLootChance The multiple loot chance value to set.
+     * @return The FishingEffect instance for method chaining.
+     */
+    public FishingEffect setMultipleLootChance(double multipleLootChance) {
+        this.multipleLootChance = multipleLootChance;
+        return this;
+    }
+
+    /**
      * Retrieves the size multiplier.
      *
      * @return The size multiplier value.
@@ -236,6 +124,17 @@ public class FishingEffect implements Effect {
     @Override
     public double getSizeMultiplier() {
         return sizeMultiplier;
+    }
+
+    /**
+     * Sets the size multiplier.
+     *
+     * @param sizeMultiplier The size multiplier value to set.
+     * @return The FishingEffect instance for method chaining.
+     */
+    public FishingEffect setSizeMultiplier(double sizeMultiplier) {
+        this.sizeMultiplier = sizeMultiplier;
+        return this;
     }
 
     /**
@@ -249,6 +148,17 @@ public class FishingEffect implements Effect {
     }
 
     /**
+     * Sets the size.
+     *
+     * @param size The size value to set.
+     * @return The FishingEffect instance for method chaining.
+     */
+    public FishingEffect setSize(double size) {
+        this.size = size;
+        return this;
+    }
+
+    /**
      * Retrieves the score multiplier.
      *
      * @return The score multiplier value.
@@ -256,6 +166,17 @@ public class FishingEffect implements Effect {
     @Override
     public double getScoreMultiplier() {
         return scoreMultiplier;
+    }
+
+    /**
+     * Sets the score multiplier.
+     *
+     * @param scoreMultiplier The score multiplier value to set.
+     * @return The FishingEffect instance for method chaining.
+     */
+    public FishingEffect setScoreMultiplier(double scoreMultiplier) {
+        this.scoreMultiplier = scoreMultiplier;
+        return this;
     }
 
     /**
@@ -269,6 +190,17 @@ public class FishingEffect implements Effect {
     }
 
     /**
+     * Sets the wait time multiplier.
+     *
+     * @param timeMultiplier The wait time multiplier value to set.
+     * @return The FishingEffect instance for method chaining.
+     */
+    public FishingEffect setWaitTimeMultiplier(double timeMultiplier) {
+        this.waitTimeMultiplier = timeMultiplier;
+        return this;
+    }
+
+    /**
      * Retrieves the wait time.
      *
      * @return The wait time .
@@ -276,6 +208,17 @@ public class FishingEffect implements Effect {
     @Override
     public double getWaitTime() {
         return waitTime;
+    }
+
+    /**
+     * Sets the wait time.
+     *
+     * @param waitTime The wait time value to set.
+     * @return The FishingEffect instance for method chaining.
+     */
+    public FishingEffect setWaitTime(double waitTime) {
+        this.waitTime = waitTime;
+        return this;
     }
 
     /**
@@ -289,6 +232,17 @@ public class FishingEffect implements Effect {
     }
 
     /**
+     * Sets the game time.
+     *
+     * @param gameTime The game time value to set.
+     * @return The FishingEffect instance for method chaining.
+     */
+    public FishingEffect setGameTime(double gameTime) {
+        this.gameTime = gameTime;
+        return this;
+    }
+
+    /**
      * Retrieves the game time multiplier.
      *
      * @return The game time value multiplier.
@@ -296,6 +250,17 @@ public class FishingEffect implements Effect {
     @Override
     public double getGameTimeMultiplier() {
         return gameTimeMultiplier;
+    }
+
+    /**
+     * Sets the game time multiplier.
+     *
+     * @param gameTimeMultiplier The game time multiplier value to set.
+     * @return The FishingEffect instance for method chaining.
+     */
+    public FishingEffect setGameTimeMultiplier(double gameTimeMultiplier) {
+        this.gameTimeMultiplier = gameTimeMultiplier;
+        return this;
     }
 
     /**
@@ -309,6 +274,17 @@ public class FishingEffect implements Effect {
     }
 
     /**
+     * Sets the score
+     *
+     * @param score The score value to set.
+     * @return The FishingEffect instance for method chaining.
+     */
+    public FishingEffect setScore(double score) {
+        this.score = score;
+        return this;
+    }
+
+    /**
      * Retrieves the difficulty.
      *
      * @return The difficulty value.
@@ -319,6 +295,17 @@ public class FishingEffect implements Effect {
     }
 
     /**
+     * Sets the difficulty.
+     *
+     * @param difficulty The difficulty value to set.
+     * @return The FishingEffect instance for method chaining.
+     */
+    public FishingEffect setDifficulty(double difficulty) {
+        this.difficulty = difficulty;
+        return this;
+    }
+
+    /**
      * Retrieves the difficulty multiplier.
      *
      * @return The difficulty multiplier value.
@@ -326,6 +313,17 @@ public class FishingEffect implements Effect {
     @Override
     public double getDifficultyMultiplier() {
         return difficultyMultiplier;
+    }
+
+    /**
+     * Sets the difficulty multiplier.
+     *
+     * @param difficultyMultiplier The difficulty multiplier value to set.
+     * @return The FishingEffect instance for method chaining.
+     */
+    public FishingEffect setDifficultyMultiplier(double difficultyMultiplier) {
+        this.difficultyMultiplier = difficultyMultiplier;
+        return this;
     }
 
     /**
@@ -357,15 +355,15 @@ public class FishingEffect implements Effect {
     public void merge(Effect another) {
         if (another == null) return;
         if (another.canLavaFishing()) this.lavaFishing = true;
-        this.scoreMultiplier += (another.getScoreMultiplier() -1);
+        this.scoreMultiplier += (another.getScoreMultiplier() - 1);
         this.score += another.getScore();
-        this.sizeMultiplier += (another.getSizeMultiplier() -1);
+        this.sizeMultiplier += (another.getSizeMultiplier() - 1);
         this.size += another.getSize();
-        this.difficultyMultiplier += (another.getDifficultyMultiplier() -1);
+        this.difficultyMultiplier += (another.getDifficultyMultiplier() - 1);
         this.difficulty += another.getDifficulty();
         this.gameTimeMultiplier += (another.getGameTimeMultiplier() - 1);
         this.gameTime += another.getGameTime();
-        this.waitTimeMultiplier += (another.getWaitTimeMultiplier() -1);
+        this.waitTimeMultiplier += (another.getWaitTimeMultiplier() - 1);
         this.multipleLootChance += another.getMultipleLootChance();
         this.weightModifierIgnored.addAll(another.getWeightModifierIgnored());
         this.weightModifier.addAll(another.getWeightModifier());

@@ -207,9 +207,9 @@ public class ItemManagerImpl implements ItemManager, Listener {
     /**
      * Build an ItemStack with a specified namespace and value for a player.
      *
-     * @param player   The player for whom the ItemStack is being built.
+     * @param player    The player for whom the ItemStack is being built.
      * @param namespace The namespace of the item.
-     * @param value    The value of the item.
+     * @param value     The value of the item.
      * @return The constructed ItemStack.
      */
     @Override
@@ -221,9 +221,9 @@ public class ItemManagerImpl implements ItemManager, Listener {
      * Build an ItemStack with a specified namespace and value, replacing placeholders,
      * for a player.
      *
-     * @param player      The player for whom the ItemStack is being built.
-     * @param namespace   The namespace of the item.
-     * @param value       The value of the item.
+     * @param player       The player for whom the ItemStack is being built.
+     * @param namespace    The namespace of the item.
+     * @param value        The value of the item.
      * @param placeholders The placeholders to replace in the item's attributes.
      * @return The constructed ItemStack, or null if the item doesn't exist.
      */
@@ -237,8 +237,8 @@ public class ItemManagerImpl implements ItemManager, Listener {
     /**
      * Build an ItemStack using an ItemBuilder for a player.
      *
-     * @param player      The player for whom the ItemStack is being built.
-     * @param builder     The ItemBuilder used to construct the ItemStack.
+     * @param player  The player for whom the ItemStack is being built.
+     * @param builder The ItemBuilder used to construct the ItemStack.
      * @return The constructed ItemStack.
      */
     @NotNull
@@ -336,8 +336,8 @@ public class ItemManagerImpl implements ItemManager, Listener {
      * Create a CFBuilder instance for an item configuration section
      *
      * @param section The configuration section containing item settings.
-     * @param type The type of the item (e.g., "rod", "bait").
-     * @param id The unique identifier for the item.
+     * @param type    The type of the item (e.g., "rod", "bait").
+     * @param id      The unique identifier for the item.
      * @return A CFBuilder instance representing the configured item, or null if the section is null.
      */
     @Nullable
@@ -510,10 +510,10 @@ public class ItemManagerImpl implements ItemManager, Listener {
     /**
      * Decreases the durability of an ItemStack by a specified amount and optionally updates its lore.
      *
-     * @param player      Player
-     * @param itemStack   The ItemStack to modify.
-     * @param amount      The amount by which to decrease the durability.
-     * @param updateLore  Whether to update the lore of the ItemStack.
+     * @param player     Player
+     * @param itemStack  The ItemStack to modify.
+     * @param amount     The amount by which to decrease the durability.
+     * @param updateLore Whether to update the lore of the ItemStack.
      */
     @Override
     public void decreaseDurability(Player player, ItemStack itemStack, int amount, boolean updateLore) {
@@ -523,9 +523,9 @@ public class ItemManagerImpl implements ItemManager, Listener {
     /**
      * Increases the durability of an ItemStack by a specified amount and optionally updates its lore.
      *
-     * @param itemStack   The ItemStack to modify.
-     * @param amount      The amount by which to increase the durability.
-     * @param updateLore  Whether to update the lore of the ItemStack.
+     * @param itemStack  The ItemStack to modify.
+     * @param amount     The amount by which to increase the durability.
+     * @param updateLore Whether to update the lore of the ItemStack.
      */
     @Override
     public void increaseDurability(ItemStack itemStack, int amount, boolean updateLore) {
@@ -535,22 +535,243 @@ public class ItemManagerImpl implements ItemManager, Listener {
     /**
      * Sets the durability of an ItemStack to a specific amount and optionally updates its lore.
      *
-     * @param itemStack   The ItemStack to modify.
-     * @param amount      The new durability value.
-     * @param updateLore  Whether to update the lore of the ItemStack.
+     * @param itemStack  The ItemStack to modify.
+     * @param amount     The new durability value.
+     * @param updateLore Whether to update the lore of the ItemStack.
      */
     @Override
     public void setDurability(ItemStack itemStack, int amount, boolean updateLore) {
         ItemUtils.setDurability(itemStack, amount, updateLore);
     }
 
+    /**
+     * Handles item pickup by players.
+     *
+     * @param event The PlayerAttemptPickupItemEvent.
+     */
+    @EventHandler(ignoreCancelled = true)
+    public void onPickUp(PlayerAttemptPickupItemEvent event) {
+        ItemStack itemStack = event.getItem().getItemStack();
+        NBTItem nbtItem = new NBTItem(itemStack);
+        if (!nbtItem.hasTag("owner")) return;
+        if (!Objects.equals(nbtItem.getString("owner"), event.getPlayer().getName())) {
+            event.setCancelled(true);
+        } else {
+            nbtItem.removeKey("owner");
+            itemStack.setItemMeta(nbtItem.getItem().getItemMeta());
+        }
+    }
+
+    /**
+     * Handles item movement in inventories.
+     *
+     * @param event The InventoryPickupItemEvent.
+     */
+    @EventHandler(ignoreCancelled = true)
+    public void onInvPickItem(InventoryPickupItemEvent event) {
+        ItemStack itemStack = event.getItem().getItemStack();
+        NBTItem nbtItem = new NBTItem(itemStack);
+        if (!nbtItem.hasTag("owner")) return;
+        nbtItem.removeKey("owner");
+        itemStack.setItemMeta(nbtItem.getItem().getItemMeta());
+    }
+
+    /**
+     * Handles item consumption by players.
+     *
+     * @param event The PlayerItemConsumeEvent.
+     */
+    @EventHandler(ignoreCancelled = true)
+    public void onConsumeItem(PlayerItemConsumeEvent event) {
+        ItemStack itemStack = event.getItem();
+        String id = getAnyPluginItemID(itemStack);
+        Loot loot = plugin.getLootManager().getLoot(id);
+        if (loot != null) {
+            Condition condition = new Condition(event.getPlayer());
+            if (!loot.disableGlobalAction())
+                GlobalSettings.triggerLootActions(ActionTrigger.CONSUME, condition);
+            loot.triggerActions(ActionTrigger.CONSUME, condition);
+        }
+    }
+
+    /**
+     * Handles the repair of custom items in an anvil.
+     *
+     * @param event The PrepareAnvilEvent.
+     */
+    @EventHandler(ignoreCancelled = true)
+    public void onRepairItem(PrepareAnvilEvent event) {
+        ItemStack result = event.getInventory().getResult();
+        if (result == null || result.getType() == Material.AIR) return;
+        NBTItem nbtItem = new NBTItem(result);
+        NBTCompound compound = nbtItem.getCompound("CustomFishing");
+        if (compound == null || !compound.hasTag("max_dur")) return;
+        if (!(result.getItemMeta() instanceof Damageable damageable)) {
+            return;
+        }
+        int max_dur = compound.getInteger("max_dur");
+        compound.setInteger("cur_dur", (int) (max_dur * (1 - (double) damageable.getDamage() / result.getType().getMaxDurability())));
+        event.setResult(nbtItem.getItem());
+    }
+
+    /**
+     * Handles the mending of custom items.
+     *
+     * @param event The PlayerItemMendEvent.
+     */
+    @EventHandler(ignoreCancelled = true)
+    public void onMending(PlayerItemMendEvent event) {
+        ItemStack itemStack = event.getItem();
+        NBTItem nbtItem = new NBTItem(itemStack);
+        NBTCompound compound = nbtItem.getCompound("CustomFishing");
+        if (compound == null) return;
+        event.setCancelled(true);
+        ItemUtils.increaseDurability(itemStack, event.getRepairAmount(), true);
+    }
+
+    /**
+     * Handles interactions with custom utility items.
+     *
+     * @param event The PlayerInteractEvent.
+     */
+    @EventHandler
+    public void onInteractWithItems(PlayerInteractEvent event) {
+        if (event.useItemInHand() == Event.Result.DENY)
+            return;
+        if (event.getHand() != EquipmentSlot.HAND)
+            return;
+        ItemStack itemStack = event.getPlayer().getInventory().getItemInMainHand();
+        if (itemStack.getType() == Material.AIR)
+            return;
+        if (event.getAction() != org.bukkit.event.block.Action.RIGHT_CLICK_AIR && event.getAction() != org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK)
+            return;
+        String id = getAnyPluginItemID(itemStack);
+        Condition condition = new Condition(event.getPlayer());
+
+        Loot loot = plugin.getLootManager().getLoot(id);
+        if (loot != null) {
+            loot.triggerActions(ActionTrigger.INTERACT, condition);
+            return;
+        }
+
+        // because the id can be from other plugins, so we can't infer the type of the item
+        for (String type : List.of("util", "bait", "hook")) {
+            EffectCarrier carrier = plugin.getEffectManager().getEffectCarrier(type, id);
+            if (carrier != null) {
+                Action[] actions = carrier.getActions(ActionTrigger.INTERACT);
+                if (actions != null)
+                    for (Action action : actions) {
+                        action.trigger(condition);
+                    }
+                break;
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlaceBlock(BlockPlaceEvent event) {
+        ItemStack itemStack = event.getItemInHand();
+        if (itemStack.getType() == Material.AIR || itemStack.getAmount() == 0 || !itemStack.hasItemMeta()) {
+            return;
+        }
+
+        NBTItem nbtItem = new NBTItem(itemStack);
+        NBTCompound compound = nbtItem.getCompound("CustomFishing");
+        if (compound != null) {
+
+            if (!compound.hasTag("placeable") || compound.getByte("placeable") != 1) {
+                event.setCancelled(true);
+                return;
+            }
+
+            Block block = event.getBlock();
+            if (block.getState() instanceof Skull) {
+                PersistentDataContainer pdc = block.getChunk().getPersistentDataContainer();
+                ItemStack cloned = itemStack.clone();
+                cloned.setAmount(1);
+                pdc.set(new NamespacedKey(plugin, LocationUtils.toChunkPosString(block.getLocation())), PersistentDataType.STRING, ItemUtils.toBase64(cloned));
+            } else {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onBreakBlock(BlockBreakEvent event) {
+        final Block block = event.getBlock();
+        if (block.getState() instanceof Skull) {
+            PersistentDataContainer pdc = block.getChunk().getPersistentDataContainer();
+            String base64 = pdc.get(new NamespacedKey(plugin, LocationUtils.toChunkPosString(block.getLocation())), PersistentDataType.STRING);
+            if (base64 != null) {
+                ItemStack itemStack = ItemUtils.fromBase64(base64);
+                event.setDropItems(false);
+                block.getLocation().getWorld().dropItemNaturally(block.getLocation(), itemStack);
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPiston(BlockPistonExtendEvent event) {
+        for (Block block : event.getBlocks()) {
+            if (block.getState() instanceof Skull) {
+                PersistentDataContainer pdc = block.getChunk().getPersistentDataContainer();
+                if (pdc.has(new NamespacedKey(plugin, LocationUtils.toChunkPosString(block.getLocation())), PersistentDataType.STRING)) {
+                    event.setCancelled(true);
+                    return;
+                }
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPiston(BlockPistonRetractEvent event) {
+        for (Block block : event.getBlocks()) {
+            if (block.getState() instanceof Skull) {
+                PersistentDataContainer pdc = block.getChunk().getPersistentDataContainer();
+                if (pdc.has(new NamespacedKey(plugin, LocationUtils.toChunkPosString(block.getLocation())), PersistentDataType.STRING)) {
+                    event.setCancelled(true);
+                    return;
+                }
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onExplosion(BlockExplodeEvent event) {
+        handleExplode(event.blockList());
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onExplosion(EntityExplodeEvent event) {
+        handleExplode(event.blockList());
+    }
+
+    private void handleExplode(List<Block> blocks) {
+        ArrayList<Block> blockToRemove = new ArrayList<>();
+        for (Block block : blocks) {
+            if (block.getState() instanceof Skull) {
+                PersistentDataContainer pdc = block.getChunk().getPersistentDataContainer();
+                var nk = new NamespacedKey(plugin, LocationUtils.toChunkPosString(block.getLocation()));
+                String base64 = pdc.get(nk, PersistentDataType.STRING);
+                if (base64 != null) {
+                    ItemStack itemStack = ItemUtils.fromBase64(base64);
+                    block.getLocation().getWorld().dropItemNaturally(block.getLocation(), itemStack);
+                    blockToRemove.add(block);
+                    block.setType(Material.AIR);
+                    pdc.remove(nk);
+                }
+            }
+        }
+        blocks.removeAll(blockToRemove);
+    }
+
     public static class CFBuilder implements ItemBuilder {
 
         private final String library;
         private final String id;
+        private final LinkedHashMap<String, ItemPropertyEditor> editors;
         private int min_amount;
         private int max_amount;
-        private final LinkedHashMap<String, ItemPropertyEditor> editors;
 
         public CFBuilder(String library, String id) {
             this.id = id;
@@ -899,226 +1120,5 @@ public class ItemManagerImpl implements ItemManager, Listener {
             editors.put(type, editor);
             return this;
         }
-    }
-
-    /**
-     * Handles item pickup by players.
-     *
-     * @param event The PlayerAttemptPickupItemEvent.
-     */
-    @EventHandler (ignoreCancelled = true)
-    public void onPickUp(PlayerAttemptPickupItemEvent event) {
-        ItemStack itemStack = event.getItem().getItemStack();
-        NBTItem nbtItem = new NBTItem(itemStack);
-        if (!nbtItem.hasTag("owner")) return;
-        if (!Objects.equals(nbtItem.getString("owner"), event.getPlayer().getName())) {
-            event.setCancelled(true);
-        } else {
-            nbtItem.removeKey("owner");
-            itemStack.setItemMeta(nbtItem.getItem().getItemMeta());
-        }
-    }
-
-    /**
-     * Handles item movement in inventories.
-     *
-     * @param event The InventoryPickupItemEvent.
-     */
-    @EventHandler (ignoreCancelled = true)
-    public void onInvPickItem(InventoryPickupItemEvent event) {
-        ItemStack itemStack = event.getItem().getItemStack();
-        NBTItem nbtItem = new NBTItem(itemStack);
-        if (!nbtItem.hasTag("owner")) return;
-        nbtItem.removeKey("owner");
-        itemStack.setItemMeta(nbtItem.getItem().getItemMeta());
-    }
-
-    /**
-     * Handles item consumption by players.
-     *
-     * @param event The PlayerItemConsumeEvent.
-     */
-    @EventHandler (ignoreCancelled = true)
-    public void onConsumeItem(PlayerItemConsumeEvent event) {
-        ItemStack itemStack = event.getItem();
-        String id = getAnyPluginItemID(itemStack);
-        Loot loot = plugin.getLootManager().getLoot(id);
-        if (loot != null) {
-            Condition condition = new Condition(event.getPlayer());
-            if (!loot.disableGlobalAction())
-                GlobalSettings.triggerLootActions(ActionTrigger.CONSUME, condition);
-            loot.triggerActions(ActionTrigger.CONSUME, condition);
-        }
-    }
-
-    /**
-     * Handles the repair of custom items in an anvil.
-     *
-     * @param event The PrepareAnvilEvent.
-     */
-    @EventHandler (ignoreCancelled = true)
-    public void onRepairItem(PrepareAnvilEvent event) {
-        ItemStack result = event.getInventory().getResult();
-        if (result == null || result.getType() == Material.AIR) return;
-        NBTItem nbtItem = new NBTItem(result);
-        NBTCompound compound = nbtItem.getCompound("CustomFishing");
-        if (compound == null || !compound.hasTag("max_dur")) return;
-        if (!(result.getItemMeta() instanceof Damageable damageable)) {
-            return;
-        }
-        int max_dur = compound.getInteger("max_dur");
-        compound.setInteger("cur_dur", (int) (max_dur * (1 - (double) damageable.getDamage() / result.getType().getMaxDurability())));
-        event.setResult(nbtItem.getItem());
-    }
-
-    /**
-     * Handles the mending of custom items.
-     *
-     * @param event The PlayerItemMendEvent.
-     */
-    @EventHandler (ignoreCancelled = true)
-    public void onMending(PlayerItemMendEvent event) {
-        ItemStack itemStack = event.getItem();
-        NBTItem nbtItem = new NBTItem(itemStack);
-        NBTCompound compound = nbtItem.getCompound("CustomFishing");
-        if (compound == null) return;
-        event.setCancelled(true);
-        ItemUtils.increaseDurability(itemStack, event.getRepairAmount(), true);
-    }
-
-    /**
-     * Handles interactions with custom utility items.
-     *
-     * @param event The PlayerInteractEvent.
-     */
-    @EventHandler
-    public void onInteractWithItems(PlayerInteractEvent event) {
-        if (event.useItemInHand() == Event.Result.DENY)
-            return;
-        if (event.getHand() != EquipmentSlot.HAND)
-            return;
-        ItemStack itemStack = event.getPlayer().getInventory().getItemInMainHand();
-        if (itemStack.getType() == Material.AIR)
-            return;
-        if (event.getAction() != org.bukkit.event.block.Action.RIGHT_CLICK_AIR && event.getAction() != org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK)
-            return;
-        String id = getAnyPluginItemID(itemStack);
-        Condition condition = new Condition(event.getPlayer());
-
-        Loot loot = plugin.getLootManager().getLoot(id);
-        if (loot != null) {
-            loot.triggerActions(ActionTrigger.INTERACT, condition);
-            return;
-        }
-
-        // because the id can be from other plugins, so we can't infer the type of the item
-        for (String type : List.of("util", "bait", "hook")) {
-            EffectCarrier carrier = plugin.getEffectManager().getEffectCarrier(type, id);
-            if (carrier != null) {
-                Action[] actions = carrier.getActions(ActionTrigger.INTERACT);
-                if (actions != null)
-                    for (Action action : actions) {
-                        action.trigger(condition);
-                    }
-                break;
-            }
-        }
-    }
-
-    @EventHandler (ignoreCancelled = true)
-    public void onPlaceBlock(BlockPlaceEvent event) {
-        ItemStack itemStack = event.getItemInHand();
-        if (itemStack.getType() == Material.AIR || itemStack.getAmount() == 0 || !itemStack.hasItemMeta()) {
-            return;
-        }
-
-        NBTItem nbtItem = new NBTItem(itemStack);
-        NBTCompound compound = nbtItem.getCompound("CustomFishing");
-        if (compound != null) {
-
-            if (!compound.hasTag("placeable") || compound.getByte("placeable") != 1) {
-                event.setCancelled(true);
-                return;
-            }
-
-            Block block = event.getBlock();
-            if (block.getState() instanceof Skull) {
-                PersistentDataContainer pdc = block.getChunk().getPersistentDataContainer();
-                ItemStack cloned = itemStack.clone();
-                cloned.setAmount(1);
-                pdc.set(new NamespacedKey(plugin, LocationUtils.toChunkPosString(block.getLocation())), PersistentDataType.STRING, ItemUtils.toBase64(cloned));
-            } else {
-                event.setCancelled(true);
-            }
-        }
-    }
-
-    @EventHandler (ignoreCancelled = true)
-    public void onBreakBlock(BlockBreakEvent event) {
-        final Block block = event.getBlock();
-        if (block.getState() instanceof Skull) {
-            PersistentDataContainer pdc = block.getChunk().getPersistentDataContainer();
-            String base64 = pdc.get(new NamespacedKey(plugin, LocationUtils.toChunkPosString(block.getLocation())), PersistentDataType.STRING);
-            if (base64 != null) {
-                ItemStack itemStack = ItemUtils.fromBase64(base64);
-                event.setDropItems(false);
-                block.getLocation().getWorld().dropItemNaturally(block.getLocation(), itemStack);
-            }
-        }
-    }
-
-    @EventHandler (ignoreCancelled = true)
-    public void onPiston(BlockPistonExtendEvent event) {
-        for (Block block : event.getBlocks()) {
-            if (block.getState() instanceof Skull) {
-                PersistentDataContainer pdc = block.getChunk().getPersistentDataContainer();
-                if (pdc.has(new NamespacedKey(plugin, LocationUtils.toChunkPosString(block.getLocation())), PersistentDataType.STRING)) {
-                    event.setCancelled(true);
-                    return;
-                }
-            }
-        }
-    }
-
-    @EventHandler (ignoreCancelled = true)
-    public void onPiston(BlockPistonRetractEvent event) {
-        for (Block block : event.getBlocks()) {
-            if (block.getState() instanceof Skull) {
-                PersistentDataContainer pdc = block.getChunk().getPersistentDataContainer();
-                if (pdc.has(new NamespacedKey(plugin, LocationUtils.toChunkPosString(block.getLocation())), PersistentDataType.STRING)) {
-                    event.setCancelled(true);
-                    return;
-                }
-            }
-        }
-    }
-
-    @EventHandler (ignoreCancelled = true)
-    public void onExplosion(BlockExplodeEvent event) {
-        handleExplode(event.blockList());
-    }
-
-    @EventHandler (ignoreCancelled = true)
-    public void onExplosion(EntityExplodeEvent event) {
-        handleExplode(event.blockList());
-    }
-
-    private void handleExplode(List<Block> blocks) {
-        ArrayList<Block> blockToRemove = new ArrayList<>();
-        for (Block block : blocks) {
-            if (block.getState() instanceof Skull) {
-                PersistentDataContainer pdc = block.getChunk().getPersistentDataContainer();
-                var nk = new NamespacedKey(plugin, LocationUtils.toChunkPosString(block.getLocation()));
-                String base64 = pdc.get(nk, PersistentDataType.STRING);
-                if (base64 != null) {
-                    ItemStack itemStack = ItemUtils.fromBase64(base64);
-                    block.getLocation().getWorld().dropItemNaturally(block.getLocation(), itemStack);
-                    blockToRemove.add(block);
-                    block.setType(Material.AIR);
-                    pdc.remove(nk);
-                }
-            }
-        }
-        blocks.removeAll(blockToRemove);
     }
 }

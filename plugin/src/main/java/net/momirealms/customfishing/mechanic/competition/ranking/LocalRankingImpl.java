@@ -109,7 +109,7 @@ public class LocalRankingImpl implements Ranking {
     @Override
     public Iterator<Pair<String, Double>> getIterator() {
         List<Pair<String, Double>> players = new ArrayList<>();
-        for (CompetitionPlayer competitionPlayer: competitionPlayers){
+        for (CompetitionPlayer competitionPlayer : competitionPlayers) {
             players.add(Pair.of(competitionPlayer.getPlayer(), competitionPlayer.getScore()));
         }
         return players.iterator();
@@ -137,7 +137,7 @@ public class LocalRankingImpl implements Ranking {
         for (CompetitionPlayer competitionPlayer : competitionPlayers) {
             if (competitionPlayer.getPlayer().equals(player)) {
                 return index;
-            }else {
+            } else {
                 index++;
             }
         }

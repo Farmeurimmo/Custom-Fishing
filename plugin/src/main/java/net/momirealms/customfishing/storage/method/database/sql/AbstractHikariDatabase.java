@@ -38,9 +38,9 @@ import java.util.stream.Collectors;
  */
 public abstract class AbstractHikariDatabase extends AbstractSQLDatabase implements LegacyDataStorageInterface {
 
-    private HikariDataSource dataSource;
     private final String driverClass;
     private final String sqlBrand;
+    private HikariDataSource dataSource;
 
     public AbstractHikariDatabase(CustomFishingPlugin plugin) {
         super(plugin);
@@ -149,7 +149,7 @@ public abstract class AbstractHikariDatabase extends AbstractSQLDatabase impleme
         var future = new CompletableFuture<Optional<PlayerData>>();
         plugin.getScheduler().runTaskAsync(() -> {
             try (
-                Connection connection = getConnection()
+                    Connection connection = getConnection()
             ) {
                 var builder = new PlayerData.Builder().setName("");
                 PreparedStatement statementOne = connection.prepareStatement(String.format(SqlConstants.SQL_SELECT_BY_UUID, getTableName("fishingbag")));

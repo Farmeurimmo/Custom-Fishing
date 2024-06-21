@@ -46,16 +46,16 @@ import java.util.concurrent.TimeUnit;
 public class BossBarSender {
 
     private final Player player;
+    private final DynamicText[] texts;
+    private final UUID uuid;
+    private final BossBarConfig config;
+    private final Competition competition;
+    private final HashMap<String, String> privatePlaceholders;
     private int refreshTimer;
     private int switchTimer;
     private int counter;
-    private final DynamicText[] texts;
     private CancellableTask senderTask;
-    private final UUID uuid;
-    private final BossBarConfig config;
     private boolean isShown;
-    private final Competition competition;
-    private final HashMap<String, String> privatePlaceholders;
 
     /**
      * Creates a new BossBarSender instance for a player.
@@ -105,7 +105,7 @@ public class BossBarSender {
                 switchTimer = 0;
                 counter++;
             }
-            if (refreshTimer < config.getRefreshRate()){
+            if (refreshTimer < config.getRefreshRate()) {
                 refreshTimer++;
             } else {
                 refreshTimer = 0;
@@ -151,10 +151,10 @@ public class BossBarSender {
         packet.getModifier().write(0, uuid);
         try {
             Object chatComponent = ReflectionUtils.iChatComponentMethod.invoke(null,
-            GsonComponentSerializer.gson().serialize(
-            AdventureHelper.getInstance().getComponentFromMiniMessage(
-            text.getLatestValue()
-            )));
+                    GsonComponentSerializer.gson().serialize(
+                            AdventureHelper.getInstance().getComponentFromMiniMessage(
+                                    text.getLatestValue()
+                            )));
             Object updatePacket = ReflectionUtils.updateConstructor.newInstance(chatComponent);
             packet.getModifier().write(1, updatePacket);
         } catch (InvocationTargetException | IllegalAccessException | InstantiationException e) {

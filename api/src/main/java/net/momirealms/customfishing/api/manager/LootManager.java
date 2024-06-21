@@ -36,7 +36,8 @@ public interface LootManager {
      * @param key The key of the loot group.
      * @return A list of loot IDs belonging to the specified loot group, or null if not found.
      */
-    @Nullable List<String> getLootGroup(String key);
+    @Nullable
+    List<String> getLootGroup(String key);
 
     /**
      * Retrieves a loot configuration based on a provided loot key.
@@ -44,7 +45,8 @@ public interface LootManager {
      * @param key The key of the loot configuration.
      * @return The Loot object associated with the specified loot key, or null if not found.
      */
-    @Nullable Loot getLoot(String key);
+    @Nullable
+    Loot getLoot(String key);
 
     /**
      * Retrieves a collection of all loot configuration keys.
@@ -83,14 +85,16 @@ public interface LootManager {
      * @param condition     The condition to determine possible loot.
      * @return A map of loot keys and their weights.
      */
-    @NotNull Map<String, Double> getPossibleLootKeysWithWeight(Effect initialEffect, Condition condition);
+    @NotNull
+    Map<String, Double> getPossibleLootKeysWithWeight(Effect initialEffect, Condition condition);
 
     /**
      * Get the next loot item based on fishing effect and condition.
      *
-     * @param effect The effect to apply weight modifiers.
-     * @param condition     The condition to determine possible loot.
+     * @param effect    The effect to apply weight modifiers.
+     * @param condition The condition to determine possible loot.
      * @return The next loot item, or null if it doesn't exist.
      */
-    @Nullable Loot getNextLoot(Effect effect, Condition condition);
+    @Nullable
+    Loot getNextLoot(Effect effect, Condition condition);
 }

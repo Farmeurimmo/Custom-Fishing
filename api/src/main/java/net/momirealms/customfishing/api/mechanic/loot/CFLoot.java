@@ -54,6 +54,91 @@ public class CFLoot implements Loot {
         return new Builder(id, type);
     }
 
+    @Override
+    public boolean instanceGame() {
+        return this.instanceGame;
+    }
+
+    @Override
+    public String getID() {
+        return this.id;
+    }
+
+    @Override
+    public LootType getType() {
+        return this.type;
+    }
+
+    @Override
+    public @NotNull String getNick() {
+        return this.nick;
+    }
+
+    @Override
+    public StatisticsKey getStatisticKey() {
+        return this.statisticsKey;
+    }
+
+    @Override
+    public boolean showInFinder() {
+        return this.showInFinder;
+    }
+
+    @Override
+    public double getScore() {
+        return this.score;
+    }
+
+    @Override
+    public boolean disableGame() {
+        return this.disableGame;
+    }
+
+    @Override
+    public boolean disableStats() {
+        return this.disableStats;
+    }
+
+    @Override
+    public boolean disableGlobalAction() {
+        return this.disableGlobalAction;
+    }
+
+    @Override
+    public String[] getLootGroup() {
+        return lootGroup;
+    }
+
+    @Override
+    public Action[] getActions(ActionTrigger actionTrigger) {
+        return actionMap.get(actionTrigger);
+    }
+
+    @Override
+    public void triggerActions(ActionTrigger actionTrigger, Condition condition) {
+        Action[] actions = getActions(actionTrigger);
+        if (actions != null) {
+            for (Action action : actions) {
+                action.trigger(condition);
+            }
+        }
+    }
+
+    @Override
+    public BaseEffect getBaseEffect() {
+        return effect;
+    }
+
+    @Override
+    public Action[] getSuccessTimesActions(int times) {
+        return successTimesActionMap.get(times);
+    }
+
+    @Override
+    public HashMap<Integer, Action[]> getSuccessTimesActionMap() {
+        return successTimesActionMap;
+    }
+
     /**
      * Builder class for CFLoot.
      */
@@ -239,90 +324,5 @@ public class CFLoot implements Loot {
         public CFLoot build() {
             return loot;
         }
-    }
-
-    @Override
-    public boolean instanceGame() {
-        return this.instanceGame;
-    }
-
-    @Override
-    public String getID() {
-        return this.id;
-    }
-
-    @Override
-    public LootType getType() {
-        return this.type;
-    }
-
-    @Override
-    public @NotNull String getNick() {
-        return this.nick;
-    }
-
-    @Override
-    public StatisticsKey getStatisticKey() {
-        return this.statisticsKey;
-    }
-
-    @Override
-    public boolean showInFinder() {
-        return this.showInFinder;
-    }
-
-    @Override
-    public double getScore() {
-        return this.score;
-    }
-
-    @Override
-    public boolean disableGame() {
-        return this.disableGame;
-    }
-
-    @Override
-    public boolean disableStats() {
-        return this.disableStats;
-    }
-
-    @Override
-    public boolean disableGlobalAction() {
-        return this.disableGlobalAction;
-    }
-
-    @Override
-    public String[] getLootGroup() {
-        return lootGroup;
-    }
-
-    @Override
-    public Action[] getActions(ActionTrigger actionTrigger) {
-        return actionMap.get(actionTrigger);
-    }
-
-    @Override
-    public void triggerActions(ActionTrigger actionTrigger, Condition condition) {
-        Action[] actions = getActions(actionTrigger);
-        if (actions != null) {
-            for (Action action : actions) {
-                action.trigger(condition);
-            }
-        }
-    }
-
-    @Override
-    public BaseEffect getBaseEffect() {
-        return effect;
-    }
-
-    @Override
-    public Action[] getSuccessTimesActions(int times) {
-        return successTimesActionMap.get(times);
-    }
-
-    @Override
-    public HashMap<Integer, Action[]> getSuccessTimesActionMap() {
-        return successTimesActionMap;
     }
 }

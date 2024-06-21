@@ -47,11 +47,11 @@ public class LoreItem extends AbstractItem {
                 )));
         if (itemPage.getSection().contains("display.lore")) {
             itemBuilder.addLoreLines(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
-                            CFLocale.GUI_CURRENT_VALUE
-                    )));
-            for (String lore :  itemPage.getSection().getStringList("display.lore")) {
+                    CFLocale.GUI_CURRENT_VALUE
+            )));
+            for (String lore : itemPage.getSection().getStringList("display.lore")) {
                 itemBuilder.addLoreLines(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
-                       " <gray>-</gray> " + lore
+                        " <gray>-</gray> " + lore
                 )));
             }
             itemBuilder.addLoreLines("");

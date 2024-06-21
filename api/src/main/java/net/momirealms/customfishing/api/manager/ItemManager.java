@@ -37,9 +37,9 @@ public interface ItemManager {
     /**
      * Build an ItemStack with a specified namespace and value for a player.
      *
-     * @param player   The player for whom the ItemStack is being built.
+     * @param player    The player for whom the ItemStack is being built.
      * @param namespace The namespace of the item.
-     * @param value    The value of the item.
+     * @param value     The value of the item.
      * @return The constructed ItemStack.
      */
     @Nullable
@@ -49,9 +49,9 @@ public interface ItemManager {
      * Build an ItemStack with a specified namespace and value, replacing placeholders,
      * for a player.
      *
-     * @param player      The player for whom the ItemStack is being built.
-     * @param namespace   The namespace of the item.
-     * @param value       The value of the item.
+     * @param player       The player for whom the ItemStack is being built.
+     * @param namespace    The namespace of the item.
+     * @param value        The value of the item.
      * @param placeholders The placeholders to replace in the item's attributes.
      * @return The constructed ItemStack, or null if the item doesn't exist.
      */
@@ -61,11 +61,12 @@ public interface ItemManager {
     /**
      * Build an ItemStack using an ItemBuilder for a player.
      *
-     * @param player      The player for whom the ItemStack is being built.
-     * @param builder     The ItemBuilder used to construct the ItemStack.
+     * @param player  The player for whom the ItemStack is being built.
+     * @param builder The ItemBuilder used to construct the ItemStack.
      * @return The constructed ItemStack.
      */
-    @NotNull ItemStack build(Player player, ItemBuilder builder);
+    @NotNull
+    ItemStack build(Player player, ItemBuilder builder);
 
     /**
      * Build an ItemStack using the provided ItemBuilder, player, and placeholders.
@@ -75,7 +76,8 @@ public interface ItemManager {
      * @param placeholders A map of placeholders and their corresponding values to be applied to the item.
      * @return The constructed ItemStack.
      */
-    @NotNull ItemStack build(Player player, ItemBuilder builder, Map<String, String> placeholders);
+    @NotNull
+    ItemStack build(Player player, ItemBuilder builder, Map<String, String> placeholders);
 
     /**
      * Build an ItemStack for a player based on the provided item ID.
@@ -84,7 +86,8 @@ public interface ItemManager {
      * @param id     The item ID, which include an identification (e.g., "Oraxen:id").
      * @return The constructed ItemStack or null if the ID is not valid.
      */
-    @Nullable ItemStack buildAnyPluginItemByID(Player player, String id);
+    @Nullable
+    ItemStack buildAnyPluginItemByID(Player player, String id);
 
     /**
      * Get the item ID associated with the given ItemStack, if available.
@@ -92,7 +95,8 @@ public interface ItemManager {
      * @param itemStack The ItemStack to retrieve the item ID from.
      * @return The item ID without type or null if not found or if the ItemStack is null or empty.
      */
-    @Nullable String getCustomFishingItemID(ItemStack itemStack);
+    @Nullable
+    String getCustomFishingItemID(ItemStack itemStack);
 
     /**
      * Get the item ID associated with the given ItemStack by checking all available item libraries.
@@ -101,21 +105,23 @@ public interface ItemManager {
      * @param itemStack The ItemStack to retrieve the item ID from.
      * @return The item ID or "AIR" if not found or if the ItemStack is null or empty.
      */
-    @NotNull String getAnyPluginItemID(ItemStack itemStack);
+    @NotNull
+    String getAnyPluginItemID(ItemStack itemStack);
 
     /**
      * Create a ItemBuilder instance for an item configuration section
      * <p>
      * xxx_item:  <- section
-     *   material: xxx
-     *   custom-model-data: xxx
+     * material: xxx
+     * custom-model-data: xxx
      *
      * @param section The configuration section containing item settings.
-     * @param type The type of the item (e.g., "rod", "bait").
-     * @param id The unique identifier for the item.
+     * @param type    The type of the item (e.g., "rod", "bait").
+     * @param id      The unique identifier for the item.
      * @return A CFBuilder instance representing the configured item, or null if the section is null.
      */
-    @Nullable ItemBuilder getItemBuilder(ConfigurationSection section, String type, String id);
+    @Nullable
+    ItemBuilder getItemBuilder(ConfigurationSection section, String type, String id);
 
     /**
      * Get a set of all item keys in the CustomFishing plugin.
@@ -137,7 +143,7 @@ public interface ItemManager {
     /**
      * Get an itemStack's appearance (material + custom model data)
      *
-     * @param player player
+     * @param player   player
      * @param material id
      * @return appearance
      */
@@ -181,27 +187,27 @@ public interface ItemManager {
     /**
      * Decreases the durability of an ItemStack by a specified amount and optionally updates its lore.
      *
-     * @param itemStack   The ItemStack to modify.
-     * @param amount      The amount by which to decrease the durability.
-     * @param updateLore  Whether to update the lore of the ItemStack.
+     * @param itemStack  The ItemStack to modify.
+     * @param amount     The amount by which to decrease the durability.
+     * @param updateLore Whether to update the lore of the ItemStack.
      */
     void decreaseDurability(Player player, ItemStack itemStack, int amount, boolean updateLore);
 
     /**
      * Increases the durability of an ItemStack by a specified amount and optionally updates its lore.
      *
-     * @param itemStack   The ItemStack to modify.
-     * @param amount      The amount by which to increase the durability.
-     * @param updateLore  Whether to update the lore of the ItemStack.
+     * @param itemStack  The ItemStack to modify.
+     * @param amount     The amount by which to increase the durability.
+     * @param updateLore Whether to update the lore of the ItemStack.
      */
     void increaseDurability(ItemStack itemStack, int amount, boolean updateLore);
 
     /**
      * Sets the durability of an ItemStack to a specific amount and optionally updates its lore.
      *
-     * @param itemStack   The ItemStack to modify.
-     * @param amount      The new durability value.
-     * @param updateLore  Whether to update the lore of the ItemStack.
+     * @param itemStack  The ItemStack to modify.
+     * @param amount     The new durability value.
+     * @param updateLore Whether to update the lore of the ItemStack.
      */
     void setDurability(ItemStack itemStack, int amount, boolean updateLore);
 }

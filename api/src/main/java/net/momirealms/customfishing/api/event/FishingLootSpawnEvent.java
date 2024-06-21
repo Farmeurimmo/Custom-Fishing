@@ -39,6 +39,10 @@ public class FishingLootSpawnEvent extends PlayerEvent implements Cancellable {
         this.isCancelled = false;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlerList;
+    }
+
     @Override
     public boolean isCancelled() {
         return isCancelled;
@@ -59,10 +63,6 @@ public class FishingLootSpawnEvent extends PlayerEvent implements Cancellable {
 
     @Override
     public @NotNull HandlerList getHandlers() {
-        return handlerList;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlerList;
     }
 }

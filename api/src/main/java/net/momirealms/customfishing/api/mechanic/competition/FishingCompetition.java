@@ -53,7 +53,7 @@ public interface FishingCompetition {
      * actions if it's their first time joining the competition.
      *
      * @param player The player whose data needs to be refreshed.
-     * @param score The player's current score in the competition.
+     * @param score  The player's current score in the competition.
      */
     void refreshData(Player player, double score);
 
@@ -91,28 +91,32 @@ public interface FishingCompetition {
      *
      * @return The configuration of the fishing competition.
      */
-    @NotNull CompetitionConfig getConfig();
+    @NotNull
+    CompetitionConfig getConfig();
 
     /**
      * Gets the goal of the fishing competition.
      *
      * @return The goal of the fishing competition.
      */
-    @NotNull CompetitionGoal getGoal();
+    @NotNull
+    CompetitionGoal getGoal();
 
     /**
      * Gets the ranking data for the fishing competition.
      *
      * @return The ranking data for the fishing competition.
      */
-    @NotNull Ranking getRanking();
+    @NotNull
+    Ranking getRanking();
 
     /**
      * Gets the cached placeholders for the fishing competition.
      *
      * @return A ConcurrentHashMap containing cached placeholders.
      */
-    @NotNull Map<String, String> getCachedPlaceholders();
+    @NotNull
+    Map<String, String> getCachedPlaceholders();
 
     /**
      * Gets a specific cached placeholder value by its key.
@@ -120,5 +124,6 @@ public interface FishingCompetition {
      * @param papi The key of the cached placeholder.
      * @return The cached placeholder value as a string, or null if not found.
      */
-    @Nullable String getCachedPlaceholder(String papi);
+    @Nullable
+    String getCachedPlaceholder(String papi);
 }

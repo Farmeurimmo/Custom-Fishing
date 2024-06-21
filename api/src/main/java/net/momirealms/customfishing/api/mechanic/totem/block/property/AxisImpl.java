@@ -39,6 +39,7 @@ public class AxisImpl implements TotemBlockProperty, Serializable {
 
     /**
      * Rotates the block axis 90 degrees. (X -> Z, Z -> X)
+     *
      * @return The rotated block axis.
      */
     @Override
@@ -53,6 +54,7 @@ public class AxisImpl implements TotemBlockProperty, Serializable {
 
     /**
      * Checks if the block has the property.
+     *
      * @param block The block to check.
      * @return True if the block has the property.
      */

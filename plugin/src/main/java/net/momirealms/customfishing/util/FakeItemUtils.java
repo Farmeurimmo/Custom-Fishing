@@ -37,7 +37,8 @@ import java.util.UUID;
  */
 public class FakeItemUtils {
 
-    private FakeItemUtils() {}
+    private FakeItemUtils() {
+    }
 
     /**
      * Creates a destroy packet for removing a fake item entity.
@@ -72,8 +73,8 @@ public class FakeItemUtils {
     /**
      * Creates a metadata packet for updating the metadata of a fake item entity.
      *
-     * @param id         The ID of the fake item entity
-     * @param itemStack  The ItemStack to update the metadata with
+     * @param id        The ID of the fake item entity
+     * @param itemStack The ItemStack to update the metadata with
      * @return The PacketContainer representing the metadata packet
      */
     public static PacketContainer getMetaPacket(int id, ItemStack itemStack) {
@@ -136,7 +137,7 @@ public class FakeItemUtils {
     /**
      * Sets the value list in a PacketContainer's DataWatcher from a WrappedDataWatcher.
      *
-     * @param metaPacket       The PacketContainer representing the metadata packet
+     * @param metaPacket         The PacketContainer representing the metadata packet
      * @param wrappedDataWatcher The WrappedDataWatcher containing the value list
      */
     @SuppressWarnings("DuplicatedCode")

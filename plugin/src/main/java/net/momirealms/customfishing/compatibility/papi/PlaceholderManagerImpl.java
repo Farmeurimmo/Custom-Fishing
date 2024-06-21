@@ -60,6 +60,10 @@ public class PlaceholderManagerImpl implements PlaceholderManager {
         }
     }
 
+    public static PlaceholderManagerImpl getInstance() {
+        return instance;
+    }
+
     public void load() {
         if (competitionPapi != null) competitionPapi.load();
         if (statisticsPapi != null) statisticsPapi.load();
@@ -137,8 +141,8 @@ public class PlaceholderManagerImpl implements PlaceholderManager {
     /**
      * Get the value associated with a single placeholder.
      *
-     * @param player      The player for whom the placeholders are being resolved (nullable).
-     * @param placeholder The placeholder to look up.
+     * @param player       The player for whom the placeholders are being resolved (nullable).
+     * @param placeholder  The placeholder to look up.
      * @param placeholders A map of placeholders to their corresponding values.
      * @return The value associated with the placeholder, or the original placeholder if not found.
      */
@@ -146,7 +150,7 @@ public class PlaceholderManagerImpl implements PlaceholderManager {
     public String getSingleValue(@Nullable Player player, String placeholder, Map<String, String> placeholders) {
         String result = null;
         if (placeholders != null)
-             result = placeholders.get(placeholder);
+            result = placeholders.get(placeholder);
         if (result != null)
             return result;
         String custom = customPlaceholderMap.get(placeholder);
@@ -158,8 +162,8 @@ public class PlaceholderManagerImpl implements PlaceholderManager {
     /**
      * Parse a text string by replacing placeholders with their corresponding values.
      *
-     * @param player      The offline player for whom the placeholders are being resolved (nullable).
-     * @param text        The text string containing placeholders.
+     * @param player       The offline player for whom the placeholders are being resolved (nullable).
+     * @param text         The text string containing placeholders.
      * @param placeholders A map of placeholders to their corresponding values.
      * @return The text string with placeholders replaced by their values.
      */
@@ -197,11 +201,6 @@ public class PlaceholderManagerImpl implements PlaceholderManager {
         return list.stream()
                 .map(s -> parse(player, s, replacements))
                 .collect(Collectors.toList());
-    }
-
-
-    public static PlaceholderManagerImpl getInstance() {
-        return instance;
     }
 
     public boolean hasPapi() {

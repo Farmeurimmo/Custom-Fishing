@@ -43,9 +43,9 @@ public class CustomModelDataEditor {
 
     private final Player player;
     private final SectionPage parentPage;
-    private String cmd;
     private final ConfigurationSection section;
     private final String material;
+    private String cmd;
 
     public CustomModelDataEditor(Player player, SectionPage parentPage) {
         this.player = player;
@@ -63,8 +63,8 @@ public class CustomModelDataEditor {
                         .getItemManager()
                         .getItemStackAppearance(player, material)
                 )
-                .setCustomModelData(section.getInt("custom-model-data", 0))
-                .setDisplayName(String.valueOf(section.getInt("custom-model-data", 0))))
+                        .setCustomModelData(section.getInt("custom-model-data", 0))
+                        .setDisplayName(String.valueOf(section.getInt("custom-model-data", 0))))
                 .addIngredient('#', border)
                 .addIngredient('b', confirm)
                 .build();

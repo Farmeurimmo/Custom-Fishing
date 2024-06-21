@@ -68,15 +68,15 @@ import java.util.concurrent.TimeUnit;
 public class StorageManagerImpl implements StorageManager, Listener {
 
     private final CustomFishingPlugin plugin;
-    private DataStorageInterface dataSource;
-    private StorageType previousType;
     private final ConcurrentHashMap<UUID, OnlineUser> onlineUserMap;
     private final HashSet<UUID> locked;
+    private final Gson gson;
+    private DataStorageInterface dataSource;
+    private StorageType previousType;
     private boolean hasRedis;
     private RedisManager redisManager;
     private String uniqueID;
     private CancellableTask timerSaveTask;
-    private final Gson gson;
 
     public StorageManagerImpl(CustomFishingPluginImpl plugin) {
         this.plugin = plugin;
@@ -218,7 +218,7 @@ public class StorageManagerImpl implements StorageManager, Listener {
      * Asynchronously saves user data for an OfflineUser.
      *
      * @param offlineUser The OfflineUser whose data needs to be saved.
-     * @param unlock Whether to unlock the data after saving.
+     * @param unlock      Whether to unlock the data after saving.
      * @return A CompletableFuture that resolves to a boolean indicating the success of the data saving operation.
      */
     @Override
@@ -280,51 +280,13 @@ public class StorageManagerImpl implements StorageManager, Listener {
                     () -> redisManager.updatePlayerData(uuid, data, true).thenRun(
                             () -> dataSource.updatePlayerData(uuid, data, true).thenAccept(
                                     result -> {
-                                      if (result) locked.remove(uuid);
-            })));
+                                        if (result) locked.remove(uuid);
+                                    })));
         } else {
             dataSource.updatePlayerData(uuid, data, true).thenAccept(
                     result -> {
                         if (result) locked.remove(uuid);
                     });
-        }
-    }
-
-    /**
-     * Runnable task for asynchronously retrieving data from Redis.
-     * Retries up to 6 times and cancels the task if the player is offline.
-     */
-    public class RedisGetDataTask implements Runnable {
-
-        private final UUID uuid;
-        private int triedTimes;
-        private final CancellableTask task;
-
-        public RedisGetDataTask(UUID uuid) {
-            this.uuid = uuid;
-            this.task = plugin.getScheduler().runTaskAsyncTimer(this, 0, 333, TimeUnit.MILLISECONDS);
-        }
-
-        @Override
-        public void run() {
-            triedTimes++;
-            Player player = Bukkit.getPlayer(uuid);
-            if (player == null || !player.isOnline()) {
-                // offline
-                task.cancel();
-                return;
-            }
-            if (triedTimes >= 6) {
-                waitForDataLockRelease(uuid, 3);
-                return;
-            }
-            redisManager.getPlayerData(uuid, false).thenAccept(optionalData -> {
-                if (optionalData.isPresent()) {
-                    putDataInCache(player, optionalData.get());
-                    task.cancel();
-                    if (CFConfig.lockData) dataSource.lockOrUnlockPlayerData(uuid, true);
-                }
-            });
         }
     }
 
@@ -336,30 +298,30 @@ public class StorageManagerImpl implements StorageManager, Listener {
      */
     public void waitForDataLockRelease(UUID uuid, int times) {
         plugin.getScheduler().runTaskAsyncLater(() -> {
-        var player = Bukkit.getPlayer(uuid);
-        if (player == null || !player.isOnline())
-            return;
-        if (times > 3) {
-            LogUtils.warn("Tried 3 times when getting data for " + uuid + ". Giving up.");
-            return;
-        }
-        this.dataSource.getPlayerData(uuid, CFConfig.lockData).thenAccept(optionalData -> {
-            // Data should not be empty
-            if (optionalData.isEmpty()) {
-                LogUtils.severe("Unexpected error: Data is null");
+            var player = Bukkit.getPlayer(uuid);
+            if (player == null || !player.isOnline())
+                return;
+            if (times > 3) {
+                LogUtils.warn("Tried 3 times when getting data for " + uuid + ". Giving up.");
                 return;
             }
-
-            if (optionalData.get().isLocked()) {
-                waitForDataLockRelease(uuid, times + 1);
-            } else {
-                try {
-                    putDataInCache(player, optionalData.get());
-                } catch (Exception e) {
-                    e.printStackTrace();
+            this.dataSource.getPlayerData(uuid, CFConfig.lockData).thenAccept(optionalData -> {
+                // Data should not be empty
+                if (optionalData.isEmpty()) {
+                    LogUtils.severe("Unexpected error: Data is null");
+                    return;
                 }
-            }
-        });
+
+                if (optionalData.get().isLocked()) {
+                    waitForDataLockRelease(uuid, times + 1);
+                } else {
+                    try {
+                        putDataInCache(player, optionalData.get());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }, 1, TimeUnit.SECONDS);
     }
 
@@ -447,5 +409,43 @@ public class StorageManagerImpl implements StorageManager, Listener {
     @NotNull
     public PlayerData fromBytes(byte[] data) {
         return fromJson(new String(data, StandardCharsets.UTF_8));
+    }
+
+    /**
+     * Runnable task for asynchronously retrieving data from Redis.
+     * Retries up to 6 times and cancels the task if the player is offline.
+     */
+    public class RedisGetDataTask implements Runnable {
+
+        private final UUID uuid;
+        private final CancellableTask task;
+        private int triedTimes;
+
+        public RedisGetDataTask(UUID uuid) {
+            this.uuid = uuid;
+            this.task = plugin.getScheduler().runTaskAsyncTimer(this, 0, 333, TimeUnit.MILLISECONDS);
+        }
+
+        @Override
+        public void run() {
+            triedTimes++;
+            Player player = Bukkit.getPlayer(uuid);
+            if (player == null || !player.isOnline()) {
+                // offline
+                task.cancel();
+                return;
+            }
+            if (triedTimes >= 6) {
+                waitForDataLockRelease(uuid, 3);
+                return;
+            }
+            redisManager.getPlayerData(uuid, false).thenAccept(optionalData -> {
+                if (optionalData.isPresent()) {
+                    putDataInCache(player, optionalData.get());
+                    task.cancel();
+                    if (CFConfig.lockData) dataSource.lockOrUnlockPlayerData(uuid, true);
+                }
+            });
+        }
     }
 }

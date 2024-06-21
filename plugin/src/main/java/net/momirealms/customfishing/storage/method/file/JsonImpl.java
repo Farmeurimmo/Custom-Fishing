@@ -100,9 +100,9 @@ public class JsonImpl extends AbstractStorage {
     /**
      * Read JSON content from a file and parse it into an object of the specified class.
      *
-     * @param file      The JSON file to read.
-     * @param classOfT  The class of the object to parse the JSON into.
-     * @param <T>       The type of the object.
+     * @param file     The JSON file to read.
+     * @param classOfT The class of the object to parse the JSON into.
+     * @param <T>      The type of the object.
      * @return The parsed object.
      */
     public <T> T readFromJsonFile(File file, Class<T> classOfT) {

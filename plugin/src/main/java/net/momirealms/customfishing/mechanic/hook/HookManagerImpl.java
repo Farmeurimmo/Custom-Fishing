@@ -134,9 +134,9 @@ public class HookManagerImpl implements Listener, HookManager {
     /**
      * Decreases the durability of a fishing hook by a specified amount and optionally updates its lore.
      *
-     * @param rod         The fishing rod ItemStack to modify.
-     * @param amount      The amount by which to decrease the durability.
-     * @param updateLore  Whether to update the lore of the fishing rod.
+     * @param rod        The fishing rod ItemStack to modify.
+     * @param amount     The amount by which to decrease the durability.
+     * @param updateLore Whether to update the lore of the fishing rod.
      */
     @Override
     public void decreaseHookDurability(ItemStack rod, int amount, boolean updateLore) {
@@ -146,9 +146,9 @@ public class HookManagerImpl implements Listener, HookManager {
     /**
      * Increases the durability of a fishing hook by a specified amount and optionally updates its lore.
      *
-     * @param rod   The fishing rod ItemStack to modify.
-     * @param amount      The amount by which to increase the durability.
-     * @param updateLore  Whether to update the lore of the fishing rod.
+     * @param rod        The fishing rod ItemStack to modify.
+     * @param amount     The amount by which to increase the durability.
+     * @param updateLore Whether to update the lore of the fishing rod.
      */
     @Override
     public void increaseHookDurability(ItemStack rod, int amount, boolean updateLore) {
@@ -158,9 +158,9 @@ public class HookManagerImpl implements Listener, HookManager {
     /**
      * Sets the durability of a fishing hook to a specific amount and optionally updates its lore.
      *
-     * @param rod         The fishing rod ItemStack to modify.
-     * @param amount      The new durability value to set.
-     * @param updateLore  Whether to update the lore of the fishing rod.
+     * @param rod        The fishing rod ItemStack to modify.
+     * @param amount     The new durability value to set.
+     * @param updateLore Whether to update the lore of the fishing rod.
      */
     @Override
     public void setHookDurability(ItemStack rod, int amount, boolean updateLore) {

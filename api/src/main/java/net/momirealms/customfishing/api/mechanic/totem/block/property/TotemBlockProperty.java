@@ -24,6 +24,7 @@ public interface TotemBlockProperty {
 
     /**
      * Mirrors the block face if the axis is X or Z.
+     *
      * @param axis The axis to mirror.
      * @return The mirrored block face.
      */
@@ -31,12 +32,14 @@ public interface TotemBlockProperty {
 
     /**
      * Rotates the block face 90 degrees.
+     *
      * @return The rotated block face.
      */
     TotemBlockProperty rotate90();
 
     /**
      * Checks if the block has the property.
+     *
      * @param block The block to check.
      * @return True if the block has the property.
      */
@@ -44,6 +47,7 @@ public interface TotemBlockProperty {
 
     /**
      * Gets the raw text of the property.
+     *
      * @return The raw text of the property.
      */
     String getRawText();

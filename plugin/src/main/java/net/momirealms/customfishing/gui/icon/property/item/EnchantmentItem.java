@@ -49,12 +49,12 @@ public class EnchantmentItem extends AbstractItem {
                 .setDisplayName(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
                         CFLocale.GUI_ITEM_ENCHANTMENT
                 )))
-                .addEnchantment(Enchantment.ARROW_FIRE,1,true)
+                .addEnchantment(Enchantment.ARROW_FIRE, 1, true)
                 .addItemFlags(ItemFlag.HIDE_ENCHANTS);
         if (itemPage.getSection().contains("enchantments")) {
             itemBuilder.addLoreLines(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
-                            CFLocale.GUI_CURRENT_VALUE
-                    )));
+                    CFLocale.GUI_CURRENT_VALUE
+            )));
             for (Map.Entry<String, Object> entry : itemPage.getSection().getConfigurationSection("enchantments").getValues(false).entrySet()) {
                 itemBuilder.addLoreLines(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
                         " <gray>- <white>" + entry.getKey() + ":" + entry.getValue()

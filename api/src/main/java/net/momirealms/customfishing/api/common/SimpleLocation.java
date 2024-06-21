@@ -23,6 +23,10 @@ import java.util.Objects;
 
 public record SimpleLocation(String worldName, int x, int y, int z) {
 
+    public static SimpleLocation getByBukkitLocation(Location location) {
+        return new SimpleLocation(location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -55,9 +59,5 @@ public record SimpleLocation(String worldName, int x, int y, int z) {
         hash = 19 * hash + (int) (Double.doubleToLongBits(this.y) ^ (Double.doubleToLongBits(this.y) >>> 32));
         hash = 19 * hash + (int) (Double.doubleToLongBits(this.z) ^ (Double.doubleToLongBits(this.z) >>> 32));
         return hash;
-    }
-
-    public static SimpleLocation getByBukkitLocation(Location location) {
-        return new SimpleLocation(location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
     }
 }

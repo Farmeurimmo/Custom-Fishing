@@ -134,24 +134,24 @@ public class MongoDBImpl extends AbstractStorage {
     public CompletableFuture<Optional<PlayerData>> getPlayerData(UUID uuid, boolean lock) {
         var future = new CompletableFuture<Optional<PlayerData>>();
         plugin.getScheduler().runTaskAsync(() -> {
-        MongoCollection<Document> collection = database.getCollection(getCollectionName("data"));
-        Document doc = collection.find(Filters.eq("uuid", uuid)).first();
-        if (doc == null) {
-            if (Bukkit.getPlayer(uuid) != null) {
-                if (lock) lockOrUnlockPlayerData(uuid, true);
-                future.complete(Optional.of(PlayerData.empty()));
+            MongoCollection<Document> collection = database.getCollection(getCollectionName("data"));
+            Document doc = collection.find(Filters.eq("uuid", uuid)).first();
+            if (doc == null) {
+                if (Bukkit.getPlayer(uuid) != null) {
+                    if (lock) lockOrUnlockPlayerData(uuid, true);
+                    future.complete(Optional.of(PlayerData.empty()));
+                } else {
+                    future.complete(Optional.empty());
+                }
             } else {
-                future.complete(Optional.empty());
+                if (doc.getInteger("lock") != 0 && getCurrentSeconds() - CFConfig.dataSaveInterval <= doc.getInteger("lock")) {
+                    future.complete(Optional.of(PlayerData.LOCKED));
+                    return;
+                }
+                Binary binary = (Binary) doc.get("data");
+                if (lock) lockOrUnlockPlayerData(uuid, true);
+                future.complete(Optional.of(plugin.getStorageManager().fromBytes(binary.getData())));
             }
-        } else {
-            if (doc.getInteger("lock") != 0 && getCurrentSeconds() - CFConfig.dataSaveInterval <= doc.getInteger("lock")) {
-                future.complete(Optional.of(PlayerData.LOCKED));
-                return;
-            }
-            Binary binary = (Binary) doc.get("data");
-            if (lock) lockOrUnlockPlayerData(uuid, true);
-            future.complete(Optional.of(plugin.getStorageManager().fromBytes(binary.getData())));
-        }
         });
         return future;
     }
@@ -168,18 +168,18 @@ public class MongoDBImpl extends AbstractStorage {
     public CompletableFuture<Boolean> updatePlayerData(UUID uuid, PlayerData playerData, boolean unlock) {
         var future = new CompletableFuture<Boolean>();
         plugin.getScheduler().runTaskAsync(() -> {
-        MongoCollection<Document> collection = database.getCollection(getCollectionName("data"));
-        try {
-            Document query = new Document("uuid", uuid);
-            Bson updates = Updates.combine(
-                    Updates.set("lock", unlock ? 0 : getCurrentSeconds()),
-                    Updates.set("data", new Binary(plugin.getStorageManager().toBytes(playerData))));
-            UpdateOptions options = new UpdateOptions().upsert(true);
-            UpdateResult result = collection.updateOne(query, updates, options);
-            future.complete(result.wasAcknowledged());
-        } catch (MongoException e) {
-            future.completeExceptionally(e);
-        }
+            MongoCollection<Document> collection = database.getCollection(getCollectionName("data"));
+            try {
+                Document query = new Document("uuid", uuid);
+                Bson updates = Updates.combine(
+                        Updates.set("lock", unlock ? 0 : getCurrentSeconds()),
+                        Updates.set("data", new Binary(plugin.getStorageManager().toBytes(playerData))));
+                UpdateOptions options = new UpdateOptions().upsert(true);
+                UpdateResult result = collection.updateOne(query, updates, options);
+                future.complete(result.wasAcknowledged());
+            } catch (MongoException e) {
+                future.completeExceptionally(e);
+            }
         });
         return future;
     }
@@ -196,13 +196,13 @@ public class MongoDBImpl extends AbstractStorage {
         try {
             int lock = unlock ? 0 : getCurrentSeconds();
             var list = users.stream().map(it -> new UpdateOneModel<Document>(
-                    new Document("uuid", it.getUUID()),
-                    Updates.combine(
-                            Updates.set("lock", lock),
-                            Updates.set("data", new Binary(plugin.getStorageManager().toBytes(it.getPlayerData())))
-                    ),
-                    new UpdateOptions().upsert(true)
-            )
+                            new Document("uuid", it.getUUID()),
+                            Updates.combine(
+                                    Updates.set("lock", lock),
+                                    Updates.set("data", new Binary(plugin.getStorageManager().toBytes(it.getPlayerData())))
+                            ),
+                            new UpdateOptions().upsert(true)
+                    )
             ).toList();
             if (list.size() == 0) return;
             collection.bulkWrite(list);

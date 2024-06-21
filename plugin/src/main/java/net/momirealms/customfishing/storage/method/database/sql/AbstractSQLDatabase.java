@@ -81,7 +81,7 @@ public abstract class AbstractSQLDatabase extends AbstractStorage {
      */
     private String[] getSchema(@NotNull String fileName) throws IOException {
         return replaceSchemaPlaceholder(new String(Objects.requireNonNull(plugin.getResource("schema/" + fileName + ".sql"))
-               .readAllBytes(), StandardCharsets.UTF_8)).split(";");
+                .readAllBytes(), StandardCharsets.UTF_8)).split(";");
     }
 
     /**
@@ -125,38 +125,38 @@ public abstract class AbstractSQLDatabase extends AbstractStorage {
     public CompletableFuture<Optional<PlayerData>> getPlayerData(UUID uuid, boolean lock) {
         var future = new CompletableFuture<Optional<PlayerData>>();
         plugin.getScheduler().runTaskAsync(() -> {
-        try (
-            Connection connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement(String.format(SqlConstants.SQL_SELECT_BY_UUID, getTableName("data")))
-        ) {
-            statement.setString(1, uuid.toString());
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                if (lock) {
-                    int lockValue = rs.getInt(2);
-                    if (lockValue != 0 && getCurrentSeconds() - CFConfig.dataSaveInterval <= lockValue) {
-                        connection.close();
-                        future.complete(Optional.of(PlayerData.LOCKED));
-                        LogUtils.warn("Player " + uuid + "'s data is locked. Retrying...");
-                        return;
+            try (
+                    Connection connection = getConnection();
+                    PreparedStatement statement = connection.prepareStatement(String.format(SqlConstants.SQL_SELECT_BY_UUID, getTableName("data")))
+            ) {
+                statement.setString(1, uuid.toString());
+                ResultSet rs = statement.executeQuery();
+                if (rs.next()) {
+                    if (lock) {
+                        int lockValue = rs.getInt(2);
+                        if (lockValue != 0 && getCurrentSeconds() - CFConfig.dataSaveInterval <= lockValue) {
+                            connection.close();
+                            future.complete(Optional.of(PlayerData.LOCKED));
+                            LogUtils.warn("Player " + uuid + "'s data is locked. Retrying...");
+                            return;
+                        }
                     }
+                    final Blob blob = rs.getBlob("data");
+                    final byte[] dataByteArray = blob.getBytes(1, (int) blob.length());
+                    blob.free();
+                    if (lock) lockOrUnlockPlayerData(uuid, true);
+                    future.complete(Optional.of(plugin.getStorageManager().fromBytes(dataByteArray)));
+                } else if (Bukkit.getPlayer(uuid) != null) {
+                    var data = PlayerData.empty();
+                    insertPlayerData(uuid, data, lock);
+                    future.complete(Optional.of(data));
+                } else {
+                    future.complete(Optional.empty());
                 }
-                final Blob blob = rs.getBlob("data");
-                final byte[] dataByteArray = blob.getBytes(1, (int) blob.length());
-                blob.free();
-                if (lock) lockOrUnlockPlayerData(uuid, true);
-                future.complete(Optional.of(plugin.getStorageManager().fromBytes(dataByteArray)));
-            } else if (Bukkit.getPlayer(uuid) != null) {
-                var data = PlayerData.empty();
-                insertPlayerData(uuid, data, lock);
-                future.complete(Optional.of(data));
-            } else {
-                future.complete(Optional.empty());
+            } catch (SQLException e) {
+                LogUtils.warn("Failed to get " + uuid + "'s data.", e);
+                future.completeExceptionally(e);
             }
-        } catch (SQLException e) {
-            LogUtils.warn("Failed to get " + uuid + "'s data.", e);
-            future.completeExceptionally(e);
-        }
         });
         return future;
     }
@@ -164,29 +164,29 @@ public abstract class AbstractSQLDatabase extends AbstractStorage {
     /**
      * Update a player's data in the SQL database.
      *
-     * @param uuid      The UUID of the player.
+     * @param uuid       The UUID of the player.
      * @param playerData The player data to update.
-     * @param unlock    Whether to unlock the player data after updating.
+     * @param unlock     Whether to unlock the player data after updating.
      * @return A CompletableFuture indicating the success of the update.
      */
     @Override
     public CompletableFuture<Boolean> updatePlayerData(UUID uuid, PlayerData playerData, boolean unlock) {
         var future = new CompletableFuture<Boolean>();
         plugin.getScheduler().runTaskAsync(() -> {
-        try (
-            Connection connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement(String.format(SqlConstants.SQL_UPDATE_BY_UUID, getTableName("data")))
-        ) {
-            statement.setInt(1, unlock ? 0 : getCurrentSeconds());
-            statement.setBlob(2, new ByteArrayInputStream(plugin.getStorageManager().toBytes(playerData)));
-            statement.setString(3, uuid.toString());
-            statement.executeUpdate();
-            future.complete(true);
-            plugin.debug("SQL data saved for " + uuid + "; unlock: " + unlock);
-        } catch (SQLException e) {
-            LogUtils.warn("Failed to update " + uuid + "'s data.", e);
-            future.completeExceptionally(e);
-        }
+            try (
+                    Connection connection = getConnection();
+                    PreparedStatement statement = connection.prepareStatement(String.format(SqlConstants.SQL_UPDATE_BY_UUID, getTableName("data")))
+            ) {
+                statement.setInt(1, unlock ? 0 : getCurrentSeconds());
+                statement.setBlob(2, new ByteArrayInputStream(plugin.getStorageManager().toBytes(playerData)));
+                statement.setString(3, uuid.toString());
+                statement.executeUpdate();
+                future.complete(true);
+                plugin.debug("SQL data saved for " + uuid + "; unlock: " + unlock);
+            } catch (SQLException e) {
+                LogUtils.warn("Failed to update " + uuid + "'s data.", e);
+                future.completeExceptionally(e);
+            }
         });
         return future;
     }
@@ -223,14 +223,14 @@ public abstract class AbstractSQLDatabase extends AbstractStorage {
     /**
      * Insert a new player's data into the SQL database.
      *
-     * @param uuid      The UUID of the player.
+     * @param uuid       The UUID of the player.
      * @param playerData The player data to insert.
-     * @param lock      Whether to lock the player data upon insertion.
+     * @param lock       Whether to lock the player data upon insertion.
      */
     public void insertPlayerData(UUID uuid, PlayerData playerData, boolean lock) {
         try (
-            Connection connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement(String.format(SqlConstants.SQL_INSERT_DATA_BY_UUID, getTableName("data")))
+                Connection connection = getConnection();
+                PreparedStatement statement = connection.prepareStatement(String.format(SqlConstants.SQL_INSERT_DATA_BY_UUID, getTableName("data")))
         ) {
             statement.setString(1, uuid.toString());
             statement.setInt(2, lock ? getCurrentSeconds() : 0);
@@ -250,8 +250,8 @@ public abstract class AbstractSQLDatabase extends AbstractStorage {
     @Override
     public void lockOrUnlockPlayerData(UUID uuid, boolean lock) {
         try (
-            Connection connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement(String.format(SqlConstants.SQL_LOCK_BY_UUID, getTableName("data")))
+                Connection connection = getConnection();
+                PreparedStatement statement = connection.prepareStatement(String.format(SqlConstants.SQL_LOCK_BY_UUID, getTableName("data")))
         ) {
             statement.setInt(1, lock ? getCurrentSeconds() : 0);
             statement.setString(2, uuid.toString());
@@ -264,9 +264,9 @@ public abstract class AbstractSQLDatabase extends AbstractStorage {
     /**
      * Update or insert a player's data into the SQL database.
      *
-     * @param uuid      The UUID of the player.
+     * @param uuid       The UUID of the player.
      * @param playerData The player data to update or insert.
-     * @param unlock    Whether to unlock the player data after updating or inserting.
+     * @param unlock     Whether to unlock the player data after updating or inserting.
      * @return A CompletableFuture indicating the success of the operation.
      */
     @Override
@@ -274,8 +274,8 @@ public abstract class AbstractSQLDatabase extends AbstractStorage {
         var future = new CompletableFuture<Boolean>();
         plugin.getScheduler().runTaskAsync(() -> {
             try (
-                Connection connection = getConnection();
-                PreparedStatement statement = connection.prepareStatement(String.format(SqlConstants.SQL_SELECT_BY_UUID, getTableName("data")))
+                    Connection connection = getConnection();
+                    PreparedStatement statement = connection.prepareStatement(String.format(SqlConstants.SQL_SELECT_BY_UUID, getTableName("data")))
             ) {
                 statement.setString(1, uuid.toString());
                 ResultSet rs = statement.executeQuery();

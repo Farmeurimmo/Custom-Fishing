@@ -22,7 +22,7 @@ package net.momirealms.customfishing.api.mechanic.competition;
  * Contains common properties and methods for competition info.
  */
 public abstract class AbstractCompetitionInfo {
-    
+
     protected int refreshRate;
     protected int switchInterval;
     protected boolean showToAll;

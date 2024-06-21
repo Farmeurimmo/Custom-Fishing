@@ -45,13 +45,14 @@ public interface FishingManager {
      * @param uuid The UUID of the player
      * @return fishhook entity, null if not exists
      */
-    @Nullable FishHook getHook(UUID uuid);
+    @Nullable
+    FishHook getHook(UUID uuid);
 
     /**
      * Sets the temporary fishing state for a player.
      *
-     * @param player            The player for whom to set the temporary fishing state.
-     * @param tempFishingState  The temporary fishing state to set for the player.
+     * @param player           The player for whom to set the temporary fishing state.
+     * @param tempFishingState The temporary fishing state to set for the player.
      */
     void setTempFishingState(Player player, TempFishingState tempFishingState);
 
@@ -61,14 +62,16 @@ public interface FishingManager {
      * @param uuid The UUID of the player.
      * @return The {@link TempFishingState} object if found, or {@code null} if not found.
      */
-    @Nullable TempFishingState getTempFishingState(UUID uuid);
+    @Nullable
+    TempFishingState getTempFishingState(UUID uuid);
 
     /**
      * Removes the temporary fishing state associated with a player.
      *
      * @param player The player whose temporary fishing state should be removed.
      */
-    @Nullable TempFishingState removeTempFishingState(Player player);
+    @Nullable
+    TempFishingState removeTempFishingState(Player player);
 
     /**
      * Processes the game result for a gaming player
@@ -109,5 +112,6 @@ public interface FishingManager {
      * @param uuid The UUID of the player.
      * @return The {@link GamingPlayer} object if found, or {@code null} if not found.
      */
-    @Nullable GamingPlayer getGamingPlayer(UUID uuid);
+    @Nullable
+    GamingPlayer getGamingPlayer(UUID uuid);
 }

@@ -57,10 +57,10 @@ public class ItemSelector implements YamlPage {
     private final String SEARCH;
     private final Player player;
     private final YamlConfiguration yaml;
-    private String prefix;
     private final File file;
-    private long coolDown;
     private final String type;
+    private String prefix;
+    private long coolDown;
 
     public ItemSelector(Player player, File file, String type) {
         this.yaml = YamlConfiguration.loadConfiguration(file);
@@ -280,7 +280,7 @@ public class ItemSelector implements YamlPage {
             } else {
                 return new ItemBuilder(Material.BARRIER)
                         .setDisplayName(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
-                            CFLocale.GUI_DUPE_INVALID_KEY
+                                CFLocale.GUI_DUPE_INVALID_KEY
                         )));
             }
         }

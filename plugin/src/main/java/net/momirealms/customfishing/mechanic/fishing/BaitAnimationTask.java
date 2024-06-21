@@ -61,7 +61,7 @@ public class BaitAnimationTask implements Runnable {
 
     @Override
     public void run() {
-        if (       fishHook == null
+        if (fishHook == null
                 || fishHook.isOnGround()
                 || fishHook.isInLava()
                 || fishHook.isInWater()

@@ -30,9 +30,9 @@ import java.util.Map;
  */
 public class Condition {
 
-    protected Location location;
     protected final Player player;
     protected final @NotNull Map<String, String> args;
+    protected Location location;
 
     /**
      * Creates a new Condition object based on a player's location.
@@ -75,6 +75,15 @@ public class Condition {
     }
 
     /**
+     * Gets the location associated with this condition.
+     *
+     * @return The location associated with this condition.
+     */
+    public Location getLocation() {
+        return location;
+    }
+
+    /**
      * Sets the location associated with this condition.
      *
      * @param location The new location to set.
@@ -85,15 +94,6 @@ public class Condition {
         this.args.put("{y}", String.valueOf(location.getY()));
         this.args.put("{z}", String.valueOf(location.getZ()));
         this.args.put("{world}", location.getWorld().getName());
-    }
-
-    /**
-     * Gets the location associated with this condition.
-     *
-     * @return The location associated with this condition.
-     */
-    public Location getLocation() {
-        return location;
     }
 
     /**

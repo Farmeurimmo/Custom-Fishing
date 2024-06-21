@@ -32,20 +32,24 @@ public class TotemActivateEvent extends PlayerEvent implements Cancellable {
 
     private static final HandlerList handlerList = new HandlerList();
     private final Location coreLocation;
-    private boolean isCancelled;
     private final TotemConfig config;
+    private boolean isCancelled;
 
     /**
      * Constructs a new TotemActivateEvent.
      *
-     * @param who       The player who activated the totem.
-     * @param location  The location of the totem's core.
-     * @param config    The configuration of the totem being activated.
+     * @param who      The player who activated the totem.
+     * @param location The location of the totem's core.
+     * @param config   The configuration of the totem being activated.
      */
     public TotemActivateEvent(@NotNull Player who, Location location, TotemConfig config) {
         super(who);
         this.coreLocation = location;
         this.config = config;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlerList;
     }
 
     /**
@@ -78,10 +82,6 @@ public class TotemActivateEvent extends PlayerEvent implements Cancellable {
 
     @Override
     public @NotNull HandlerList getHandlers() {
-        return handlerList;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlerList;
     }
 }

@@ -50,7 +50,7 @@ public class RandomDurabilityItem extends AbstractItem {
                 )))
                 .addLoreLines("")
                 .addLoreLines(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
-                    CFLocale.GUI_CLICK_TO_TOGGLE
+                        CFLocale.GUI_CLICK_TO_TOGGLE
                 )));
 
         return itemBuilder;

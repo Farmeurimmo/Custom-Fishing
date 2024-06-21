@@ -41,9 +41,9 @@ public class VersionManagerImpl implements VersionManager {
     private final String serverVersion;
     private final CustomFishingPluginImpl plugin;
     private final boolean isSpigot;
+    private final String pluginVersion;
     private boolean hasRegionScheduler;
     private boolean isMojmap;
-    private final String pluginVersion;
 
     @SuppressWarnings("deprecation")
     public VersionManagerImpl(CustomFishingPluginImpl plugin) {
@@ -200,8 +200,7 @@ public class VersionManagerImpl implements VersionManager {
                 } else if (currentPart.length > 1) {
                     return false;
                 }
-            }
-            catch (NumberFormatException ignored) {
+            } catch (NumberFormatException ignored) {
                 return false;
             }
         }

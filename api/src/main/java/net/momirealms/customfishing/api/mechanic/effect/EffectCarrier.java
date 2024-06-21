@@ -38,6 +38,42 @@ public class EffectCarrier {
         return new Builder();
     }
 
+    public Key getKey() {
+        return key;
+    }
+
+    public Requirement[] getRequirements() {
+        return requirements;
+    }
+
+    public EffectModifier[] getEffectModifiers() {
+        return effect;
+    }
+
+    public Map<ActionTrigger, Action[]> getActionMap() {
+        return actionMap;
+    }
+
+    @Nullable
+    public Action[] getActions(ActionTrigger trigger) {
+        return actionMap.get(trigger);
+    }
+
+    public boolean isPersist() {
+        return persist;
+    }
+
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    public boolean isConditionMet(Condition condition) {
+        if (requirements == null) return true;
+        for (Requirement requirement : requirements) {
+            if (!requirement.isConditionMet(condition)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static class Builder {
 
         private final EffectCarrier item;
@@ -74,41 +110,5 @@ public class EffectCarrier {
         public EffectCarrier build() {
             return item;
         }
-    }
-
-    public Key getKey() {
-        return key;
-    }
-
-    public Requirement[] getRequirements() {
-        return requirements;
-    }
-
-    public EffectModifier[] getEffectModifiers() {
-        return effect;
-    }
-
-    public Map<ActionTrigger, Action[]> getActionMap() {
-        return actionMap;
-    }
-
-    @Nullable
-    public Action[] getActions(ActionTrigger trigger) {
-        return actionMap.get(trigger);
-    }
-
-    public boolean isPersist() {
-        return persist;
-    }
-
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public boolean isConditionMet(Condition condition) {
-        if (requirements == null) return true;
-        for (Requirement requirement : requirements) {
-            if (!requirement.isConditionMet(condition)) {
-                return false;
-            }
-        }
-        return true;
     }
 }

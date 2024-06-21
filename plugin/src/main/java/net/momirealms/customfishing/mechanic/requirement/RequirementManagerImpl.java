@@ -231,7 +231,7 @@ public class RequirementManagerImpl implements RequirementManager {
     /**
      * Retrieves a mapping of strings to doubles based on conditional elements and a player's condition.
      *
-     * @param condition The player's condition.
+     * @param condition           The player's condition.
      * @param conditionalGamesMap The map of conditional elements representing loots/games.
      * @return A HashMap with strings as keys and doubles as values representing loot/game weights.
      */
@@ -258,7 +258,7 @@ public class RequirementManagerImpl implements RequirementManager {
     /**
      * Retrieves an array of requirements based on a configuration section.
      *
-     * @param section The configuration section containing requirement definitions.
+     * @param section  The configuration section containing requirement definitions.
      * @param advanced A flag indicating whether to use advanced requirements.
      * @return An array of Requirement objects based on the configuration section
      */
@@ -326,7 +326,7 @@ public class RequirementManagerImpl implements RequirementManager {
      * If a valid RequirementFactory is found for the key, it is used to create the requirement.
      * If no factory is found, a warning is logged, and an empty requirement instance is returned.
      *
-     * @param type   The key representing the requirement type.
+     * @param type  The key representing the requirement type.
      * @param value The value associated with the requirement.
      * @return A Requirement instance based on the key and value, or an empty requirement if not found.
      */
@@ -394,7 +394,8 @@ public class RequirementManagerImpl implements RequirementManager {
                 if (groups == null) {
                     return true;
                 }
-                outer: {
+                outer:
+                {
                     for (String g : groups) {
                         if (arg.contains(g)) {
                             break outer;
@@ -468,7 +469,8 @@ public class RequirementManagerImpl implements RequirementManager {
             if (args instanceof ConfigurationSection section) {
                 Requirement[] requirements = getRequirements(section, advanced);
                 return condition -> {
-                    outer: {
+                    outer:
+                    {
                         for (Requirement requirement : requirements) {
                             if (!requirement.isConditionMet(condition)) {
                                 break outer;
@@ -490,7 +492,7 @@ public class RequirementManagerImpl implements RequirementManager {
         registerRequirement("lava-fishing", (args, actions, advanced) -> {
             boolean inLava = (boolean) args;
             return condition -> {
-                String current = condition.getArgs().getOrDefault("{lava}","false");
+                String current = condition.getArgs().getOrDefault("{lava}", "false");
                 if (current.equals(String.valueOf(inLava)))
                     return true;
                 if (advanced) triggerActions(actions, condition);
@@ -582,8 +584,8 @@ public class RequirementManagerImpl implements RequirementManager {
             HashSet<String> biomes = new HashSet<>(ConfigUtils.stringListArgs(args));
             return condition -> {
                 String currentBiome = SparrowHeart.getInstance().getBiomeResourceLocation(condition.getLocation());
-                    if (biomes.contains(currentBiome))
-                        return true;
+                if (biomes.contains(currentBiome))
+                    return true;
                 if (advanced) triggerActions(actions, condition);
                 return false;
             };
@@ -1054,7 +1056,7 @@ public class RequirementManagerImpl implements RequirementManager {
     private void registerItemInHandRequirement() {
         registerRequirement("item-in-hand", (args, actions, advanced) -> {
             if (args instanceof ConfigurationSection section) {
-                boolean mainOrOff = section.getString("hand","main").equalsIgnoreCase("main");
+                boolean mainOrOff = section.getString("hand", "main").equalsIgnoreCase("main");
                 int amount = section.getInt("amount", 1);
                 List<String> items = ConfigUtils.stringListArgs(section.get("item"));
                 return condition -> {
@@ -1387,7 +1389,8 @@ public class RequirementManagerImpl implements RequirementManager {
                 registerRequirement(expansion.getRequirementType(), expansion.getRequirementFactory());
                 LogUtils.info("Loaded requirement expansion: " + expansion.getRequirementType() + "[" + expansion.getVersion() + "]" + " by " + expansion.getAuthor());
             }
-        } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
+                 NoSuchMethodException e) {
             LogUtils.warn("Error occurred when creating expansion instance.", e);
         }
     }

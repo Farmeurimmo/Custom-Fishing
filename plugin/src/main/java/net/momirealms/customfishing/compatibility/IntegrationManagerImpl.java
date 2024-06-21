@@ -141,7 +141,7 @@ public class IntegrationManagerImpl implements IntegrationManager {
         if (plugin.isHookedPluginEnabled("Vault")) {
             VaultHook.initialize();
         }
-        if (plugin.isHookedPluginEnabled("BattlePass")){
+        if (plugin.isHookedPluginEnabled("BattlePass")) {
             BattlePassHook battlePassHook = new BattlePassHook();
             battlePassHook.register();
             hookMessage("BattlePass");
@@ -166,7 +166,7 @@ public class IntegrationManagerImpl implements IntegrationManager {
      * Registers a level plugin with the specified name.
      *
      * @param plugin The name of the level plugin.
-     * @param level The implementation of the LevelInterface.
+     * @param level  The implementation of the LevelInterface.
      * @return true if the registration was successful, false if the plugin name is already registered.
      */
     @Override
@@ -213,7 +213,7 @@ public class IntegrationManagerImpl implements IntegrationManager {
     }
 
     private void hookMessage(String plugin) {
-        LogUtils.info( plugin + " hooked!");
+        LogUtils.info(plugin + " hooked!");
     }
 
     /**

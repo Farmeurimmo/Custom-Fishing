@@ -9,7 +9,7 @@ public interface TotemParticle {
      * Start the particle task at specified location
      *
      * @param location location
-     * @param radius totem radius
+     * @param radius   totem radius
      * @return cancellable task
      */
     CancellableTask start(Location location, double radius);

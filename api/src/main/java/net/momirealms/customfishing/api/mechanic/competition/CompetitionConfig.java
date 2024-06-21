@@ -43,6 +43,10 @@ public class CompetitionConfig {
         this.key = key;
     }
 
+    public static Builder builder(String key) {
+        return new Builder(key);
+    }
+
     public String getKey() {
         return key;
     }
@@ -117,10 +121,6 @@ public class CompetitionConfig {
     @Nullable
     public ActionBarConfig getActionBarConfig() {
         return actionBarConfig;
-    }
-
-    public static Builder builder(String key) {
-        return new Builder(key);
     }
 
     public static class Builder {

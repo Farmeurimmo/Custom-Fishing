@@ -25,10 +25,6 @@ import org.bukkit.configuration.ConfigurationSection;
 @SuppressWarnings("DuplicatedCode")
 public class OffsetUtils {
 
-    private OffsetUtils() {
-        throw new UnsupportedOperationException("This class cannot be instantiated");
-    }
-
     private static String font;
     private static String negative_1;
     private static String negative_2;
@@ -46,6 +42,9 @@ public class OffsetUtils {
     private static String positive_32;
     private static String positive_64;
     private static String positive_128;
+    private OffsetUtils() {
+        throw new UnsupportedOperationException("This class cannot be instantiated");
+    }
 
     /**
      * Load font configuration from a given section.

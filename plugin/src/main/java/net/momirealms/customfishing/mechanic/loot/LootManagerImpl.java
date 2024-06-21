@@ -168,8 +168,8 @@ public class LootManagerImpl implements LootManager {
     /**
      * Get a map of possible loot keys with their corresponding weights, considering fishing effect and condition.
      *
-     * @param effect The effect to apply weight modifiers.
-     * @param condition     The condition to determine possible loot.
+     * @param effect    The effect to apply weight modifiers.
+     * @param condition The condition to determine possible loot.
      * @return A map of loot keys and their weights.
      */
     @NotNull
@@ -192,8 +192,8 @@ public class LootManagerImpl implements LootManager {
     /**
      * Get the next loot item based on fishing effect and condition.
      *
-     * @param effect The effect to apply weight modifiers.
-     * @param condition     The condition to determine possible loot.
+     * @param effect    The effect to apply weight modifiers.
+     * @param condition The condition to determine possible loot.
      * @return The next loot item, or null if it doesn't exist.
      */
     @Override

@@ -61,7 +61,7 @@ public class LoreEditor {
 
     public void reOpen(int idx) {
         Item border = new SimpleItem(new ItemBuilder(Material.AIR));
-        var confirm  = new ConfirmIcon();
+        var confirm = new ConfirmIcon();
         Gui upperGui = Gui.normal()
                 .setStructure("a # b")
                 .addIngredient('a', new ItemBuilder(Material.NAME_TAG).setDisplayName(lore.get(idx)))
@@ -140,8 +140,8 @@ public class LoreEditor {
         @Override
         public ItemProvider getItemProvider() {
             return new ItemBuilder(Material.PAPER).setDisplayName(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
-                    line
-            ))).addLoreLines("")
+                            line
+                    ))).addLoreLines("")
                     .addLoreLines(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
                             CFLocale.GUI_LEFT_CLICK_EDIT
                     ))).addLoreLines(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(

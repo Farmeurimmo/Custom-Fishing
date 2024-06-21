@@ -26,7 +26,8 @@ import java.util.stream.Stream;
 
 public class CompletableFutures {
 
-    private CompletableFutures() {}
+    private CompletableFutures() {
+    }
 
     /**
      * A collector for collecting a stream of CompletableFuture instances into a single CompletableFuture that completes

@@ -30,15 +30,6 @@ public class MarketGUIHolder implements InventoryHolder {
     private Inventory inventory;
 
     /**
-     * Sets the inventory associated with this holder.
-     *
-     * @param inventory The inventory to associate with this holder.
-     */
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
-    }
-
-    /**
      * Retrieves the inventory associated with this holder.
      *
      * @return The associated inventory.
@@ -46,5 +37,14 @@ public class MarketGUIHolder implements InventoryHolder {
     @Override
     public @NotNull Inventory getInventory() {
         return inventory;
+    }
+
+    /**
+     * Sets the inventory associated with this holder.
+     *
+     * @param inventory The inventory to associate with this holder.
+     */
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
 }

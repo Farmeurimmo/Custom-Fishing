@@ -27,10 +27,7 @@ package net.momirealms.customfishing.libraries.dependencies;
 
 import com.google.common.collect.ImmutableList;
 import net.momirealms.customfishing.libraries.dependencies.relocation.Relocation;
-import org.bukkit.Bukkit;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Locale;
 
@@ -197,12 +194,11 @@ public enum Dependency {
             Relocation.of("lang3", "org{}apache{}commons{}lang3")
     );
 
+    private static final String MAVEN_FORMAT = "%s/%s/%s/%s-%s.jar";
     private final String mavenRepoPath;
     private final String version;
     private final List<Relocation> relocations;
     private final String artifact;
-
-    private static final String MAVEN_FORMAT = "%s/%s/%s/%s-%s.jar";
 
     Dependency(String groupId, String artifactId, String version, String artifact) {
         this(groupId, artifactId, version, artifact, new Relocation[0]);

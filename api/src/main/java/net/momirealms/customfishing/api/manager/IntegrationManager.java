@@ -31,7 +31,7 @@ public interface IntegrationManager {
      * Registers a level plugin with the specified name.
      *
      * @param plugin The name of the level plugin.
-     * @param level The implementation of the LevelInterface.
+     * @param level  The implementation of the LevelInterface.
      * @return true if the registration was successful, false if the plugin name is already registered.
      */
     boolean registerLevelPlugin(String plugin, LevelInterface level);
@@ -67,7 +67,8 @@ public interface IntegrationManager {
      * @param plugin The name of the plugin providing the LevelInterface.
      * @return The LevelInterface provided by the specified plugin, or null if the plugin is not registered.
      */
-    @Nullable LevelInterface getLevelPlugin(String plugin);
+    @Nullable
+    LevelInterface getLevelPlugin(String plugin);
 
     /**
      * Get an enchantment plugin by its plugin name.
@@ -75,7 +76,8 @@ public interface IntegrationManager {
      * @param plugin The name of the enchantment plugin.
      * @return The enchantment plugin interface, or null if not found.
      */
-    @Nullable EnchantmentInterface getEnchantmentPlugin(String plugin);
+    @Nullable
+    EnchantmentInterface getEnchantmentPlugin(String plugin);
 
     /**
      * Get a list of enchantment keys with level applied to the given ItemStack.
@@ -90,7 +92,8 @@ public interface IntegrationManager {
      *
      * @return The current season interface, or null if not available.
      */
-    @Nullable SeasonInterface getSeasonInterface();
+    @Nullable
+    SeasonInterface getSeasonInterface();
 
     /**
      * Set the current season interface.

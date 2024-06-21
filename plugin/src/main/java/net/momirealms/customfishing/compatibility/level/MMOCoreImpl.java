@@ -27,7 +27,7 @@ public class MMOCoreImpl implements LevelInterface {
 
     @Override
     public void addXp(Player player, String target, double amount) {
-        MMOCore.plugin.professionManager.get(target).giveExperience(PlayerData.get(player), amount, null ,EXPSource.OTHER);
+        MMOCore.plugin.professionManager.get(target).giveExperience(PlayerData.get(player), amount, null, EXPSource.OTHER);
     }
 
     @Override

@@ -35,9 +35,9 @@ public class ParticleSetting implements TotemParticle {
     protected final Expression expressionHorizontal;
     protected final Expression expressionVertical;
     protected final double interval;
+    protected final Particle particle;
     protected int delay;
     protected int period;
-    protected final Particle particle;
     List<Pair<Double, Double>> ranges;
 
     public ParticleSetting(
@@ -72,7 +72,7 @@ public class ParticleSetting implements TotemParticle {
                     double x = r * Math.cos(theta) + 0.5;
                     double z = r * Math.sin(theta) + 0.5;
                     double y = expressionVertical.setVariable("theta", theta).setVariable("radius", radius).evaluate();
-                    world.spawnParticle(particle, location.clone().add(x, y, z), 1,0,0,0);
+                    world.spawnParticle(particle, location.clone().add(x, y, z), 1, 0, 0, 0);
                 }
             }
         }, delay * 50L, period * 50L, TimeUnit.MILLISECONDS);

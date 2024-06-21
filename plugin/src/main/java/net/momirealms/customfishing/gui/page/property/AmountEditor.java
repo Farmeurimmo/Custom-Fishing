@@ -41,15 +41,15 @@ import xyz.xenondevs.invui.window.AnvilWindow;
 public class AmountEditor {
 
     private final SectionPage parentPage;
-    private String amount;
     private final ConfigurationSection section;
+    private String amount;
 
     public AmountEditor(Player player, SectionPage parentPage) {
         this.parentPage = parentPage;
         this.section = parentPage.getSection();
 
         Item border = new SimpleItem(new ItemBuilder(Material.AIR));
-        var confirm  = new ConfirmIcon();
+        var confirm = new ConfirmIcon();
         Gui upperGui = Gui.normal()
                 .setStructure("a # b")
                 .addIngredient('a', new ItemBuilder(Material.IRON_NUGGET).setDisplayName(String.valueOf(section.getInt("amount", 1))))

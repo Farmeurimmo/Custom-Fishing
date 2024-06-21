@@ -41,15 +41,15 @@ import xyz.xenondevs.invui.window.AnvilWindow;
 public class ScoreEditor {
 
     private final SectionPage parentPage;
-    private String score;
     private final ConfigurationSection section;
+    private String score;
 
     public ScoreEditor(Player player, SectionPage parentPage) {
         this.parentPage = parentPage;
         this.section = parentPage.getSection();
 
         Item border = new SimpleItem(new ItemBuilder(Material.AIR));
-        var confirm  = new ConfirmIcon();
+        var confirm = new ConfirmIcon();
         Gui upperGui = Gui.normal()
                 .setStructure("a # b")
                 .addIngredient('a', new ItemBuilder(Material.NETHER_STAR).setDisplayName(String.valueOf(section.getDouble("score", 0))))
@@ -98,7 +98,7 @@ public class ScoreEditor {
                     Double.parseDouble(score);
                     return new ItemBuilder(Material.NETHER_STAR)
                             .setDisplayName(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
-                                  CFLocale.GUI_NEW_VALUE + score
+                                    CFLocale.GUI_NEW_VALUE + score
                             )))
                             .addLoreLines(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
                                     CFLocale.GUI_CLICK_CONFIRM

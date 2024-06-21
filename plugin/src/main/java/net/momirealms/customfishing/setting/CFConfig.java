@@ -160,7 +160,7 @@ public class CFConfig {
 
         redisRanking = config.getBoolean("mechanics.competition.redis-ranking", false);
         placeholderLimit = config.getInt("mechanics.competition.placeholder-limit", 3);
-        serverGroup = config.getString("mechanics.competition.server-group","default");
+        serverGroup = config.getString("mechanics.competition.server-group", "default");
 
         multipleLootSpawnDelay = config.getInt("mechanics.multiple-loot-spawn-delay", 0);
 

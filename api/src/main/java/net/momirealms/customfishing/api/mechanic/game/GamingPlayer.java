@@ -65,5 +65,6 @@ public interface GamingPlayer {
     /**
      * @return effect reward based on game results
      */
-    @Nullable Effect getEffectReward();
+    @Nullable
+    Effect getEffectReward();
 }

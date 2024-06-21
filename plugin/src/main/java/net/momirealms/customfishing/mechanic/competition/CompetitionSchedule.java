@@ -73,7 +73,7 @@ public class CompetitionSchedule {
      * @return The total number of seconds.
      */
     public int getTotalSeconds() {
-        return  second +
+        return second +
                 minute * 60 +
                 hour * 60 * 60 +
                 weekday * 24 * 60 * 60;

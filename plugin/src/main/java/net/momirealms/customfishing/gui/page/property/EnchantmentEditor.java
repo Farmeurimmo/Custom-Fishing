@@ -48,8 +48,8 @@ public class EnchantmentEditor {
     private final SectionPage parentPage;
     private final ArrayList<String> enchantments;
     private final ConfigurationSection section;
-    private int index;
     private final boolean store;
+    private int index;
 
     public EnchantmentEditor(Player player, SectionPage parentPage, boolean store) {
         this.player = player;
@@ -69,7 +69,7 @@ public class EnchantmentEditor {
 
     public void reOpen(int idx) {
         Item border = new SimpleItem(new ItemBuilder(Material.AIR));
-        var confirm  = new ConfirmIcon();
+        var confirm = new ConfirmIcon();
         Gui upperGui = Gui.normal()
                 .setStructure("a # b")
                 .addIngredient('a', new ItemBuilder(Material.NAME_TAG).setDisplayName(enchantments.get(idx)))
@@ -148,8 +148,8 @@ public class EnchantmentEditor {
         @Override
         public ItemProvider getItemProvider() {
             return new ItemBuilder(Material.ENCHANTED_BOOK).setDisplayName(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
-                    line
-            ))).addLoreLines("")
+                            line
+                    ))).addLoreLines("")
                     .addLoreLines(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
                             CFLocale.GUI_LEFT_CLICK_EDIT
                     ))).addLoreLines(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(

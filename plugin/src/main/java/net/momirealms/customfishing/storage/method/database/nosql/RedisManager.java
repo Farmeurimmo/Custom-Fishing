@@ -41,8 +41,8 @@ import java.util.concurrent.CompletableFuture;
  */
 public class RedisManager extends AbstractStorage {
 
-    private static RedisManager instance;
     private final static String STREAM = "customfishing";
+    private static RedisManager instance;
     private JedisPool jedisPool;
     private String password;
     private int port;
@@ -63,6 +63,55 @@ public class RedisManager extends AbstractStorage {
      */
     public static RedisManager getInstance() {
         return instance;
+    }
+
+    private static void handleMessage(String message) {
+        CustomFishingPlugin.get().debug("Received Redis message: " + message);
+        String[] split = message.split(";");
+        String server = split[0];
+        if (!CFConfig.serverGroup.contains(server)) {
+            return;
+        }
+        String action = split[1];
+        CustomFishingPlugin.get().getScheduler().runTaskAsync(() -> {
+            switch (action) {
+                case "start" -> {
+                    // start competition for all the servers that connected to redis
+                    CustomFishingPlugin.get().getCompetitionManager().startCompetition(split[2], true, null);
+                }
+                case "end" -> {
+                    if (CustomFishingPlugin.get().getCompetitionManager().getOnGoingCompetition() != null)
+                        CustomFishingPlugin.get().getCompetitionManager().getOnGoingCompetition().end(true);
+                }
+                case "stop" -> {
+                    if (CustomFishingPlugin.get().getCompetitionManager().getOnGoingCompetition() != null)
+                        CustomFishingPlugin.get().getCompetitionManager().getOnGoingCompetition().stop(true);
+                }
+            }
+        });
+    }
+
+    public static String getStream() {
+        return STREAM;
+    }
+
+    private static boolean isRedisNewerThan5(String version) {
+        String[] split = version.split("\\.");
+        int major = Integer.parseInt(split[0]);
+        if (major < 7) {
+            LogUtils.warn(String.format("Detected that you are running an outdated Redis server. v%s. ", version));
+            LogUtils.warn("It's recommended to update to avoid security vulnerabilities!");
+        }
+        return major >= 5;
+    }
+
+    private static String parseRedisVersion(String info) {
+        for (String line : info.split("\n")) {
+            if (line.startsWith("redis_version:")) {
+                return line.split(":")[1];
+            }
+        }
+        return "Unknown";
     }
 
     /**
@@ -90,10 +139,10 @@ public class RedisManager extends AbstractStorage {
         jedisPoolConfig.setTestWhileIdle(true);
         jedisPoolConfig.setTimeBetweenEvictionRuns(Duration.ofMillis(30000));
         jedisPoolConfig.setNumTestsPerEvictionRun(-1);
-        jedisPoolConfig.setMinEvictableIdleTime(Duration.ofMillis(section.getInt("MinEvictableIdleTimeMillis",1800000)));
-        jedisPoolConfig.setMaxTotal(section.getInt("MaxTotal",8));
-        jedisPoolConfig.setMaxIdle(section.getInt("MaxIdle",8));
-        jedisPoolConfig.setMinIdle(section.getInt("MinIdle",1));
+        jedisPoolConfig.setMinEvictableIdleTime(Duration.ofMillis(section.getInt("MinEvictableIdleTimeMillis", 1800000)));
+        jedisPoolConfig.setMaxTotal(section.getInt("MaxTotal", 8));
+        jedisPoolConfig.setMaxIdle(section.getInt("MaxIdle", 8));
+        jedisPoolConfig.setMinIdle(section.getInt("MinIdle", 1));
         jedisPoolConfig.setMaxWait(Duration.ofMillis(section.getInt("MaxWaitMillis")));
 
         password = section.getString("password", "");
@@ -141,7 +190,7 @@ public class RedisManager extends AbstractStorage {
     /**
      * Send a message to Redis on a specified channel.
      *
-     * @param server The Redis channel to send the message to.
+     * @param server  The Redis channel to send the message to.
      * @param message The message to send.
      */
     public void publishRedisMessage(@NotNull String server, @NotNull String message) {
@@ -189,32 +238,6 @@ public class RedisManager extends AbstractStorage {
         thread.start();
     }
 
-    private static void handleMessage(String message) {
-        CustomFishingPlugin.get().debug("Received Redis message: " + message);
-        String[] split = message.split(";");
-        String server = split[0];
-        if (!CFConfig.serverGroup.contains(server)) {
-            return;
-        }
-        String action = split[1];
-        CustomFishingPlugin.get().getScheduler().runTaskAsync(() -> {
-            switch (action) {
-                case "start" -> {
-                    // start competition for all the servers that connected to redis
-                    CustomFishingPlugin.get().getCompetitionManager().startCompetition(split[2], true, null);
-                }
-                case "end" -> {
-                    if (CustomFishingPlugin.get().getCompetitionManager().getOnGoingCompetition() != null)
-                        CustomFishingPlugin.get().getCompetitionManager().getOnGoingCompetition().end(true);
-                }
-                case "stop" -> {
-                    if (CustomFishingPlugin.get().getCompetitionManager().getOnGoingCompetition() != null)
-                        CustomFishingPlugin.get().getCompetitionManager().getOnGoingCompetition().stop(true);
-                }
-            }
-        });
-    }
-
     @Override
     public StorageType getStorageType() {
         return StorageType.Redis;
@@ -229,14 +252,14 @@ public class RedisManager extends AbstractStorage {
     public CompletableFuture<Void> setChangeServer(UUID uuid) {
         var future = new CompletableFuture<Void>();
         plugin.getScheduler().runTaskAsync(() -> {
-        try (Jedis jedis = jedisPool.getResource()) {
-            jedis.setex(
-                    getRedisKey("cf_server", uuid),
-                    10,
-                    new byte[0]
-            );
-        }
-        future.complete(null);
+            try (Jedis jedis = jedisPool.getResource()) {
+                jedis.setex(
+                        getRedisKey("cf_server", uuid),
+                        10,
+                        new byte[0]
+                );
+            }
+            future.complete(null);
             plugin.debug("Server data set for " + uuid);
         });
         return future;
@@ -251,17 +274,17 @@ public class RedisManager extends AbstractStorage {
     public CompletableFuture<Boolean> getChangeServer(UUID uuid) {
         var future = new CompletableFuture<Boolean>();
         plugin.getScheduler().runTaskAsync(() -> {
-        try (Jedis jedis = jedisPool.getResource()) {
-            byte[] key = getRedisKey("cf_server", uuid);
-            if (jedis.get(key) != null) {
-                jedis.del(key);
-                future.complete(true);
-                plugin.debug("Server data retrieved for " + uuid + "; value: true");
-            } else {
-                future.complete(false);
-                plugin.debug("Server data retrieved for " + uuid + "; value: false");
+            try (Jedis jedis = jedisPool.getResource()) {
+                byte[] key = getRedisKey("cf_server", uuid);
+                if (jedis.get(key) != null) {
+                    jedis.del(key);
+                    future.complete(true);
+                    plugin.debug("Server data retrieved for " + uuid + "; value: true");
+                } else {
+                    future.complete(false);
+                    plugin.debug("Server data retrieved for " + uuid + "; value: false");
+                }
             }
-        }
         });
         return future;
     }
@@ -277,21 +300,21 @@ public class RedisManager extends AbstractStorage {
     public CompletableFuture<Optional<PlayerData>> getPlayerData(UUID uuid, boolean lock) {
         var future = new CompletableFuture<Optional<PlayerData>>();
         plugin.getScheduler().runTaskAsync(() -> {
-        try (Jedis jedis = jedisPool.getResource()) {
-            byte[] key = getRedisKey("cf_data", uuid);
-            byte[] data = jedis.get(key);
-            jedis.del(key);
-            if (data != null) {
-                future.complete(Optional.of(plugin.getStorageManager().fromBytes(data)));
-                plugin.debug("Redis data retrieved for " + uuid + "; normal data");
-            } else {
+            try (Jedis jedis = jedisPool.getResource()) {
+                byte[] key = getRedisKey("cf_data", uuid);
+                byte[] data = jedis.get(key);
+                jedis.del(key);
+                if (data != null) {
+                    future.complete(Optional.of(plugin.getStorageManager().fromBytes(data)));
+                    plugin.debug("Redis data retrieved for " + uuid + "; normal data");
+                } else {
+                    future.complete(Optional.empty());
+                    plugin.debug("Redis data retrieved for " + uuid + "; empty data");
+                }
+            } catch (Exception e) {
                 future.complete(Optional.empty());
-                plugin.debug("Redis data retrieved for " + uuid + "; empty data");
+                LogUtils.warn("Failed to get redis data for " + uuid, e);
             }
-        } catch (Exception e) {
-            future.complete(Optional.empty());
-            LogUtils.warn("Failed to get redis data for " + uuid, e);
-        }
         });
         return future;
     }
@@ -308,18 +331,18 @@ public class RedisManager extends AbstractStorage {
     public CompletableFuture<Boolean> updatePlayerData(UUID uuid, PlayerData playerData, boolean ignore) {
         var future = new CompletableFuture<Boolean>();
         plugin.getScheduler().runTaskAsync(() -> {
-        try (Jedis jedis = jedisPool.getResource()) {
-            jedis.setex(
-                    getRedisKey("cf_data", uuid),
-                    10,
-                    plugin.getStorageManager().toBytes(playerData)
-            );
-            future.complete(true);
-            plugin.debug("Redis data set for " + uuid);
-        } catch (Exception e) {
-            future.complete(false);
-            LogUtils.warn("Failed to set redis data for player " + uuid, e);
-        }
+            try (Jedis jedis = jedisPool.getResource()) {
+                jedis.setex(
+                        getRedisKey("cf_data", uuid),
+                        10,
+                        plugin.getStorageManager().toBytes(playerData)
+                );
+                future.complete(true);
+                plugin.debug("Redis data set for " + uuid);
+            } catch (Exception e) {
+                future.complete(false);
+                LogUtils.warn("Failed to set redis data for player " + uuid, e);
+            }
         });
         return future;
     }
@@ -347,36 +370,9 @@ public class RedisManager extends AbstractStorage {
         return (key + ":" + uuid).getBytes(StandardCharsets.UTF_8);
     }
 
-    public static String getStream() {
-        return STREAM;
-    }
-
-    private static boolean isRedisNewerThan5(String version) {
-        String[] split = version.split("\\.");
-        int major = Integer.parseInt(split[0]);
-        if (major < 7) {
-            LogUtils.warn(String.format("Detected that you are running an outdated Redis server. v%s. ", version));
-            LogUtils.warn("It's recommended to update to avoid security vulnerabilities!");
-        }
-        return major >= 5;
-    }
-
-    private static String parseRedisVersion(String info) {
-        for (String line : info.split("\n")) {
-            if (line.startsWith("redis_version:")) {
-                return line.split(":")[1];
-            }
-        }
-        return "Unknown";
-    }
-
     public class BlockingThreadTask {
 
         private boolean stopped;
-
-        public void stop() {
-            stopped = true;
-        }
 
         public BlockingThreadTask() {
             Thread thread = new Thread(() -> {
@@ -400,7 +396,7 @@ public class RedisManager extends AbstractStorage {
                             Thread.sleep(2000);
                         }
                     } catch (Exception e) {
-                        LogUtils.warn("Failed to connect redis. Try reconnecting 10s later",e);
+                        LogUtils.warn("Failed to connect redis. Try reconnecting 10s later", e);
                         try {
                             Thread.sleep(10000);
                         } catch (InterruptedException ex) {
@@ -410,6 +406,10 @@ public class RedisManager extends AbstractStorage {
                 }
             });
             thread.start();
+        }
+
+        public void stop() {
+            stopped = true;
         }
     }
 }

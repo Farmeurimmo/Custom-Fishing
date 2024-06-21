@@ -43,8 +43,8 @@ mechanics:
   # Configures global events for hook/bait/rod/loot
   # which would help you reduce duplicated lines
   global-events:
-    hook: {}
-    bait: {}
+    hook: { }
+    bait: { }
     loot:
       new_size_record:
         conditional_size_record_action:

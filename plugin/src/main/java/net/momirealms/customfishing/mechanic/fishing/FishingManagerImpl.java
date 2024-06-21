@@ -168,7 +168,7 @@ public class FishingManagerImpl implements Listener, FishingManager {
      * When you fish, both left click air and right click air
      * are triggered. And you can't cancel the left click event.
      */
-    @EventHandler (ignoreCancelled = false)
+    @EventHandler(ignoreCancelled = false)
     public void onLeftClick(PlayerInteractEvent event) {
         if (event.getAction() != Action.LEFT_CLICK_AIR)
             return;
@@ -183,7 +183,7 @@ public class FishingManagerImpl implements Listener, FishingManager {
         }
     }
 
-    @EventHandler (ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true)
     public void onSwapHand(PlayerSwapHandItemsEvent event) {
         GamingPlayer gamingPlayer = gamingPlayerMap.get(event.getPlayer().getUniqueId());
         if (gamingPlayer != null) {
@@ -315,7 +315,7 @@ public class FishingManagerImpl implements Listener, FishingManager {
         }
         // Check mechanic requirements
         if (!RequirementManager.isRequirementMet(
-            fishingPreparation, RequirementManagerImpl.mechanicRequirements
+                fishingPreparation, RequirementManagerImpl.mechanicRequirements
         )) {
             this.removeTempFishingState(player);
             return;
@@ -523,7 +523,7 @@ public class FishingManagerImpl implements Listener, FishingManager {
             }
 
             var temp = getTempFishingState(uuid);
-            if (temp != null ) {
+            if (temp != null) {
                 Loot loot = temp.getLoot();
                 var fishingPreparation = temp.getPreparation();
                 if (!loot.disableGlobalAction())
@@ -628,7 +628,7 @@ public class FishingManagerImpl implements Listener, FishingManager {
      * Handle the success of a fishing attempt, including spawning loot, calling events, and executing success actions.
      *
      * @param state The temporary fishing state containing information about the loot and effect.
-     * @param hook The FishHook entity associated with the fishing attempt.
+     * @param hook  The FishHook entity associated with the fishing attempt.
      */
     public void success(TempFishingState state, FishHook hook) {
         var loot = state.getLoot();
@@ -711,10 +711,10 @@ public class FishingManagerImpl implements Listener, FishingManager {
     /**
      * Execute success-related actions after a successful fishing attempt, including updating competition data, triggering events and actions, and updating player statistics.
      *
-     * @param loot The loot that was successfully caught.
-     * @param effect The effect applied during fishing.
+     * @param loot               The loot that was successfully caught.
+     * @param effect             The effect applied during fishing.
      * @param fishingPreparation The fishing preparation containing preparation data.
-     * @param player The player who successfully caught the loot.
+     * @param player             The player who successfully caught the loot.
      */
     private void doSuccessActions(Loot loot, Effect effect, FishingPreparation fishingPreparation, Player player) {
         FishingCompetition competition = plugin.getCompetitionManager().getOnGoingCompetition();
@@ -767,7 +767,7 @@ public class FishingManagerImpl implements Listener, FishingManager {
         if (!loot.disableStats())
             Optional.ofNullable(
                     plugin.getStatisticsManager()
-                          .getStatistics(player.getUniqueId())
+                            .getStatistics(player.getUniqueId())
             ).ifPresent(it -> {
                 it.addLootAmount(loot, fishingPreparation, 1);
                 String size = fishingPreparation.getArg("{SIZE}");
@@ -845,8 +845,8 @@ public class FishingManagerImpl implements Listener, FishingManager {
     /**
      * Sets the temporary fishing state for a player.
      *
-     * @param player            The player for whom to set the temporary fishing state.
-     * @param tempFishingState  The temporary fishing state to set for the player.
+     * @param player           The player for whom to set the temporary fishing state.
+     * @param tempFishingState The temporary fishing state to set for the player.
      */
     @Override
     public void setTempFishingState(Player player, TempFishingState tempFishingState) {

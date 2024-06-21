@@ -28,5 +28,6 @@ public interface SeasonInterface {
      * @param world world
      * @return spring, summer, autumn, winter or disabled
      */
-    @NotNull String getSeason(World world);
+    @NotNull
+    String getSeason(World world);
 }

@@ -27,10 +27,28 @@ import org.jetbrains.annotations.Nullable;
 public interface RequirementManager {
 
     /**
+     * Checks if an array of requirements is met for a given condition.
+     *
+     * @param condition    The Condition object to check against the requirements.
+     * @param requirements An array of Requirement instances to be evaluated.
+     * @return True if all requirements are met, false otherwise. Returns true if the requirements array is null.
+     */
+    static boolean isRequirementMet(Condition condition, Requirement... requirements) {
+        if (requirements == null) return true;
+        for (Requirement requirement : requirements) {
+            if (!requirement.isConditionMet(condition)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Legacy format support
-     * @param key key
+     *
+     * @param key          key
      * @param requirements requirements
-     * @param weight weight
+     * @param weight       weight
      * @return success or not
      */
     @Deprecated
@@ -56,11 +74,12 @@ public interface RequirementManager {
     /**
      * Retrieves an array of requirements based on a configuration section.
      *
-     * @param section The configuration section containing requirement definitions.
+     * @param section  The configuration section containing requirement definitions.
      * @param advanced A flag indicating whether to use advanced requirements.
      * @return An array of Requirement objects based on the configuration section
      */
-    @Nullable Requirement[] getRequirements(ConfigurationSection section, boolean advanced);
+    @Nullable
+    Requirement[] getRequirements(ConfigurationSection section, boolean advanced);
 
     /**
      * If a requirement type exists
@@ -74,14 +93,15 @@ public interface RequirementManager {
      * Retrieves a Requirement object based on a configuration section and advanced flag.
      * <p>
      * requirement_1:  <- section
-     *   type: xxx
-     *   value: xxx
+     * type: xxx
+     * value: xxx
      *
      * @param section  The configuration section containing requirement definitions.
      * @param advanced A flag indicating whether to use advanced requirements.
      * @return A Requirement object based on the configuration section, or an EmptyRequirement if the section is null or invalid.
      */
-    @NotNull Requirement getRequirement(ConfigurationSection section, boolean advanced);
+    @NotNull
+    Requirement getRequirement(ConfigurationSection section, boolean advanced);
 
     /**
      * Gets a requirement based on the provided type and value.
@@ -89,13 +109,14 @@ public interface RequirementManager {
      * If no factory is found, a warning is logged, and an empty requirement instance is returned.
      * <p>
      * world:     <- type
-     *   - world  <- value
+     * - world  <- value
      *
-     * @param type   The type representing the requirement type.
+     * @param type  The type representing the requirement type.
      * @param value The value associated with the requirement.
      * @return A Requirement instance based on the type and value, or an EmptyRequirement if the type is invalid.
      */
-    @NotNull Requirement getRequirement(String type, Object value);
+    @NotNull
+    Requirement getRequirement(String type, Object value);
 
     /**
      * Retrieves a RequirementFactory based on the specified requirement type.
@@ -103,22 +124,6 @@ public interface RequirementManager {
      * @param type The requirement type for which to retrieve a factory.
      * @return A RequirementFactory for the specified type, or null if no factory is found.
      */
-    @Nullable RequirementFactory getRequirementFactory(String type);
-
-    /**
-     * Checks if an array of requirements is met for a given condition.
-     *
-     * @param condition    The Condition object to check against the requirements.
-     * @param requirements An array of Requirement instances to be evaluated.
-     * @return True if all requirements are met, false otherwise. Returns true if the requirements array is null.
-     */
-    static boolean isRequirementMet(Condition condition, Requirement... requirements) {
-        if (requirements == null) return true;
-        for (Requirement requirement : requirements) {
-            if (!requirement.isConditionMet(condition)) {
-                return false;
-            }
-        }
-        return true;
-    }
+    @Nullable
+    RequirementFactory getRequirementFactory(String type);
 }

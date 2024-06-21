@@ -34,16 +34,16 @@ public class CompetitionEvent extends Event {
         this.competition = competition;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlerList;
+    }
+
     public State getState() {
         return state;
     }
 
     public FishingCompetition getCompetition() {
         return competition;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlerList;
     }
 
     @NotNull

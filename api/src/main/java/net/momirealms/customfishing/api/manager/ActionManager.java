@@ -28,11 +28,24 @@ import java.util.HashMap;
 public interface ActionManager {
 
     /**
+     * Triggers a list of actions with the given condition.
+     * If the list of actions is not null, each action in the list is triggered.
+     *
+     * @param actions   The list of actions to trigger.
+     * @param condition The condition associated with the actions.
+     */
+    static void triggerActions(Condition condition, Action... actions) {
+        if (actions != null)
+            for (Action action : actions)
+                action.trigger(condition);
+    }
+
+    /**
      * Registers an ActionFactory for a specific action type.
      * This method allows you to associate an ActionFactory with a custom action type.
      *
-     * @param type           The custom action type to register.
-     * @param actionFactory  The ActionFactory responsible for creating actions of the specified type.
+     * @param type          The custom action type to register.
+     * @param actionFactory The ActionFactory responsible for creating actions of the specified type.
      * @return True if the registration was successful (the action type was not already registered), false otherwise.
      */
     boolean registerAction(String type, ActionFactory actionFactory);
@@ -52,9 +65,9 @@ public interface ActionManager {
      * and builds an Action object using the specified values and chance.
      * <p>
      * events:
-     *   success:
-     *     action_1:  <- section
-     *       ...
+     * success:
+     * action_1:  <- section
+     * ...
      *
      * @param section The ConfigurationSection containing the action configuration.
      * @return An Action object created based on the configuration, or an EmptyAction instance if the action type is invalid.
@@ -67,9 +80,9 @@ public interface ActionManager {
      * and their associated arrays of Actions.
      * <p>
      * events:  <- section
-     *   success:
-     *     action_1:
-     *       ...
+     * success:
+     * action_1:
+     * ...
      *
      * @param section The ConfigurationSection containing action mappings.
      * @return A HashMap where keys are ActionTriggers and values are arrays of Action objects.
@@ -82,9 +95,9 @@ public interface ActionManager {
      * and build an array of Action objects.
      * <p>
      * events:
-     *   success:  <- section
-     *     action_1:
-     *       ...
+     * success:  <- section
+     * action_1:
+     * ...
      *
      * @param section The ConfigurationSection containing action configurations.
      * @return An array of Action objects created based on the configurations in the section.
@@ -103,26 +116,13 @@ public interface ActionManager {
      * Retrieves a mapping of success times to corresponding arrays of actions from a ConfigurationSection.
      * <p>
      * events:
-     *   success-times:  <- section
-     *     1:
-     *       action_1:
-     *         ...
+     * success-times:  <- section
+     * 1:
+     * action_1:
+     * ...
      *
      * @param section The ConfigurationSection containing success times actions.
      * @return A HashMap where success times associated with actions.
      */
     HashMap<Integer, Action[]> getTimesActionMap(ConfigurationSection section);
-
-    /**
-     * Triggers a list of actions with the given condition.
-     * If the list of actions is not null, each action in the list is triggered.
-     *
-     * @param actions   The list of actions to trigger.
-     * @param condition The condition associated with the actions.
-     */
-    static void triggerActions(Condition condition, Action... actions) {
-        if (actions != null)
-            for (Action action : actions)
-                action.trigger(condition);
-    }
 }

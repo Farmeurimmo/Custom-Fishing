@@ -22,7 +22,23 @@ import org.bukkit.block.Block;
 /**
  * Represents a condition used to check the type of a Block.
  */
-public interface TypeCondition  {
+public interface TypeCondition {
+
+    /**
+     * Gets a TypeCondition based on its raw text representation.
+     *
+     * @param raw The raw text representation of the TypeCondition.
+     * @return A TypeCondition instance corresponding to the raw text.
+     */
+    static TypeCondition getTypeCondition(String raw) {
+        if (raw.startsWith("*")) {
+            return new EndWithType(raw.substring(1));
+        } else if (raw.endsWith("*")) {
+            return new StartWithType(raw.substring(0, raw.length() - 1));
+        } else {
+            return new EqualType(raw);
+        }
+    }
 
     /**
      * Checks if the specified Block meets the condition.
@@ -38,20 +54,4 @@ public interface TypeCondition  {
      * @return The raw text representation of this TypeCondition.
      */
     String getRawText();
-
-    /**
-     * Gets a TypeCondition based on its raw text representation.
-     *
-     * @param raw The raw text representation of the TypeCondition.
-     * @return A TypeCondition instance corresponding to the raw text.
-     */
-    static TypeCondition getTypeCondition(String raw) {
-        if (raw.startsWith("*")) {
-            return new EndWithType(raw.substring(1));
-        } else if (raw.endsWith("*")) {
-            return new StartWithType(raw.substring(0, raw.length() -1));
-        } else {
-            return new EqualType(raw);
-        }
-    }
 }

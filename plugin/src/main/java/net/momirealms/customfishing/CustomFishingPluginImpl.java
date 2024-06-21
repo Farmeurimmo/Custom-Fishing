@@ -79,6 +79,27 @@ public class CustomFishingPluginImpl extends CustomFishingPlugin {
         super();
     }
 
+    /**
+     * Retrieves the ProtocolManager instance used for managing packets.
+     *
+     * @return The ProtocolManager instance.
+     */
+    @NotNull
+    public static ProtocolManager getProtocolManager() {
+        return protocolManager;
+    }
+
+    public static void sendPacket(Player player, PacketContainer packet) {
+        protocolManager.sendServerPacket(player, packet);
+    }
+
+    public static void sendPackets(Player player, PacketContainer... packets) {
+        List<PacketContainer> bundle = new ArrayList<>(Arrays.asList(packets));
+        PacketContainer bundlePacket = new PacketContainer(PacketType.Play.Server.BUNDLE);
+        bundlePacket.getPacketBundles().write(0, bundle);
+        sendPacket(player, bundlePacket);
+    }
+
     @Override
     public void onLoad() {
         this.versionManager = new VersionManagerImpl(this);
@@ -144,8 +165,10 @@ public class CustomFishingPluginImpl extends CustomFishingPlugin {
         if (CFConfig.metrics) new Metrics(this, 16648);
         if (CFConfig.updateChecker)
             this.versionManager.checkUpdate().thenAccept(result -> {
-                if (!result) this.getAdventure().sendConsoleMessage("[CustomFishing] You are using the latest version.");
-                else this.getAdventure().sendConsoleMessage("[CustomFishing] Update is available: <u>https://polymart.org/resource/2723<!u>");
+                if (!result)
+                    this.getAdventure().sendConsoleMessage("[CustomFishing] You are using the latest version.");
+                else
+                    this.getAdventure().sendConsoleMessage("[CustomFishing] Update is available: <u>https://polymart.org/resource/2723<!u>");
             });
     }
 
@@ -284,26 +307,5 @@ public class CustomFishingPluginImpl extends CustomFishingPlugin {
 
     public DependencyManager getDependencyManager() {
         return dependencyManager;
-    }
-
-    /**
-     * Retrieves the ProtocolManager instance used for managing packets.
-     *
-     * @return The ProtocolManager instance.
-     */
-    @NotNull
-    public static ProtocolManager getProtocolManager() {
-        return protocolManager;
-    }
-
-    public static void sendPacket(Player player, PacketContainer packet) {
-        protocolManager.sendServerPacket(player, packet);
-    }
-
-    public static void sendPackets(Player player, PacketContainer... packets) {
-        List<PacketContainer> bundle = new ArrayList<>(Arrays.asList(packets));
-        PacketContainer bundlePacket = new PacketContainer(PacketType.Play.Server.BUNDLE);
-        bundlePacket.getPacketBundles().write(0, bundle);
-        sendPacket(player, bundlePacket);
     }
 }

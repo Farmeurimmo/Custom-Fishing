@@ -46,10 +46,10 @@ public class CompetitionCommand {
         Set<String> allCompetitions = CustomFishingPlugin.get().getCompetitionManager().getAllCompetitionKeys();
         var command = new CommandAPICommand("start")
                 .withArguments(
-                    new StringArgument("id")
-                        .replaceSuggestions(
-                            ArgumentSuggestions.strings(allCompetitions)
-                        )
+                        new StringArgument("id")
+                                .replaceSuggestions(
+                                        ArgumentSuggestions.strings(allCompetitions)
+                                )
                 );
         if (CFConfig.redisRanking) command.withOptionalArguments(new StringArgument("server-group"));
         command.executes((sender, args) -> {

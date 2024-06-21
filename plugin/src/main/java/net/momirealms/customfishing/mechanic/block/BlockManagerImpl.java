@@ -61,10 +61,10 @@ public class BlockManagerImpl implements BlockManager, Listener {
 
     private final CustomFishingPlugin plugin;
     private final HashMap<String, BlockLibrary> blockLibraryMap;
-    private BlockLibrary[] blockDetectionArray;
     private final HashMap<String, BlockConfig> blockConfigMap;
     private final HashMap<String, BlockDataModifierBuilder> dataBuilderMap;
     private final HashMap<String, BlockStateModifierBuilder> stateBuilderMap;
+    private BlockLibrary[] blockDetectionArray;
 
     public BlockManagerImpl(CustomFishingPluginImpl plugin) {
         this.plugin = plugin;
@@ -475,7 +475,7 @@ public class BlockManagerImpl implements BlockManager, Listener {
                 for (Map.Entry<String, Object> entry : section.getValues(false).entrySet()) {
                     if (entry.getValue() instanceof ConfigurationSection inner) {
                         String item = inner.getString("item");
-                        Pair<Integer, Integer> amountPair = ConfigUtils.splitStringIntegerArgs(inner.getString("amount","1~1"), "~");
+                        Pair<Integer, Integer> amountPair = ConfigUtils.splitStringIntegerArgs(inner.getString("amount", "1~1"), "~");
                         double chance = inner.getDouble("chance", 1);
                         tempChanceList.add(Tuple.of(chance, item, amountPair));
                     }

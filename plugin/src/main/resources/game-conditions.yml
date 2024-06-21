@@ -1,7 +1,7 @@
 # global group
 global-group:
-  conditions: {}
-  list: []
+  conditions: { }
+  list: [ ]
   sub-groups:
     lava_fishing_game:
       conditions:
@@ -29,7 +29,7 @@ global-group:
     water_fish_game:
       conditions:
         lava-fishing: false
-      list: []
+      list: [ ]
       sub-groups:
         rainbow_fish_game:
           conditions:

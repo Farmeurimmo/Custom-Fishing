@@ -57,10 +57,10 @@ public class DataCommand {
     public CommandAPICommand getDataCommand() {
         return new CommandAPICommand("data")
                 .withSubcommands(
-                    getExportLegacyCommand(),
-                    getExportCommand(),
-                    getImportCommand(),
-                    getUnlockCommand()
+                        getExportLegacyCommand(),
+                        getExportCommand(),
+                        getImportCommand(),
+                        getUnlockCommand()
                 );
     }
 
@@ -68,9 +68,9 @@ public class DataCommand {
         return new CommandAPICommand("unlock")
                 .withArguments(new UUIDArgument("uuid"))
                 .executes((sender, args) -> {
-                   UUID uuid = (UUID) args.get("uuid");
-                   CustomFishingPlugin.get().getStorageManager().getDataSource().lockOrUnlockPlayerData(uuid, false);
-                   AdventureHelper.getInstance().sendMessageWithPrefix(sender, "Successfully unlocked.");
+                    UUID uuid = (UUID) args.get("uuid");
+                    CustomFishingPlugin.get().getStorageManager().getDataSource().lockOrUnlockPlayerData(uuid, false);
+                    AdventureHelper.getInstance().sendMessageWithPrefix(sender, "Successfully unlocked.");
                 });
     }
 
@@ -78,7 +78,7 @@ public class DataCommand {
     private CommandAPICommand getExportLegacyCommand() {
         return new CommandAPICommand("export-legacy")
                 .withArguments(new StringArgument("method")
-                .replaceSuggestions(ArgumentSuggestions.strings("MySQL", "MariaDB", "YAML")))
+                        .replaceSuggestions(ArgumentSuggestions.strings("MySQL", "MariaDB", "YAML")))
                 .executes((sender, args) -> {
                     String arg = (String) args.get("method");
                     if (arg == null) return;

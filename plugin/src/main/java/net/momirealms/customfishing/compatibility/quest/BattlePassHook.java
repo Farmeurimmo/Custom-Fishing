@@ -41,7 +41,7 @@ public class BattlePassHook implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onBattlePassReload(PluginReloadEvent event){
+    public void onBattlePassReload(PluginReloadEvent event) {
         register();
     }
 
@@ -51,7 +51,7 @@ public class BattlePassHook implements Listener {
         }
 
         @EventHandler
-        public void onFish(FishingResultEvent event){
+        public void onFish(FishingResultEvent event) {
             if (event.isCancelled() || event.getResult() == FishingResultEvent.Result.FAILURE)
                 return;
             Player player = event.getPlayer();

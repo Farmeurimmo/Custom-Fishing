@@ -41,15 +41,15 @@ import xyz.xenondevs.invui.window.AnvilWindow;
 public class NickEditor {
 
     private final SectionPage parentPage;
-    private String nick;
     private final ConfigurationSection section;
+    private String nick;
 
     public NickEditor(Player player, SectionPage parentPage) {
         this.parentPage = parentPage;
         this.section = parentPage.getSection();
 
         Item border = new SimpleItem(new ItemBuilder(Material.AIR));
-        var confirm  = new ConfirmIcon();
+        var confirm = new ConfirmIcon();
         Gui upperGui = Gui.normal()
                 .setStructure("a # b")
                 .addIngredient('a', new ItemBuilder(Material.WRITABLE_BOOK).setDisplayName(section.getString("nick", CFLocale.GUI_NICK_NEW)))
@@ -96,7 +96,7 @@ public class NickEditor {
             } else {
                 return new ItemBuilder(Material.WRITABLE_BOOK)
                         .setDisplayName(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
-                              "<!i><white>" + nick
+                                "<!i><white>" + nick
                         )))
                         .addLoreLines(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
                                 CFLocale.GUI_CLICK_CONFIRM

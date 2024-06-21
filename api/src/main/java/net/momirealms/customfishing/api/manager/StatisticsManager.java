@@ -31,7 +31,8 @@ public interface StatisticsManager {
      * @param uuid The UUID of the player for whom statistics are retrieved.
      * @return The player's statistics or null if the player is not found.
      */
-    @Nullable Statistics getStatistics(UUID uuid);
+    @Nullable
+    Statistics getStatistics(UUID uuid);
 
     /**
      * Get a list of strings associated with a specific key in a category map.
@@ -39,5 +40,6 @@ public interface StatisticsManager {
      * @param key The key to look up in the category map.
      * @return A list of strings associated with the key or null if the key is not found.
      */
-    @Nullable List<String> getCategory(String key);
+    @Nullable
+    List<String> getCategory(String key);
 }

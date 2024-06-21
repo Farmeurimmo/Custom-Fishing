@@ -27,6 +27,7 @@ public interface AdventureManager {
 
     /**
      * Get component from text
+     *
      * @param text text
      * @return component
      */
@@ -34,8 +35,9 @@ public interface AdventureManager {
 
     /**
      * Send a message to a command sender
+     *
      * @param sender sender
-     * @param msg message
+     * @param msg    message
      */
     void sendMessage(CommandSender sender, String msg);
 
@@ -43,59 +45,65 @@ public interface AdventureManager {
      * Send a message with prefix
      *
      * @param sender command sender
-     * @param s message
+     * @param s      message
      */
     void sendMessageWithPrefix(CommandSender sender, String s);
 
     /**
      * Send a message to console
+     *
      * @param msg message
      */
     void sendConsoleMessage(String msg);
 
     /**
      * Send a message to a player
+     *
      * @param player player
-     * @param msg message
+     * @param msg    message
      */
     void sendPlayerMessage(Player player, String msg);
 
     /**
      * Send a title to a player
-     * @param player player
-     * @param title title
+     *
+     * @param player   player
+     * @param title    title
      * @param subtitle subtitle
-     * @param in in (ms)
+     * @param in       in (ms)
      * @param duration duration (ms)
-     * @param out out (ms)
+     * @param out      out (ms)
      */
     void sendTitle(Player player, String title, String subtitle, int in, int duration, int out);
 
     /**
      * Send a title to a player
-     * @param player player
-     * @param title title
+     *
+     * @param player   player
+     * @param title    title
      * @param subtitle subtitle
-     * @param in in (ms)
+     * @param in       in (ms)
      * @param duration duration (ms)
-     * @param out out (ms)
+     * @param out      out (ms)
      */
     void sendTitle(Player player, Component title, Component subtitle, int in, int duration, int out);
 
     /**
      * Send actionbar
+     *
      * @param player player
-     * @param msg msg
+     * @param msg    msg
      */
     void sendActionbar(Player player, String msg);
 
     /**
      * Play a sound to a player
+     *
      * @param player player
      * @param source sound source
-     * @param key sound key
+     * @param key    sound key
      * @param volume volume
-     * @param pitch pitch
+     * @param pitch  pitch
      */
     void sendSound(Player player, Sound.Source source, Key key, float volume, float pitch);
 
@@ -103,6 +111,7 @@ public interface AdventureManager {
 
     /**
      * Replace legacy color codes to MiniMessage format
+     *
      * @param legacy legacy text
      * @return MiniMessage format text
      */
@@ -110,6 +119,7 @@ public interface AdventureManager {
 
     /**
      * if a char is legacy color code
+     *
      * @param c char
      * @return is legacy color
      */
@@ -118,6 +128,7 @@ public interface AdventureManager {
 
     /**
      * Get legacy format text
+     *
      * @param component component
      * @return legacy format text
      */
@@ -125,6 +136,7 @@ public interface AdventureManager {
 
     /**
      * Get json
+     *
      * @param component component
      * @return json
      */
@@ -132,6 +144,7 @@ public interface AdventureManager {
 
     /**
      * Get paper component
+     *
      * @param component shaded component
      * @return paper component
      */

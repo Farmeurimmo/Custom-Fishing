@@ -265,7 +265,7 @@ public class TotemManagerImpl implements TotemManager, Listener {
     }
 
     public ParticleSetting getParticleSetting(ConfigurationSection section) {
-        Particle particle = Particle.valueOf(section.getString("type","REDSTONE"));
+        Particle particle = Particle.valueOf(section.getString("type", "REDSTONE"));
         String formulaHorizontal = section.getString("polar-coordinates-formula.horizontal");
         String formulaVertical = section.getString("polar-coordinates-formula.vertical");
         List<Pair<Double, Double>> ranges = section.getStringList("theta.range")
@@ -278,7 +278,7 @@ public class TotemManagerImpl implements TotemManager, Listener {
         int delay = section.getInt("task.delay", 0);
         int period = section.getInt("task.period", 0);
         if (particle == Particle.REDSTONE) {
-            String color = section.getString("options.color","0,0,0");
+            String color = section.getString("options.color", "0,0,0");
             String[] colorSplit = color.split(",");
             return new DustParticleSetting(
                     formulaHorizontal,
@@ -298,9 +298,9 @@ public class TotemManagerImpl implements TotemManager, Listener {
                     )
             );
         } else if (particle == Particle.DUST_COLOR_TRANSITION) {
-            String color = section.getString("options.from","0,0,0");
+            String color = section.getString("options.from", "0,0,0");
             String[] colorSplit = color.split(",");
-            String toColor = section.getString("options.to","255,255,255");
+            String toColor = section.getString("options.to", "255,255,255");
             String[] toColorSplit = toColor.split(",");
             return new DustParticleSetting(
                     formulaHorizontal,
@@ -361,18 +361,18 @@ public class TotemManagerImpl implements TotemManager, Listener {
             TotemBlock[][][][] totemBlocks = new TotemBlock[set.size()][][][];
             for (Map.Entry<String, Object> entry : set) {
                 if (entry.getValue() instanceof List<?> list) {
-                    totemBlocks[Integer.parseInt(entry.getKey())-1] = parseLayer((List<String>) list);
+                    totemBlocks[Integer.parseInt(entry.getKey()) - 1] = parseLayer((List<String>) list);
                 }
             }
             totemBlocksList.addAll(List.of(totemBlocks));
         }
 
-        String[] core = section.getString("core","1,1,1").split(",");
+        String[] core = section.getString("core", "1,1,1").split(",");
         int x = Integer.parseInt(core[2]) - 1;
         int z = Integer.parseInt(core[1]) - 1;
         int y = Integer.parseInt(core[0]) - 1;
         return new TotemModel(
-                x,y,z,
+                x, y, z,
                 totemBlocksList.toArray(new TotemBlock[0][][][])
         );
     }
@@ -403,7 +403,7 @@ public class TotemManagerImpl implements TotemManager, Listener {
             if (index == -1) {
                 index = block.length();
             } else {
-                String propertyStr = block.substring(index+1, block.length()-1);
+                String propertyStr = block.substring(index + 1, block.length() - 1);
                 String[] properties = propertyStr.split(";");
                 for (String property : properties) {
                     String[] split = property.split("=");

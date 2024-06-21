@@ -40,7 +40,7 @@ public class WeightUtils {
         List<T> available = new ArrayList<>();
         double[] weights = new double[pairs.size()];
         int index = 0;
-        for (Pair<T, Double> pair : pairs){
+        for (Pair<T, Double> pair : pairs) {
             double weight = pair.right();
             T key = pair.left();
             if (weight <= 0) continue;
@@ -61,7 +61,7 @@ public class WeightUtils {
         List<T> available = new ArrayList<>();
         double[] weights = new double[map.size()];
         int index = 0;
-        for (Map.Entry<T, Double> entry : map.entrySet()){
+        for (Map.Entry<T, Double> entry : map.entrySet()) {
             double weight = entry.getValue();
             T key = entry.getKey();
             if (weight <= 0) continue;
@@ -83,8 +83,8 @@ public class WeightUtils {
     private static <T> T getRandom(double[] weights, List<T> available, int effectiveSize) {
         double total = Arrays.stream(weights).sum();
         double[] weightRatios = new double[effectiveSize];
-        for (int i = 0; i < effectiveSize; i++){
-            weightRatios[i] = weights[i]/total;
+        for (int i = 0; i < effectiveSize; i++) {
+            weightRatios[i] = weights[i] / total;
         }
         double[] weightRange = new double[effectiveSize];
         double startPos = 0;

@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class PlayerData {
 
+    public static PlayerData LOCKED = empty();
     @SerializedName("name")
     protected String name;
     @SerializedName("stats")
@@ -31,8 +32,6 @@ public class PlayerData {
     protected InventoryData bagData;
     @SerializedName("trade")
     protected EarningData earningData;
-
-    public static PlayerData LOCKED = empty();
 
     public static Builder builder() {
         return new Builder();
@@ -44,6 +43,26 @@ public class PlayerData {
                 .setEarningData(EarningData.empty())
                 .setStats(StatisticData.empty())
                 .build();
+    }
+
+    public StatisticData getStatistics() {
+        return statisticsData;
+    }
+
+    public InventoryData getBagData() {
+        return bagData;
+    }
+
+    public EarningData getEarningData() {
+        return earningData;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isLocked() {
+        return this == LOCKED;
     }
 
     public static class Builder {
@@ -82,25 +101,5 @@ public class PlayerData {
         public PlayerData build() {
             return this.playerData;
         }
-    }
-
-    public StatisticData getStatistics() {
-        return statisticsData;
-    }
-
-    public InventoryData getBagData() {
-        return bagData;
-    }
-
-    public EarningData getEarningData() {
-        return earningData;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public boolean isLocked() {
-        return this == LOCKED;
     }
 }

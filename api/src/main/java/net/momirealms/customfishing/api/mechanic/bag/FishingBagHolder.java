@@ -38,15 +38,15 @@ public class FishingBagHolder implements InventoryHolder {
         return inventory;
     }
 
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
     public void setItems(ItemStack[] itemStacks) {
         this.inventory.setContents(itemStacks);
     }
 
     public UUID getOwner() {
         return owner;
-    }
-
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
     }
 }

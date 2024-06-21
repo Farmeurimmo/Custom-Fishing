@@ -208,7 +208,7 @@ public class EffectManagerImpl implements EffectManager {
     private List<Pair<String, WeightModifier>> getGroupModifiers(List<String> modList) {
         List<Pair<String, WeightModifier>> result = new ArrayList<>();
         for (String group : modList) {
-            String[] split = group.split(":",2);
+            String[] split = group.split(":", 2);
             String key = split[0];
             List<String> members = plugin.getLootManager().getLootGroup(key);
             if (members == null) {
@@ -233,7 +233,7 @@ public class EffectManagerImpl implements EffectManager {
     public EffectModifier[] getEffectModifiers(ConfigurationSection section) {
         if (section == null) return new EffectModifier[0];
         ArrayList<EffectModifier> modifiers = new ArrayList<>();
-        for (Map.Entry<String, Object> entry: section.getValues(false).entrySet()) {
+        for (Map.Entry<String, Object> entry : section.getValues(false).entrySet()) {
             if (entry.getValue() instanceof ConfigurationSection inner) {
                 EffectModifier effectModifier = getEffectModifier(inner);
                 if (effectModifier != null)

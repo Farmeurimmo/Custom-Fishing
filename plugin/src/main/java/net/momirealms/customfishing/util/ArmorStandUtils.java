@@ -38,7 +38,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class ArmorStandUtils {
 
-    private ArmorStandUtils() {}
+    private ArmorStandUtils() {
+    }
 
     /**
      * Creates a destroy packet for removing an armor stand entity.
@@ -100,7 +101,7 @@ public class ArmorStandUtils {
     /**
      * Sets the value list in a PacketContainer's DataWatcher from a WrappedDataWatcher.
      *
-     * @param metaPacket       The PacketContainer representing the metadata packet
+     * @param metaPacket         The PacketContainer representing the metadata packet
      * @param wrappedDataWatcher The WrappedDataWatcher containing the value list
      */
     @SuppressWarnings("DuplicatedCode")
@@ -187,14 +188,14 @@ public class ArmorStandUtils {
      * @param player    The player to send the entity to
      * @param location  The location where the entity should appear
      * @param itemStack The ItemStack to represent the entity
-     * @param seconds      The duration (in seconds) the entity should be displayed
+     * @param seconds   The duration (in seconds) the entity should be displayed
      */
     public static void sendFakeItem(Player player, Location location, ItemStack itemStack, int seconds) {
         int id = new Random().nextInt(Integer.MAX_VALUE);
         if (CustomFishingPlugin.get().getVersionManager().isVersionNewerThan1_19_R3()) {
-            CustomFishingPluginImpl.sendPackets(player, getSpawnPacket(id, location.clone().subtract(0,1,0)), getMetaPacket(id), getEquipPacket(id, itemStack));
+            CustomFishingPluginImpl.sendPackets(player, getSpawnPacket(id, location.clone().subtract(0, 1, 0)), getMetaPacket(id), getEquipPacket(id, itemStack));
         } else {
-            CustomFishingPluginImpl.sendPacket(player, getSpawnPacket(id, location.clone().subtract(0,1,0)));
+            CustomFishingPluginImpl.sendPacket(player, getSpawnPacket(id, location.clone().subtract(0, 1, 0)));
             CustomFishingPluginImpl.sendPacket(player, getMetaPacket(id));
             CustomFishingPluginImpl.sendPacket(player, getEquipPacket(id, itemStack));
         }
@@ -207,14 +208,14 @@ public class ArmorStandUtils {
      * @param player    The player to send the hologram to
      * @param location  The location where the hologram should appear
      * @param component The Component representing the hologram's text
-     * @param seconds      The duration (in seconds) the hologram should be displayed
+     * @param seconds   The duration (in seconds) the hologram should be displayed
      */
     public static void sendHologram(Player player, Location location, Component component, int seconds) {
         int id = new Random().nextInt(Integer.MAX_VALUE);
         if (CustomFishingPlugin.get().getVersionManager().isVersionNewerThan1_19_R3()) {
-            CustomFishingPluginImpl.sendPackets(player, getSpawnPacket(id, location.clone().subtract(0,1,0)), getMetaPacket(id, component));
+            CustomFishingPluginImpl.sendPackets(player, getSpawnPacket(id, location.clone().subtract(0, 1, 0)), getMetaPacket(id, component));
         } else {
-            CustomFishingPluginImpl.sendPacket(player, getSpawnPacket(id, location.clone().subtract(0,1,0)));
+            CustomFishingPluginImpl.sendPacket(player, getSpawnPacket(id, location.clone().subtract(0, 1, 0)));
             CustomFishingPluginImpl.sendPacket(player, getMetaPacket(id, component));
         }
         CustomFishingPlugin.get().getScheduler().runTaskAsyncLater(() -> CustomFishingPluginImpl.getProtocolManager().sendServerPacket(player, getDestroyPacket(id)), seconds * 50L, TimeUnit.MILLISECONDS);

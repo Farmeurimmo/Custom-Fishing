@@ -41,11 +41,11 @@ import java.util.List;
 
 public class FishingPreparationImpl extends FishingPreparation {
 
+    private final @NotNull ItemStack rodItemStack;
+    private final List<EffectCarrier> effects;
     private boolean hasBait = false;
     private boolean hasHook = false;
     private @Nullable ItemStack baitItemStack;
-    private final @NotNull ItemStack rodItemStack;
-    private final List<EffectCarrier> effects;
     private boolean canFish = true;
 
     public FishingPreparationImpl(Player player, CustomFishingPlugin plugin) {

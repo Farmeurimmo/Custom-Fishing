@@ -30,8 +30,8 @@ import java.util.StringJoiner;
  */
 public class TotemModel implements Serializable {
 
-    private int coreX;
     private final int coreY;
+    private int coreX;
     private int coreZ;
     // [Y][Z][X][alternative totem blocks]
     private TotemBlock[][][][] model;
@@ -49,6 +49,68 @@ public class TotemModel implements Serializable {
         this.coreY = coreY;
         this.coreZ = coreZ;
         this.model = model;
+    }
+
+    /**
+     * Rotate a 3D totem model 90 degrees clockwise.
+     *
+     * @param matrix The 3D totem model to rotate.
+     * @return The rotated 3D totem model.
+     */
+    private static TotemBlock[][][][] rotate90(TotemBlock[][][][] matrix) {
+        int height = matrix.length;
+        int rows = matrix[0].length;
+        int cols = matrix[0][0].length;
+        TotemBlock[][][][] rotated = new TotemBlock[height][cols][rows][];
+        for (int h = 0; h < height; h++) {
+            for (int r = 0; r < rows; r++) {
+                for (int c = 0; c < cols; c++) {
+                    rotated[h][c][rows - 1 - r] = matrix[h][r][c];
+                }
+            }
+        }
+        return rotated;
+    }
+
+    /**
+     * Mirror a 3D totem model horizontally.
+     *
+     * @param matrix The 3D totem model to mirror.
+     */
+    private static void mirrorHorizontally(TotemBlock[][][][] matrix) {
+        int height = matrix.length;
+        int rows = matrix[0].length;
+        int cols = matrix[0][0].length;
+
+        for (int h = 0; h < height; h++) {
+            for (int i = 0; i < rows / 2; i++) {
+                for (int j = 0; j < cols; j++) {
+                    TotemBlock[] temp = matrix[h][i][j];
+                    matrix[h][i][j] = matrix[h][rows - i - 1][j];
+                    matrix[h][rows - i - 1][j] = temp;
+                }
+            }
+        }
+    }
+
+    /**
+     * Mirror a 3D totem model vertically.
+     *
+     * @param matrix The 3D totem model to mirror.
+     */
+    private static void mirrorVertically(TotemBlock[][][][] matrix) {
+        int height = matrix.length;
+        int rows = matrix[0].length;
+        int cols = matrix[0][0].length;
+        for (int h = 0; h < height; h++) {
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < cols / 2; j++) {
+                    TotemBlock[] temp = matrix[h][i][j];
+                    matrix[h][i][j] = matrix[h][i][cols - j - 1];
+                    matrix[h][i][cols - j - 1] = temp;
+                }
+            }
+        }
     }
 
     /**
@@ -200,78 +262,16 @@ public class TotemModel implements Serializable {
             Location loc = startLoc.clone().add(-coreX, y, -coreZ);
             for (int z = 0; z < width; z++) {
                 outer:
-                    for (int x = 0; x < length; x++) {
-                        for (TotemBlock totemBlock : model[y][z][x]) {
-                            if (totemBlock.isRightBlock(loc.clone().add(x, 0, z).getBlock())) {
-                                continue outer;
-                            }
+                for (int x = 0; x < length; x++) {
+                    for (TotemBlock totemBlock : model[y][z][x]) {
+                        if (totemBlock.isRightBlock(loc.clone().add(x, 0, z).getBlock())) {
+                            continue outer;
                         }
-                        return false;
                     }
+                    return false;
+                }
             }
         }
         return true;
-    }
-
-    /**
-     * Rotate a 3D totem model 90 degrees clockwise.
-     *
-     * @param matrix The 3D totem model to rotate.
-     * @return The rotated 3D totem model.
-     */
-    private static TotemBlock[][][][] rotate90(TotemBlock[][][][] matrix) {
-        int height = matrix.length;
-        int rows = matrix[0].length;
-        int cols = matrix[0][0].length;
-        TotemBlock[][][][] rotated = new TotemBlock[height][cols][rows][];
-        for (int h = 0; h < height; h++) {
-            for (int r = 0; r < rows; r++) {
-                for (int c = 0; c < cols; c++) {
-                    rotated[h][c][rows - 1 - r] = matrix[h][r][c];
-                }
-            }
-        }
-        return rotated;
-    }
-
-    /**
-     * Mirror a 3D totem model horizontally.
-     *
-     * @param matrix The 3D totem model to mirror.
-     */
-    private static void mirrorHorizontally(TotemBlock[][][][] matrix) {
-        int height = matrix.length;
-        int rows = matrix[0].length;
-        int cols = matrix[0][0].length;
-
-        for (int h = 0; h < height; h++) {
-            for (int i = 0; i < rows / 2; i++) {
-                for (int j = 0; j < cols; j++) {
-                    TotemBlock[] temp = matrix[h][i][j];
-                    matrix[h][i][j] = matrix[h][rows - i - 1][j];
-                    matrix[h][rows - i - 1][j] = temp;
-                }
-            }
-        }
-    }
-
-    /**
-     * Mirror a 3D totem model vertically.
-     *
-     * @param matrix The 3D totem model to mirror.
-     */
-    private static void mirrorVertically(TotemBlock[][][][] matrix) {
-        int height = matrix.length;
-        int rows = matrix[0].length;
-        int cols = matrix[0][0].length;
-        for (int h = 0; h < height; h++) {
-            for (int i = 0; i < rows; i++) {
-                for (int j = 0; j < cols / 2; j++) {
-                    TotemBlock[] temp = matrix[h][i][j];
-                    matrix[h][i][j] = matrix[h][i][cols - j - 1];
-                    matrix[h][i][cols - j - 1] = temp;
-                }
-            }
-        }
     }
 }

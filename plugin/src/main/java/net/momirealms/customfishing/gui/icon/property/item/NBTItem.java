@@ -49,8 +49,8 @@ public class NBTItem extends AbstractItem {
         var section = itemPage.getSection().getConfigurationSection("nbt");
         if (section != null) {
             itemBuilder.addLoreLines(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
-                            CFLocale.GUI_CURRENT_VALUE
-                    )));
+                    CFLocale.GUI_CURRENT_VALUE
+            )));
             for (String line : ConfigUtils.getReadableSection(section.getValues(false))) {
                 itemBuilder.addLoreLines(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
                         line

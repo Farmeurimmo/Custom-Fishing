@@ -25,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class CustomFishingPlugin extends JavaPlugin {
 
+    private static CustomFishingPlugin instance;
     protected boolean initialized;
     protected Scheduler scheduler;
     protected CommandManager commandManager;
@@ -48,8 +49,6 @@ public abstract class CustomFishingPlugin extends JavaPlugin {
     protected StatisticsManager statisticsManager;
     protected TotemManager totemManager;
     protected HookManager hookManager;
-
-    private static CustomFishingPlugin instance;
 
     public CustomFishingPlugin() {
         instance = this;

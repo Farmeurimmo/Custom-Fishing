@@ -33,6 +33,20 @@ public class BasicGameConfig {
         return new Builder();
     }
 
+    /**
+     * Generates random game settings based on specified time and difficulty ranges, adjusted by an effect's difficulty modifier.
+     *
+     * @param effect The effect to adjust the difficulty.
+     * @return A {@link GameSettings} object representing the generated game settings.
+     */
+    @Nullable
+    public GameSettings getGameSetting(Effect effect) {
+        return new GameSettings(
+                ThreadLocalRandom.current().nextInt(minTime, maxTime + 1) * effect.getGameTimeMultiplier() + effect.getGameTime(),
+                (int) Math.min(100, Math.max(1, ThreadLocalRandom.current().nextInt(minDifficulty, maxDifficulty + 1) * effect.getDifficultyMultiplier() + effect.getDifficulty()))
+        );
+    }
+
     public static class Builder {
 
         private final BasicGameConfig basicGameConfig;
@@ -68,19 +82,5 @@ public class BasicGameConfig {
         public BasicGameConfig build() {
             return basicGameConfig;
         }
-    }
-
-    /**
-     * Generates random game settings based on specified time and difficulty ranges, adjusted by an effect's difficulty modifier.
-     *
-     * @param effect The effect to adjust the difficulty.
-     * @return A {@link GameSettings} object representing the generated game settings.
-     */
-    @Nullable
-    public GameSettings getGameSetting(Effect effect) {
-        return new GameSettings(
-                ThreadLocalRandom.current().nextInt(minTime, maxTime + 1) * effect.getGameTimeMultiplier() + effect.getGameTime(),
-                (int) Math.min(100, Math.max(1, ThreadLocalRandom.current().nextInt(minDifficulty, maxDifficulty + 1) * effect.getDifficultyMultiplier() + effect.getDifficulty()))
-        );
     }
 }

@@ -37,19 +37,19 @@ public class FishingBagCommand {
     public static FishingBagCommand INSTANCE = new FishingBagCommand();
 
     public CommandAPICommand getBagCommand() {
-         return new CommandAPICommand("fishingbag")
-                    .withPermission("fishingbag.user")
-                    .withSubcommands(getEditOnlineCommand(), getEditOfflineCommand())
-                    .executesPlayer(((player, args) -> {
-                        if (CustomFishingPlugin.get().getBagManager().isEnabled()) {
-                            var inv = CustomFishingPlugin.get().getBagManager().getOnlineBagInventory(player.getUniqueId());
-                            if (inv != null) {
-                                player.openInventory(inv);
-                            } else {
-                                AdventureHelper.getInstance().sendMessageWithPrefix(player, CFLocale.MSG_Data_Not_Loaded);
-                            }
+        return new CommandAPICommand("fishingbag")
+                .withPermission("fishingbag.user")
+                .withSubcommands(getEditOnlineCommand(), getEditOfflineCommand())
+                .executesPlayer(((player, args) -> {
+                    if (CustomFishingPlugin.get().getBagManager().isEnabled()) {
+                        var inv = CustomFishingPlugin.get().getBagManager().getOnlineBagInventory(player.getUniqueId());
+                        if (inv != null) {
+                            player.openInventory(inv);
+                        } else {
+                            AdventureHelper.getInstance().sendMessageWithPrefix(player, CFLocale.MSG_Data_Not_Loaded);
                         }
-                    }));
+                    }
+                }));
     }
 
     private CommandAPICommand getEditOnlineCommand() {
@@ -63,7 +63,7 @@ public class FishingBagCommand {
                     if (onlineInv != null) {
                         player.openInventory(onlineInv);
                     }
-            }));
+                }));
     }
 
     private CommandAPICommand getEditOfflineCommand() {

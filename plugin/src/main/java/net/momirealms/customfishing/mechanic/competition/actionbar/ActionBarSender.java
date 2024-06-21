@@ -35,15 +35,15 @@ import java.util.concurrent.TimeUnit;
 public class ActionBarSender {
 
     private final Player player;
+    private final DynamicText[] texts;
+    private final ActionBarConfig config;
+    private final Competition competition;
+    private final HashMap<String, String> privatePlaceholders;
     private int refreshTimer;
     private int switchTimer;
     private int counter;
-    private final DynamicText[] texts;
     private CancellableTask senderTask;
-    private final ActionBarConfig config;
     private boolean isShown;
-    private final Competition competition;
-    private final HashMap<String, String> privatePlaceholders;
 
     /**
      * Creates a new ActionBarSender instance for a player.
@@ -91,7 +91,7 @@ public class ActionBarSender {
                 switchTimer = 0;
                 counter++;
             }
-            if (refreshTimer < config.getRefreshRate()){
+            if (refreshTimer < config.getRefreshRate()) {
                 refreshTimer++;
             } else {
                 refreshTimer = 0;

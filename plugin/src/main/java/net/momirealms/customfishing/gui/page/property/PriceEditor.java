@@ -43,21 +43,21 @@ public class PriceEditor {
     private final Player player;
     private final SectionPage parentPage;
     private final String[] price;
-    private int index;
     private final ConfigurationSection section;
+    private int index;
 
     public PriceEditor(Player player, SectionPage parentPage) {
         this.player = player;
         this.parentPage = parentPage;
         this.section = parentPage.getSection();
         this.index = 0;
-        this.price = new String[]{section.getString("price.base","0"), section.getString("price.bonus","0")};
+        this.price = new String[]{section.getString("price.base", "0"), section.getString("price.bonus", "0")};
         reOpen();
     }
 
     public void reOpen() {
         Item border = new SimpleItem(new ItemBuilder(Material.AIR));
-        var confirm  = new ConfirmIcon();
+        var confirm = new ConfirmIcon();
         Gui upperGui = Gui.normal()
                 .setStructure("a # b")
                 .addIngredient('a', new ItemBuilder(Material.GOLD_INGOT).setDisplayName(price[index]))
@@ -145,7 +145,7 @@ public class PriceEditor {
                     Double.parseDouble(price[1]);
                     return new ItemBuilder(Material.GOLD_INGOT)
                             .setDisplayName(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
-                                  CFLocale.GUI_NEW_VALUE
+                                    CFLocale.GUI_NEW_VALUE
                             )))
                             .addLoreLines(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
                                     CFLocale.GUI_ITEM_PRICE_BASE + price[0]

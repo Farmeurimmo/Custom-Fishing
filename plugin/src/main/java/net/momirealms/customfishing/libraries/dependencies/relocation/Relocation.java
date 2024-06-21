@@ -29,17 +29,15 @@ import java.util.Objects;
 
 public final class Relocation {
     private static final String RELOCATION_PREFIX = "net.momirealms.customfishing.libraries.";
-
-    public static Relocation of(String id, String pattern) {
-        return new Relocation(pattern.replace("{}", "."), RELOCATION_PREFIX + id);
-    }
-
     private final String pattern;
     private final String relocatedPattern;
-
     private Relocation(String pattern, String relocatedPattern) {
         this.pattern = pattern;
         this.relocatedPattern = relocatedPattern;
+    }
+
+    public static Relocation of(String id, String pattern) {
+        return new Relocation(pattern.replace("{}", "."), RELOCATION_PREFIX + id);
     }
 
     public String getPattern() {

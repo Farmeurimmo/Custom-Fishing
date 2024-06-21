@@ -35,6 +35,7 @@ public class FaceImpl implements TotemBlockProperty, Serializable {
 
     /**
      * Mirrors the block face if the axis is X or Z.
+     *
      * @param axis The axis to mirror.
      * @return The mirrored block face.
      */

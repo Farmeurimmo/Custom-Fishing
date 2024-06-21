@@ -49,12 +49,12 @@ public class StoredEnchantmentItem extends AbstractItem {
                 .setDisplayName(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
                         CFLocale.GUI_ITEM_STORED_ENCHANTMENT
                 )))
-                .addEnchantment(Enchantment.ARROW_FIRE,1,true)
+                .addEnchantment(Enchantment.ARROW_FIRE, 1, true)
                 .addItemFlags(ItemFlag.HIDE_ENCHANTS);
         if (itemPage.getSection().contains("stored-enchantments")) {
             itemBuilder.addLoreLines(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
-                            CFLocale.GUI_CURRENT_VALUE
-                    )));
+                    CFLocale.GUI_CURRENT_VALUE
+            )));
             for (Map.Entry<String, Object> entry : itemPage.getSection().getConfigurationSection("stored-enchantments").getValues(false).entrySet()) {
                 itemBuilder.addLoreLines(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
                         " <gray>- <white>" + entry.getKey() + ":" + entry.getValue()

@@ -49,10 +49,10 @@ import java.util.concurrent.TimeUnit;
 public class Competition implements FishingCompetition {
 
     private final CompetitionConfig config;
-    private CancellableTask competitionTimerTask;
     private final CompetitionGoal goal;
     private final ConcurrentHashMap<String, String> publicPlaceholders;
     private final Ranking ranking;
+    private CancellableTask competitionTimerTask;
     private float progress;
     private long remainingTime;
     private long startTime;
@@ -63,7 +63,7 @@ public class Competition implements FishingCompetition {
         this.config = config;
         this.goal = config.getGoal() == CompetitionGoal.RANDOM ? CompetitionGoal.getRandom() : config.getGoal();
         if (CFConfig.redisRanking) this.ranking = new RedisRankingImpl();
-                            else this.ranking = new LocalRankingImpl();
+        else this.ranking = new LocalRankingImpl();
         this.publicPlaceholders = new ConcurrentHashMap<>();
         this.publicPlaceholders.put("{goal}", CustomFishingPlugin.get().getCompetitionManager().getCompetitionGoalLocale(goal));
     }
@@ -194,7 +194,8 @@ public class Competition implements FishingCompetition {
                 } else {
                     Action[] actions = rewardsMap.get("participation");
                     if (actions != null) {
-                        Player player = Bukkit.getPlayer(competitionPlayer.left()); {
+                        Player player = Bukkit.getPlayer(competitionPlayer.left());
+                        {
                             if (player != null)
                                 for (Action action : actions)
                                     action.trigger(new Condition(player, this.publicPlaceholders));
@@ -252,7 +253,7 @@ public class Competition implements FishingCompetition {
      * actions if it's their first time joining the competition.
      *
      * @param player The player whose data needs to be refreshed.
-     * @param score The player's current score in the competition.
+     * @param score  The player's current score in the competition.
      */
     @Override
     public void refreshData(Player player, double score) {

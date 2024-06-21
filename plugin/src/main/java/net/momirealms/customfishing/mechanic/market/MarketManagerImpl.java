@@ -56,10 +56,11 @@ public class MarketManagerImpl implements MarketManager, Listener {
 
     private final CustomFishingPlugin plugin;
     private final HashMap<String, Double> priceMap;
+    private final HashMap<Character, BuildableItem> decorativeIcons;
+    private final ConcurrentHashMap<UUID, MarketGUI> marketGUIMap;
     private String[] layout;
     private String title;
     private String formula;
-    private final HashMap<Character, BuildableItem> decorativeIcons;
     private char itemSlot;
     private char sellSlot;
     private char sellAllSlot;
@@ -78,7 +79,6 @@ public class MarketManagerImpl implements MarketManager, Listener {
     private String earningLimitExpression;
     private boolean allowItemWithNoPrice;
     private boolean sellFishingBag;
-    private final ConcurrentHashMap<UUID, MarketGUI> marketGUIMap;
     private boolean enable;
     private CancellableTask resetEarningsTask;
     private int date;
@@ -331,8 +331,8 @@ public class MarketManagerImpl implements MarketManager, Listener {
                         "{money}", NumberUtils.money(worth),
                         "{rest}", NumberUtils.money(earningLimit - data.earnings),
                         "{money_formatted}", String.format("%.2f", worth)
-                        ,"{rest_formatted}", String.format("%.2f", (earningLimit - data.earnings))
-                        ,"{sold-item-amount}", String.valueOf(amount)
+                        , "{rest_formatted}", String.format("%.2f", (earningLimit - data.earnings))
+                        , "{sold-item-amount}", String.valueOf(amount)
                 )));
                 if (worth > 0) {
                     if (earningLimit != -1 && (earningLimit - data.earnings) < worth) {
@@ -377,8 +377,8 @@ public class MarketManagerImpl implements MarketManager, Listener {
                         "{money}", NumberUtils.money(worth),
                         "{rest}", NumberUtils.money(earningLimit - data.earnings),
                         "{money_formatted}", String.format("%.2f", worth)
-                        ,"{rest_formatted}", String.format("%.2f", (earningLimit - data.earnings))
-                        ,"{sold-item-amount}", String.valueOf(amount)
+                        , "{rest_formatted}", String.format("%.2f", (earningLimit - data.earnings))
+                        , "{sold-item-amount}", String.valueOf(amount)
                 )));
                 if (worth > 0) {
                     if (earningLimit != -1 && (earningLimit - data.earnings) < worth) {
@@ -427,7 +427,7 @@ public class MarketManagerImpl implements MarketManager, Listener {
             }
 
             if ((event.getClick() == ClickType.SHIFT_LEFT || event.getClick() == ClickType.SHIFT_RIGHT)
-            && (current != null && current.getType() != Material.AIR)) {
+                    && (current != null && current.getType() != Material.AIR)) {
                 event.setCancelled(true);
                 MarketGUIElement element = gui.getElement(itemSlot);
                 if (element == null) return;
@@ -469,7 +469,7 @@ public class MarketManagerImpl implements MarketManager, Listener {
     @Override
     public int getDate() {
         Calendar calendar = Calendar.getInstance();
-        return (calendar.get(Calendar.MONTH) +1) * 100 + calendar.get(Calendar.DATE);
+        return (calendar.get(Calendar.MONTH) + 1) * 100 + calendar.get(Calendar.DATE);
     }
 
     @Override

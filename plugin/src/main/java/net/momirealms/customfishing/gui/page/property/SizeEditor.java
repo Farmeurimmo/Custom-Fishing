@@ -43,21 +43,21 @@ public class SizeEditor {
     private final Player player;
     private final SectionPage parentPage;
     private final String[] size;
-    private int index;
     private final ConfigurationSection section;
+    private int index;
 
     public SizeEditor(Player player, SectionPage parentPage) {
         this.player = player;
         this.parentPage = parentPage;
         this.section = parentPage.getSection();
         this.index = 0;
-        this.size = section.contains("size") ? section.getString("size").split("~") : new String[]{"0","0"};
+        this.size = section.contains("size") ? section.getString("size").split("~") : new String[]{"0", "0"};
         reOpen();
     }
 
     public void reOpen() {
         Item border = new SimpleItem(new ItemBuilder(Material.AIR));
-        var confirm  = new ConfirmIcon();
+        var confirm = new ConfirmIcon();
         Gui upperGui = Gui.normal()
                 .setStructure("a # b")
                 .addIngredient('a', new ItemBuilder(Material.PUFFERFISH).setDisplayName(size[index]))

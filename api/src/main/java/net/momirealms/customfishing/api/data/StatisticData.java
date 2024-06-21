@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class StatisticData {
 
-    @SerializedName(value="amount", alternate={"map"})
+    @SerializedName(value = "amount", alternate = {"map"})
     public Map<String, Integer> amountMap;
 
     @SerializedName("size")

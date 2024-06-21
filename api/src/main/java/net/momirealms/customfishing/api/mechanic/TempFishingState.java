@@ -33,9 +33,9 @@ public class TempFishingState {
     /**
      * Creates a new instance of TempFishingState.
      *
-     * @param effect       The effect associated with this state.
-     * @param preparation  The fishing preparation associated with this state.
-     * @param loot         The loot associated with this state.
+     * @param effect      The effect associated with this state.
+     * @param preparation The fishing preparation associated with this state.
+     * @param loot        The loot associated with this state.
      */
     public TempFishingState(Effect effect, FishingPreparation preparation, Loot loot) {
         this.effect = effect;
@@ -72,7 +72,6 @@ public class TempFishingState {
 
     /**
      * Set the loot associated with this fishing state.
-     *
      */
     public void setLoot(Loot loot) {
         this.loot = loot;

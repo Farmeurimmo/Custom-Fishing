@@ -34,6 +34,10 @@ public class TotemConfig {
     private double radius;
     private int duration;
 
+    public static Builder builder(String key) {
+        return new Builder(key);
+    }
+
     /**
      * Get the array of totem models that define the totem's pattern.
      *
@@ -111,10 +115,6 @@ public class TotemConfig {
      */
     public TotemBlock[] getTotemCore() {
         return totemModels[0].getTotemCore();
-    }
-
-    public static Builder builder(String key) {
-        return new Builder(key);
     }
 
     /**

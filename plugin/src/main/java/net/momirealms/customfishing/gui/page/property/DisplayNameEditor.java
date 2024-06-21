@@ -41,15 +41,15 @@ import xyz.xenondevs.invui.window.AnvilWindow;
 public class DisplayNameEditor {
 
     private final SectionPage parentPage;
-    private String name;
     private final ConfigurationSection section;
+    private String name;
 
     public DisplayNameEditor(Player player, SectionPage parentPage) {
         this.parentPage = parentPage;
         this.section = parentPage.getSection();
 
         Item border = new SimpleItem(new ItemBuilder(Material.AIR));
-        var confirm  = new ConfirmIcon();
+        var confirm = new ConfirmIcon();
         Gui upperGui = Gui.normal()
                 .setStructure("a # b")
                 .addIngredient('a', new ItemBuilder(Material.NAME_TAG).setDisplayName(section.getString("display.name", CFLocale.GUI_NEW_DISPLAY_NAME)))
@@ -96,7 +96,7 @@ public class DisplayNameEditor {
             } else {
                 return new ItemBuilder(Material.NAME_TAG)
                         .setDisplayName(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
-                              "<!i>" + name
+                                "<!i>" + name
                         )))
                         .addLoreLines(new ShadedAdventureComponentWrapper(AdventureHelper.getInstance().getComponentFromMiniMessage(
                                 CFLocale.GUI_CLICK_CONFIRM

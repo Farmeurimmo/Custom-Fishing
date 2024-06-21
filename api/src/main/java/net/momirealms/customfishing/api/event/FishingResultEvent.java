@@ -35,11 +35,11 @@ import java.util.Optional;
 public class FishingResultEvent extends PlayerEvent implements Cancellable {
 
     private static final HandlerList handlerList = new HandlerList();
-    private boolean isCancelled;
     private final Result result;
     private final Loot loot;
     private final FishHook fishHook;
     private final Map<String, String> args;
+    private boolean isCancelled;
 
     /**
      * Constructs a new FishingResultEvent.
@@ -90,7 +90,8 @@ public class FishingResultEvent extends PlayerEvent implements Cancellable {
 
     /**
      * Set the value associated with a specific argument key.
-     * @param key key
+     *
+     * @param key   key
      * @param value value
      * @return previous value
      */

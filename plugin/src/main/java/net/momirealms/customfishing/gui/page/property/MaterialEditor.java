@@ -47,8 +47,8 @@ public class MaterialEditor {
 
     private final Player player;
     private final SectionPage parentPage;
-    private String material;
     private final ConfigurationSection section;
+    private String material;
 
     public MaterialEditor(Player player, SectionPage parentPage) {
         this.player = player;
@@ -62,7 +62,7 @@ public class MaterialEditor {
                 .getItemManager()
                 .getItemStackAppearance(player, material)
         )
-        .setDisplayName(section.getString("material", ""));
+                .setDisplayName(section.getString("material", ""));
 
         if (section.contains("custom-model-data"))
             itemBuilder.setCustomModelData(section.getInt("custom-model-data", 0));
@@ -107,9 +107,12 @@ public class MaterialEditor {
         ArrayList<Item> items = new ArrayList<>();
         for (String lib : ((ItemManagerImpl) CustomFishingPlugin.get().getItemManager()).getItemLibraries()) {
             switch (lib) {
-                case "MMOItems" -> items.add(new SimpleItem(new ItemBuilder(Material.BELL).setDisplayName(lib + ":TYPE:ID")));
-                case "ItemsAdder" -> items.add(new SimpleItem(new ItemBuilder(Material.BELL).setDisplayName(lib + ":namespace:id")));
-                case "vanilla", "CustomFishing" -> {}
+                case "MMOItems" ->
+                        items.add(new SimpleItem(new ItemBuilder(Material.BELL).setDisplayName(lib + ":TYPE:ID")));
+                case "ItemsAdder" ->
+                        items.add(new SimpleItem(new ItemBuilder(Material.BELL).setDisplayName(lib + ":namespace:id")));
+                case "vanilla", "CustomFishing" -> {
+                }
                 default -> items.add(new SimpleItem(new ItemBuilder(Material.BELL).setDisplayName(lib + ":ID")));
             }
         }

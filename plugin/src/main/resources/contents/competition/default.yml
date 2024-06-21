@@ -91,7 +91,7 @@ weekend_competition:
         - 'You have joined the competition. Good luck!'
 
   # Requirements for participating the competition
-  participate-requirements: {}
+  participate-requirements: { }
 
   # Rewards
   rewards:
